@@ -1,0 +1,28 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* Style for Log In Page */ 
+.text-field {  
+  -fx-text-box-border: #98116D;
+  -fx-background-radius: 10, 10, 10, 10;
+  -fx-focus-color: #98116D;
+}
+
+.combo-box{
+	-fx-background-color: transparent;
+}
+
+#signUp_button {
+    -fx-background-color: transparent;
+}
+
+#logIn_button {
+    -fx-background-radius: 10, 10, 10, 10; 
+    -fx-background-color: linear-gradient(#970265, #BB3A7F);
+}
+
+#logIn_button:hover { /* hover effect for log in button */
+      -fx-background-color:linear-gradient(#6C0045, #B90079);
+}
+    
+ 
+
