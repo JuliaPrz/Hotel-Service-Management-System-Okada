@@ -62,7 +62,7 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Label>
-            <Button fx:id="signUp_button" focusTraversable="false" layoutX="196.0" layoutY="326.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" stylesheets="@styling.css" text="Sign Up" underline="true">
+            <Button fx:id="link" focusTraversable="false" layoutX="196.0" layoutY="326.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" stylesheets="@styling.css" text="Sign Up" underline="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

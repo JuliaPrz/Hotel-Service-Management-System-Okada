@@ -11,6 +11,7 @@ public class LogIn_Controller implements Initializable {
 
 	@FXML
 	private ComboBox<String> logIn_cbb;
+	
 	private String[] user = {"Guest", "Employee", "Admin"};
 	
 	@Override
