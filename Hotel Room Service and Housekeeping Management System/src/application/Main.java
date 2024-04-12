@@ -15,11 +15,14 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 			
-			Parent root = FXMLLoader.load(getClass().getResource("Sign Up Scene.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("Admin Page.fxml"));
 			Scene scene = new Scene(root);
 			
 			//String css = this.getClass().getResource("styling.css").toExternalForm();
 			//scene.getStylesheets().add(css);
+			
+			//stage.setResizable(false);
+			//stage.setMaximized(true);
 			
 			stage.setScene(scene);
 			stage.show();
