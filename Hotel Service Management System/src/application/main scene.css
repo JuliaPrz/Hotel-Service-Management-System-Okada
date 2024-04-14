@@ -27,8 +27,25 @@
 	-fx-background-color:#98106C;
 }
 .hover_button:hover  {
-  -fx-background-color: linear-gradient(#53093A, #901868);
+  	-fx-background-color: linear-gradient(#53093A, #901868);
 }
+.svgbutton:hover{
+	-fx-fill: #54093B; 
+}
+.oval_btn{
+	-fx-background-radius: 10, 10, 10, 10;
+	-fx-background-color:#98106C;
+}
+
+
+.text-field {  
+  -fx-text-box-border: #98116D;
+  -fx-background-radius: 10, 10, 10, 10;
+  -fx-focus-color: #98116D;
+}
+
+
+
 
 /* table modification */
 

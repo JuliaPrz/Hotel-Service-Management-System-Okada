@@ -1,4 +1,4 @@
-package application;
+package application.logIn_signUp;
 
 import java.net.URL;
 import java.util.ResourceBundle;
