@@ -1,0 +1,55 @@
+
+
+.main_bg{
+	-fx-background-color:#F4F4F4;
+}
+
+.bg_radius{
+	-fx-background-radius: 8px;
+}
+
+.bg_shadow{
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,1);
+}
+
+.transparent_bg{
+	-fx-background-color:transparent;
+}
+
+
+/* card colors */
+.bg_color{
+	-fx-background-color: linear-gradient(#53093A, #901868);
+}
+
+/* button classes */
+.button_color{
+	-fx-background-color:#98106C;
+}
+.hover_button:hover  {
+  -fx-background-color: linear-gradient(#53093A, #901868);
+}
+
+/* table modification */
+
+.table-view .column-header, .filter{
+	-fx-background-color:transparent;
+	-fx-size: 40px;
+}
+.table-view .column-header-background {
+	-fx-background-color:#98106C;
+}
+.table-view .column-header .label {
+	-fx-text-fill:white;
+}
+
+
+
+
+
+
+
+
+
+
+    
