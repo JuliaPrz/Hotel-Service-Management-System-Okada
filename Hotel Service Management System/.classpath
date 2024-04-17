@@ -11,11 +11,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFXjars">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX Jars">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/FontAwesome/fontawesomefx-8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/FontAwesome/fontawesomefx-8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
