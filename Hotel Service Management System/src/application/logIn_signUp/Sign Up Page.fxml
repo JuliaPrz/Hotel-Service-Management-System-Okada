@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.logIn_signUp.LogIn_Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.logIn_signUp.SignUp_Controller">
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="450.0" BorderPane.alignment="CENTER">
          <children>
@@ -33,12 +33,12 @@
                   <Font name="Aharoni Bold" size="35.0" />
                </font>
             </Label>
-            <TextField focusTraversable="false" layoutX="37.0" layoutY="134.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css">
+            <TextField fx:id="signUpFName" focusTraversable="false" layoutX="37.0" layoutY="134.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </TextField>
-            <PasswordField focusTraversable="false" layoutX="38.0" layoutY="273.0" prefHeight="35.0" prefWidth="294.0" stylesheets="@LogIn%20SignUp.css" />
+            <PasswordField fx:id="signUpPass" focusTraversable="false" layoutX="38.0" layoutY="273.0" prefHeight="35.0" prefWidth="294.0" stylesheets="@LogIn%20SignUp.css" />
             <Label layoutX="63.0" layoutY="249.0" text="Password" textFill="#98116d">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
@@ -64,7 +64,7 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Label>
-            <Button fx:id="link" focusTraversable="false" layoutX="191.0" layoutY="465.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" stylesheets="@LogIn%20SignUp.css" text="Log In" underline="true">
+            <Button fx:id="logInLink" focusTraversable="false" layoutX="191.0" layoutY="465.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" styleClass="link_button" stylesheets="@LogIn%20SignUp.css" text="Log In" underline="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -84,14 +84,14 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Label>
-            <TextField focusTraversable="false" layoutX="37.0" layoutY="203.0" prefHeight="35.0" prefWidth="295.0" stylesheets="@LogIn%20SignUp.css">
+            <TextField fx:id="signUpEmail" focusTraversable="false" layoutX="37.0" layoutY="203.0" prefHeight="35.0" prefWidth="295.0" stylesheets="@LogIn%20SignUp.css">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </TextField>
-            <PasswordField focusTraversable="false" layoutX="38.0" layoutY="346.0" prefHeight="35.0" prefWidth="294.0" stylesheets="@LogIn%20SignUp.css" />
+            <PasswordField fx:id="ConfirmPass" focusTraversable="false" layoutX="38.0" layoutY="346.0" prefHeight="35.0" prefWidth="294.0" stylesheets="@LogIn%20SignUp.css" />
             <FontAwesomeIcon glyphName="LOCK" layoutX="46.0" layoutY="334.0" size="13" text="" wrappingWidth="10.114310264587402" />
-            <DatePicker fx:id="date" editable="false" focusTraversable="false" layoutX="41.0" layoutY="417.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css" />
+            <DatePicker fx:id="signUp_bdate" editable="false" focusTraversable="false" layoutX="41.0" layoutY="417.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css" />
             <Label layoutX="60.0" layoutY="391.0" text="Birthdate" textFill="#98116d">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
@@ -102,12 +102,12 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Label>
-            <TextField focusTraversable="false" layoutX="201.0" layoutY="417.0" prefHeight="35.0" prefWidth="133.0" stylesheets="@LogIn%20SignUp.css">
+            <TextField fx:id="signUpContact" focusTraversable="false" layoutX="201.0" layoutY="417.0" prefHeight="35.0" prefWidth="133.0" stylesheets="@LogIn%20SignUp.css">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </TextField>
-            <TextField focusTraversable="false" layoutX="190.0" layoutY="134.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css">
+            <TextField fx:id="signUpLName" focusTraversable="false" layoutX="190.0" layoutY="134.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>

@@ -23,3 +23,19 @@ public class LogIn_Controller implements Initializable {
 
 	
 }
+
+/* ///////// ABSTRACTION    ////////////
+
+//Abstract class for the account
+abstract class Account {
+	private String username;
+	private String password;
+
+ // Constructor
+ public Account(String username, String password) {
+     this.username = username;
+     this.password = password;
+ }
+}
+
+*/
