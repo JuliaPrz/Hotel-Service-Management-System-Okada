@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="1082.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminPage_Controller">
+   <left>
+      <AnchorPane prefHeight="667.0" prefWidth="252.0" style="-fx-background-color: linear-gradient(#53093A, #901868);;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="64.0" fitWidth="72.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/white%20logo.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="78.0" fitWidth="138.0" layoutX="94.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/okada%20title.png" />
+               </image>
+            </ImageView>
+            <VBox layoutX="-1.6" layoutY="199.0" prefHeight="349.0" prefWidth="256.0" spacing="5.0" stylesheets="@../vertical%20navigation.css" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="199.0">
+               <children>
+                  <Button fx:id="dashboard_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Dashboard">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="HOME" size="25" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="room_btn" alignment="BASELINE_LEFT" graphicTextGap="23.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Room">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="BED" size="25" wrappingWidth="26.97142219543457" />
+                     </graphic>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="food_btn" alignment="BASELINE_LEFT" graphicTextGap="30.0" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Food">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="CUTLERY" size="25" />
+                     </graphic>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="hk_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Housekeeping">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="acc_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Account">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="25" wrappingWidth="21.98569679260254" />
+                     </graphic>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="transact_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Transaction">
+                     <font>
+                        <Font name="Century" size="17.0" />
+                     </font>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                     <graphic>
+                        <SVGPath fx:id="transact_icon" content="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z" fill="WHITE" scaleX="1.5" scaleY="1.5" />
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="667.0" prefWidth="708.0" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <AnchorPane id="PROFILE" fx:id="profile_page" layoutX="50.0" layoutY="50.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="145.0" text="PROFILE" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="TRANSACATION" fx:id="transact_page" layoutX="40.0" layoutY="40.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="249.0" text="TRANSACTION" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="ACCOUNT" fx:id="acc_page" layoutX="30.0" layoutY="30.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="434.0" text="ACCOUNT MANAGEMENT" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="HOUSEKEEPING" fx:id="hk_page" layoutX="20.0" layoutY="20.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="272.0" text="HOUSEKEEPING" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="FOOD" fx:id="food_page" layoutX="10.0" layoutY="10.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="384.0" text="FOOD MANAGEMENT" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="ROOM" fx:id="room_page" layoutX="10.0" layoutY="10.0" prefHeight="728.0" prefWidth="891.2" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="384.0" text="ROOM MANAGEMENT" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL ROOMS" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="19.0" prefHeight="35.0" prefWidth="238.0" text="AVAILABLE" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefHeight="35.0" prefWidth="245.0" text="OCCUPIED" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="58.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                     <styleClass>
+                        <String fx:value="bg_radius" />
+                        <String fx:value="bg_shadow" />
+                     </styleClass>
+                  </AnchorPane>
+                  <AnchorPane layoutX="14.0" layoutY="284.0" maxWidth="1.7976931348623157E308" prefHeight="362.0" prefWidth="790.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="284.0">
+                     <styleClass>
+                        <String fx:value="bg_radius" />
+                        <String fx:value="bg_shadow" />
+                     </styleClass>
+                     <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="14.4" layoutY="17.0" prefHeight="35.0" prefWidth="148.0" text="All Rooms" textFill="#98116d" AnchorPane.leftAnchor="14.4" AnchorPane.topAnchor="17.0">
+                           <font>
+                              <Font name="Century Gothic" size="25.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="524.0" layoutY="18.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="138.0" text="Add Room Type" textFill="WHITE" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="18.0">
+                           <font>
+                              <Font name="Century Gothic Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="button_color" />
+                              <String fx:value="hover_button" />
+                           </styleClass>
+                        </Button>
+                        <TableView layoutY="64.0" prefHeight="271.0" prefWidth="790.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+                          <columns>
+                            <TableColumn fx:id="rm_roomNum" prefWidth="82.39999085664749" text="Room No." />
+                            <TableColumn fx:id="rm_roomType" prefWidth="167.20004272460938" text="Room Type" />
+                              <TableColumn fx:id="rm_price" prefWidth="102.39997863769531" text="Price" />
+                              <TableColumn fx:id="rm_status" prefWidth="103.20001220703125" text="Status" />
+                              <TableColumn fx:id="rm_actions" prefWidth="139.20001220703125" text="Actions" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Group layoutX="212.0" layoutY="18.0" AnchorPane.leftAnchor="162.0">
+                           <children>
+                              <TextField fx:id="rmSearch" layoutX="-50.0" layoutY="-3.0" prefHeight="38.0" prefWidth="262.0" promptText="Search">
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </TextField>
+                              <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
+                              <Button layoutX="134.0" layoutY="5.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="69.0" text="Search" textFill="WHITE">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="12.0" />
+                                 </font>
+                                 <styleClass>
+                                    <String fx:value="hover_button" />
+                                    <String fx:value="oval_btn" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                        </Group>
+                        <Button layoutX="672.0" layoutY="18.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Add Room" textFill="WHITE" AnchorPane.rightAnchor="14.399999999999977">
+                           <font>
+                              <Font name="Century Gothic Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="button_color" />
+                              <String fx:value="hover_button" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="DASHBOARD" fx:id="dashboard_page" prefHeight="667.2" prefWidth="830.4" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" stylesheets="@../main.css" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <Label layoutX="14.4" layoutY="11.0" prefHeight="44.0" prefWidth="227.0" text="DASHBOARD" textFill="#98116d" AnchorPane.leftAnchor="14.4">
+                           <font>
+                              <Font name="Aharoni Bold" size="35.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="profile_btn" focusTraversable="false" layoutX="684.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="46.0" prefWidth="58.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="23.99999999999998">
+                           <graphic>
+                              <SVGPath content="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z&#10;" scaleX="2.5" scaleY="2.5" styleClass="svgbutton">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="0.2803030438495404" startY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="0.2947368323802948" green="0.0589473694562912" blue="0.24364912509918213" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.800000011920929" green="0.2933333218097687" blue="0.6311110854148865" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </SVGPath>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card_bg" layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                     <children>
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="bg_radius" />
+                                    <String fx:value="bg_color" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children></AnchorPane>
+   </center>
+</BorderPane>

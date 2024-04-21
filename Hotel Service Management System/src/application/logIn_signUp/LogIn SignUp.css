@@ -25,6 +25,9 @@
 .link_button { /* black, underlined, sign up and log in button */
     -fx-background-color: transparent;
 }
+.link_button:hover { /* black, underlined, sign up and log in button */
+    -fx-background-color: transparent;
+}
 
 /* DatePicker customization */
 .date-picker{
