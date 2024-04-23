@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="1082.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminPage_Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="1082.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.admin.AdminPage_Controller">
    <left>
       <AnchorPane prefHeight="667.0" prefWidth="252.0" style="-fx-background-color: linear-gradient(#53093A, #901868);;" BorderPane.alignment="CENTER">
          <children>
@@ -604,7 +604,7 @@
                               <String fx:value="hover_button" />
                            </styleClass>
                         </Button>
-                        <TableView layoutY="64.0" prefHeight="271.0" prefWidth="790.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+                        <TableView fx:id="rmTable" focusTraversable="false" layoutY="64.0" prefHeight="271.0" prefWidth="790.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
                           <columns>
                             <TableColumn fx:id="rm_roomNum" prefWidth="82.39999085664749" text="Room No." />
                             <TableColumn fx:id="rm_roomType" prefWidth="167.20004272460938" text="Room Type" />

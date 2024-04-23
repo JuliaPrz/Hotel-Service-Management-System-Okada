@@ -10,6 +10,25 @@ public class RoomType {
 	private String rtAmenities;
 	private String rtImage;
 	
+	public Integer getRoomNum() {
+		return roomNum;
+	}
+
+	public void setRoomNum(Integer roomNum) {
+		this.roomNum = roomNum;
+	}
+
+	public String getRoomStatus() {
+		return roomStatus;
+	}
+
+	public void setRoomStatus(String roomStatus) {
+		this.roomStatus = roomStatus;
+	}
+	private Integer roomNum;
+	private String roomStatus;
+	
+	
 	public RoomType (Integer rtID, String rtName, Double rtPrice, String bedType, String rtDescription, String rtAmenities, String rtImage) {
 		
 		this.rtID = rtID;
@@ -20,6 +39,15 @@ public class RoomType {
 		this.rtAmenities = rtAmenities;
 		this.rtImage = rtImage;
 	}
+	
+	public RoomType (Integer roomNum, Integer rtID, Double rtPrice, String roomStatus) {
+		
+		this.roomNum = roomNum;
+		this.rtID = rtID;
+		this.rtPrice = rtPrice;
+		this.roomStatus = roomStatus;
+	}
+	
 	
 
 	public Integer getRtID() {
