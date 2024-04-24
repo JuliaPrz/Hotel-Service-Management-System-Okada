@@ -1,4 +1,4 @@
-package application.admin;
+package application.employee;
 
 import java.sql.SQLException;
 
@@ -19,14 +19,14 @@ import javafx.scene.layout.AnchorPane;
 
 
 
-public class AdminPage_Controller extends DB_Connection {
+public class EmployeePage_Controller extends DB_Connection {
 	
 	//          ---------     SWITCH PAGE     --------
 	@FXML
-	private AnchorPane dashboard_page, room_page, food_page, hk_page, acc_page, transact_page, profile_page;
+	private AnchorPane dashboard_page, room_page, food_page, hk_page, transact_page, profile_page;
 	
 	@FXML
-	private Button dashboard_btn, room_btn, food_btn, hk_btn, acc_btn, transact_btn, profile_btn;
+	private Button dashboard_btn, room_btn, food_btn, hk_btn, transact_btn, profile_btn;
 	
 	// Switches tab
 	@FXML
@@ -47,9 +47,6 @@ public class AdminPage_Controller extends DB_Connection {
 	            break;
 	        case "hk_btn":
 	        	hk_page.toFront();
-	            break;
-	        case "acc_btn":
-	        	acc_page.toFront();
 	            break;
 	        case "transact_btn":
 	        	transact_page.toFront();
@@ -89,6 +86,7 @@ public class AdminPage_Controller extends DB_Connection {
     
     void updateRoomTable() {
     	rmTable.setFixedCellSize(50);
+   // 	rmTable.getSelectionModel().clearSelection();
     	connection = connect();
     	String query = "SELECT room.Room_No, room_type.Type_ID, room_type.Price_per_Night, room.`Status`\r\n"
     			+ "FROM room\r\n"
@@ -114,6 +112,7 @@ public class AdminPage_Controller extends DB_Connection {
 	    	rm_roomType.setCellValueFactory(new PropertyValueFactory<>("rtID"));
 	    	rm_price.setCellValueFactory(new PropertyValueFactory<>("rtPrice"));
 	    	rm_status.setCellValueFactory(new PropertyValueFactory<>("roomStatus"));
+	    	
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -157,9 +156,7 @@ public class AdminPage_Controller extends DB_Connection {
     
 	
     public void initialize() {
-  
-         
-    
+
     	updateRoomTable();
     	
     

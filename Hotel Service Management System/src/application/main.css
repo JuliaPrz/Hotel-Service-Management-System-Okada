@@ -29,6 +29,18 @@
 .hover_button:hover  {
   	-fx-background-color: linear-gradient(#53093A, #901868);
 }
+.red_button{
+	 -fx-background-color:#B00000
+}
+.hover_red:hover{
+	 -fx-background-color: linear-gradient(#710000, #BF0000)
+}
+.green_button{
+	 -fx-background-color: #0E861B
+}
+.hover_green:hover{
+	 -fx-background-color: linear-gradient(#004100, #0E861B)
+}
 .svgbutton:hover{
 	-fx-fill: #54093B; 
 }
@@ -50,34 +62,50 @@
 /* table modification */
 .table-view {
     -fx-background-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
+
 
 .table-view .column-header, .filter{
 	-fx-background-color:transparent;
 	-fx-size: 40px;
 }
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+
 .table-view .column-header-background {
 	-fx-background-color:#98106C;
 }
 .table-view .column-header .label {
 	-fx-text-fill:white;
-}
+} 
 
 .table-column {
   -fx-alignment: CENTER;
   -fx-font-size: 15px;
 }
-
-.table-view:focused { 
-	-fx-background-color: transparent,-fx-box-border,-fx-control-inner-background;
-}
-.table-row-cell:filled:selected{
-	-fx-background-color: #98116D;
-	-fx-text-fill: white;
-	-fx-padding: 0;
+.table-view .column-header .arrow {
+    -fx-background-color: white; /* Change the color of the arrows to red */
 }
 
+/** color the scroll bar background and thumb */
+.table-view .scroll-bar {
+    -fx-background-color: white;
+}
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
 
+.table-view .virtual-flow .scroll-bar:vertical .thumb{
+    -fx-background-color:  linear-gradient(to bottom, #53093A, #901868);
+}
+.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color:  linear-gradient(to right, #53093A, #901868);
+}
 
 
 

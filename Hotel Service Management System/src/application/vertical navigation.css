@@ -10,6 +10,7 @@
     -fx-background-color: white;
     -fx-text-fill: #54093B; 
 }
+
 .button:focused .glyph-icon {
     -fx-fill: #54093B; /* Change the color to red when hovering */
 }
@@ -24,14 +25,14 @@
 
 /* changes the color of the icon based on the downloaded png */
 #hk_btn{
-	-fx-graphic: url(../images/white_hk_icon.png);
+	-fx-graphic: url(../images/icons/white_hk_icon.png);
 	-fx-graphic-text-gap: 15px;  /*Adjust the space between graphic and text */		
 }
 #hk_btn:hover{
-	-fx-graphic: url(../images/purple%20hk%20icon.png);
+	-fx-graphic: url(../images/icons/purple%20hk%20icon.png);
 }
 #hk_btn:focused{
-	-fx-graphic: url(../images/purple%20hk%20icon.png);
+	-fx-graphic: url(../images/icons/purple%20hk%20icon.png);
 }
 
 /* changes the color of the icon based on the downloaded svg */

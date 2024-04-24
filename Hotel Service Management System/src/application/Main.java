@@ -10,13 +10,13 @@ public class Main extends Application{
 	
 	// log in controller
 	// sign up controller
-	// admin, employee, guest controller
+	//  employee, guest controller
 
 	@Override
 	public void start(Stage stage) throws Exception {
 			
 			//Parent root = FXMLLoader.load(getClass().getResource("logIn_signUp/Sign Up Page.fxml"));
-			Parent root = FXMLLoader.load(getClass().getResource("admin/Admin Page.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("logIn_signUp/Log In Page.fxml"));
 			Scene scene = new Scene(root);
 			
 			//String css = this.getClass().getResource("styling.css").toExternalForm();

@@ -67,7 +67,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         
         Pattern pat = Pattern.compile(regexPattern); 
-        if (email == null) 
+        if (email == null || email.getText().isEmpty()) 
             return false; 
         return  pat.matcher(email.getText()).matches();
     }
@@ -180,6 +180,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	}	
     } 
 
+    // clears the text fields
     public void clearSignUpFields() {
     	signUpLName.setText("");
     	signUpFName.setText("");

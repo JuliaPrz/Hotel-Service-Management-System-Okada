@@ -1,14 +1,19 @@
 package application.encapsulatedData;
 
 public class RoomType {
-	
+
+	private Integer roomNum;
 	private Integer rtID;
-	private String rtName;
+	private String roomStatus;
 	private Double rtPrice;
-	private String bedType;
-	private String rtDescription;
-	private String rtAmenities;
-	private String rtImage;
+	
+	public RoomType (Integer roomNum, Integer rtID, Double rtPrice, String roomStatus) {
+		
+		this.roomNum = roomNum;
+		this.rtID = rtID;
+		this.rtPrice = rtPrice;
+		this.roomStatus = roomStatus;
+	}
 	
 	public Integer getRoomNum() {
 		return roomNum;
@@ -25,8 +30,21 @@ public class RoomType {
 	public void setRoomStatus(String roomStatus) {
 		this.roomStatus = roomStatus;
 	}
-	private Integer roomNum;
-	private String roomStatus;
+
+	
+
+	
+	
+	
+	
+	
+	/////////////////////		NOT USED YET       /////////////
+
+	private String rtName;
+	private String bedType;
+	private String rtDescription;
+	private String rtAmenities;
+	private String rtImage;
 	
 	
 	public RoomType (Integer rtID, String rtName, Double rtPrice, String bedType, String rtDescription, String rtAmenities, String rtImage) {
@@ -39,15 +57,6 @@ public class RoomType {
 		this.rtAmenities = rtAmenities;
 		this.rtImage = rtImage;
 	}
-	
-	public RoomType (Integer roomNum, Integer rtID, Double rtPrice, String roomStatus) {
-		
-		this.roomNum = roomNum;
-		this.rtID = rtID;
-		this.rtPrice = rtPrice;
-		this.roomStatus = roomStatus;
-	}
-	
 	
 
 	public Integer getRtID() {

@@ -1,4 +1,4 @@
-package application.admin;
+package application.employee;
 
 import java.io.File;
 import java.sql.Date;
@@ -29,7 +29,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 
 
-public class AddRoomType_Controller extends DB_Connection {
+public class CheckIn_Controller extends DB_Connection {
 	
 
 	//          ---------     ROOM TYPE     --------
@@ -73,11 +73,7 @@ public class AddRoomType_Controller extends DB_Connection {
     		rtImageView.setImage(image);		
     	}
     }
-    // Method to display the bed type options
-    public void bedTypeChoices() {
-        Choices bedType = new Choices(); 
-        bedType.bedTypeChoices(rt_bedType);
-    }
+
   
     public void addRoomType() {
     	connection = connect();
@@ -170,7 +166,7 @@ public class AddRoomType_Controller extends DB_Connection {
         	rt_amenities.setWrapText(true);
         
 
-    	bedTypeChoices();
+
     	
     
 
