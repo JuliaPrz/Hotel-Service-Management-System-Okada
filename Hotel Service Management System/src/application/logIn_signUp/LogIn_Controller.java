@@ -84,7 +84,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     	        
                     	 if (result.next()) {
             	        	// Load the FXML file of the selected page
-            	            root = FXMLLoader.load(getClass().getResource("/application/employee/EmployeePage.fxml"));
+            	            root = FXMLLoader.load(getClass().getResource("/application/hotelCoord/HotelCoordPage.fxml"));
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             	         // Set the scene in the stage
@@ -113,7 +113,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     	        if (result.next()) {
             	        	
             	        	// Load the FXML file of the selected page
-            	            root = FXMLLoader.load(getClass().getResource("/application/employee/EmployeePage.fxml"));
+            	            root = FXMLLoader.load(getClass().getResource("/application/hotelCoord/HotelCoordPage.fxml"));
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             	         // Set the scene in the stage
@@ -127,28 +127,13 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	                	        e.printStackTrace();
 	                	        // Handle database error
 	                	        alert.errorMessage("An error occurred. Please try again later.");
-	                	    }
-            	        
-        	        } 
-    	
-        	        
-        	       
-        	    
-        	     
-        	
+	                	    }	        
+        	        }     
     		}
-    		
-    		
-    		
     }
     	
     	
-    	
-	
-	
-	
-	
-	
+
     // this method is applied to the sign up link
     public void openSignUpPage (ActionEvent event) throws IOException {
     		 // Load the FXML file of log in page
@@ -163,18 +148,6 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
     
     
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

@@ -44,9 +44,36 @@
 .svgbutton:hover{
 	-fx-fill: #54093B; 
 }
+.light_svgbutton:hover{
+	-fx-fill: linear-gradient(#ffffff, #ffade5);
+}
+.light_svgbutton:focused{
+	-fx-fill: linear-gradient(#ffffff, #ffade5);
+}
+
+.hoributtons_hover:hover{
+	-fx-border-color: transparent transparent white transparent; 
+	-fx-border-width: 0 0 2 0;
+}
+.hoributtons_hover:focused{
+	-fx-border-color: transparent transparent white transparent; 
+	-fx-border-width: 0 0 2 0;
+}
+
+
 .oval_btn{
 	-fx-background-radius: 10, 10, 10, 10;
 	-fx-background-color:#98106C;
+}
+.book_oval_btn{
+	-fx-background-radius: 15;
+	-fx-background-color:#40003F;
+	-fx-text-fill: white;
+}
+.book_oval_btn:hover{
+	-fx-background-radius: 15;
+	-fx-background-color:white;
+	-fx-text-fill: black;
 }
 
 
