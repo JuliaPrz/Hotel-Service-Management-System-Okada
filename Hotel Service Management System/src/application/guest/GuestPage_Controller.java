@@ -1,22 +1,20 @@
 package application.guest;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import application.DB_Connection;
-import application.encapsulatedData.RoomType;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -24,7 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+
 
 
 public class GuestPage_Controller extends DB_Connection implements Initializable{
@@ -35,6 +33,25 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    private Button homeBtn, roomBtn , bookingBtn, foodBtn, hkBtn, aboutUsBtn, profileBtn;
 	    @FXML
 	    private AnchorPane welcomePage, roomPage, bookingPage, foodPage, hkPage, aboutUsPage, profilePage;
+	    @FXML
+	    private StackPane rootPane;
+	    @FXML
+	    private Rectangle rt_bg1, rt_bg2, rt_bg3, rt_bg4;
+	    @FXML
+	    private Label rt_am1, rt_am2, rt_am3, rt_am4;
+	    @FXML
+	    private Label rt_betType1, rt_betType2, rt_betType3, rt_betType4;
+	    @FXML
+	    private Label rt_desc1, rt_desc2, rt_desc3, rt_desc4;
+	    @FXML
+	    private Label rt_name1, rt_name2, rt_name3, rt_name4;
+	    @FXML
+	    private Label rt_price1, rt_price2, rt_price3, rt_price4;
+
+	    final int numberOfRoomRype = 4;
+	    
+	    
+	    
 		// Declare a HashMap to map button IDs to pages
 		private HashMap<String, AnchorPane> pageMap = new HashMap<>();
 		// Switches tab
@@ -61,9 +78,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    }
 	    
 
-    @FXML
-	    private StackPane rootPane;
-	
 	    // SETS THE BACKGROUND IMAGE
 	    public void wrapBgImage() {
 	    	  WrappedImageView imageView = new WrappedImageView();
@@ -76,39 +90,12 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	    imageView.toBack(); // moves it to the back so, we can put more nodes in the front
 	    }
 	    
-	    @FXML
-	    Rectangle rt_bg1, rt_bg2, rt_bg3, rt_bg4;
 	    
-	    public void roomTypeImage(){
-	    	rt_bg1.setArcWidth(25.0);   // Corner radius
-	    	rt_bg1.setArcHeight(25.0);
-	    	rt_bg2.setArcWidth(25.0);   // Corner radius
-	    	rt_bg2.setArcHeight(25.0);
-	    	rt_bg3.setArcWidth(25.0);   // Corner radius
-	    	rt_bg3.setArcHeight(25.0);
-	    	rt_bg4.setArcWidth(25.0);   // Corner radius
-	    	rt_bg4.setArcHeight(25.0);
-	
-	    	    ImagePattern pattern1 = new ImagePattern(
-	    	        new Image("/images/room type/Deluxe King.jpg", 280, 180, false, false) // Resizing
-	    	    );
-	
-	    	    rt_bg1.setFill(pattern1);
-	    	    rt_bg1.setEffect(new DropShadow(2, Color.BLACK));  // Shadow
-	    	    rt_bg2.setFill(pattern1);
-	    	    rt_bg2.setEffect(new DropShadow(2, Color.BLACK));  // Shadow
-	    	    rt_bg3.setFill(pattern1);
-	    	    rt_bg3.setEffect(new DropShadow(2, Color.BLACK));  // Shadow
-	    	    rt_bg4.setFill(pattern1);
-	    	    rt_bg4.setEffect(new DropShadow(2, Color.BLACK));  // Shadow
-	    }
-
-	    
-	    
-	    void displayData() {
+	    // ROOM PAGE - display all data
+	    void displayRoomPageData() {
 	    	connection = connect();
 	        // Define an array of queries and corresponding target nodes
-	        String[] queries = {
+	        String[] imageQueries = {
 	            "SELECT Image FROM room_type WHERE type_ID = 10",
 	            "SELECT Image FROM room_type WHERE type_ID = 20",
 	            "SELECT Image FROM room_type WHERE type_ID = 30",
@@ -118,18 +105,21 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        Rectangle[] targetNodes = {rt_bg1, rt_bg2, rt_bg3, rt_bg4};
 
 	        // Display images
-	        for (int i = 0; i < queries.length; i++) {
-	            displayImage(connection,queries[i], targetNodes[i]);
+	        for (int i = 0; i < imageQueries.length; i++) {
+	            roomType_displayImage(connection,imageQueries[i], targetNodes[i]);
 	        }
 
 	        // Display text
-	        displayTextFromDatabase();
+	        roomType_displayName(connection);
+	        roomType_displayPrice(connection);
+	        roomType_displayBedType(connection);
+	        roomType_displayDescription(connection);
+	        roomType_displayAmenities(connection);
 	        close();
 	    }
 
-	    void displayImage(Connection connection, String query, Rectangle targetNode) {
-	 
-
+	    // ROOM PAGE - method to display IMAGE
+	    void roomType_displayImage(Connection connection, String query, Rectangle targetNode) {
 	        try {
 	            prepare = connection.prepareStatement(query);
 	            result = prepare.executeQuery();
@@ -174,13 +164,204 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        }
 	    }
 
-	    void displayTextFromDatabase() {
-	        // Code to retrieve and display text from the database using labels
-	        // ...
-	    }
-				
+	    // ROOM PAGE - method to display NAME
+	    void roomType_displayName(Connection connection) {	
+	    	 Label[] nameLabel = {rt_name1, rt_name2, rt_name3, rt_name4};
+	    
+		        String[] nameQueries = {
+		            "SELECT Name FROM room_type WHERE type_ID = 10",
+		            "SELECT Name FROM room_type WHERE type_ID = 20",
+		            "SELECT Name FROM room_type WHERE type_ID = 30",
+		            "SELECT Name FROM room_type WHERE type_ID = 40"
+		        };
+
+		        // Display text for labels
+		        for (int i = 0; i < numberOfRoomRype; i++) {
+		            try {
+		                prepare = connection.prepareStatement(nameQueries[i]);
+		                result = prepare.executeQuery();
+		                
+		                if (result.next()) {
+		                    String name = result.getString("Name");
+		                    nameLabel[i].setText(name);
+		                } else {
+		                    System.out.println("Price per Night: No data found for the given ID.");
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            } finally {
+		            	// since I'm reusing the connection, it is a good practice to close the resultset and preparedstatement
+		                try {
+		                    if (result != null) result.close();
+		                    if (prepare != null) prepare.close();
+		                } catch (SQLException e) {
+		                    e.printStackTrace();
+		                }
+		             }
+		        } // end of for loop
+		   }
+	  
+	    // ROOM PAGE - method to display PRICE
+	    void roomType_displayPrice(Connection connection) {
+	    	 Label[] priceLabel = {rt_price1, rt_price2, rt_price3, rt_price4};
+
+	    	 String [] priceQueries = {
+			        	"SELECT Price_per_night FROM room_type WHERE type_ID = 10",
+			        	"SELECT Price_per_night FROM room_type WHERE type_ID = 20",
+			        	"SELECT Price_per_night FROM room_type WHERE type_ID = 30",
+			        	"SELECT Price_per_night FROM room_type WHERE type_ID = 40"
+			        };
+		            
+		        // Display text for labels
+		        for (int i = 0; i < numberOfRoomRype; i++) {
+		            try {
+		              
+		                prepare = connection.prepareStatement(priceQueries[i]);
+			            result = prepare.executeQuery();
+
+		                if (result.next()) {	                 
+		                	// Retrieve the price from the result set
+		                    double price = result.getDouble("Price_per_night");
+
+		                    // Format the price with commas and no decimals
+		                    DecimalFormat formatter = new DecimalFormat("#,###");
+		                    String formattedPrice = formatter.format(price);
+
+		                    // Set the formatted price text to the label
+		                    priceLabel[i].setText(formattedPrice + " PHP");
+   
+		                } else {
+		                    System.out.println("No data found for the given ID.");
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            } finally {
+		                try {
+		                    if (result != null) result.close();
+		                    if (prepare != null) prepare.close();
+		                } catch (SQLException e) {
+		                    e.printStackTrace();
+		                }
+		             }
+		        } // end of for loop
+		   }
+
+	 // Method to retrieve and display the BED TYPE from the database using labels
+	    void roomType_displayBedType(Connection connection) {
+	    	 Label[] bedLabel = {rt_betType1, rt_betType2, rt_betType3, rt_betType4};
+
+		    	 String [] bedTypeQueries = {
+		 	        	"SELECT Bed_Type FROM room_type WHERE type_ID = 10",
+		 	        	"SELECT Bed_Type FROM room_type WHERE type_ID = 20",
+		 	        	"SELECT Bed_Type FROM room_type WHERE type_ID = 30",
+		 	        	"SELECT Bed_Type FROM room_type WHERE type_ID = 40"
+		 	        };
+		            
+		        // Display text for labels
+		        for (int i = 0; i < numberOfRoomRype; i++) {
+		            try {
+		              
+		                prepare = connection.prepareStatement(bedTypeQueries[i]);
+			            result = prepare.executeQuery();
+
+		                if (result.next()) {	                 
+		                    String bedType = result.getString("Bed_Type");
+		                    bedLabel[i].setText(bedType);
+   
+		                } else {
+		                    System.out.println("Bed Type: No data found for the given ID.");
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            } finally {
+		                try {
+		                    if (result != null) result.close();
+		                    if (prepare != null) prepare.close();
+		                } catch (SQLException e) {
+		                    e.printStackTrace();
+		                }
+		             }
+		        } // end of for loop
+		   }
     
-    
+	  
+	    // ROOM PAGE - method to display DESCRIPTION
+	    void roomType_displayDescription(Connection connection) {	
+	    	 Label[] descriptionLabel = {rt_desc1, rt_desc2, rt_desc3, rt_desc4};
+	    	 
+	    
+	    	 String [] descQueries = {
+			        	"SELECT Description FROM room_type WHERE type_ID = 10",
+			        	"SELECT Description FROM room_type WHERE type_ID = 20",
+			        	"SELECT Description FROM room_type WHERE type_ID = 30",
+			        	"SELECT Description FROM room_type WHERE type_ID = 40"
+			        };
+		        
+		        // Display text for labels
+		        for (int i = 0; i < numberOfRoomRype; i++) {
+		            try {
+		                prepare = connection.prepareStatement(descQueries[i]);
+		                result = prepare.executeQuery();
+		                
+		                if (result.next()) {
+		                    String desc = result.getString("Description");
+		                    descriptionLabel[i].setText(desc);
+		                    descriptionLabel[i].setWrapText(true);
+		                    
+		                } else {
+		                    System.out.println("Description: No data found for the given ID.");
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            } finally {
+		            	// since I'm reusing the connection, it is a good practice to close the resultset and preparedstatement
+		                try {
+		                    if (result != null) result.close();
+		                    if (prepare != null) prepare.close();
+		                } catch (SQLException e) {
+		                    e.printStackTrace();
+		                }
+		             }
+		        } // end of for loop
+		   }
+	   
+	    // ROOM PAGE - method to display AMENITIES
+	    void roomType_displayAmenities(Connection connection) {	
+	    	 Label[] amenLabel = {rt_am1, rt_am2, rt_am3, rt_am4};
+	    
+	    	 String [] amenQueries = {
+			        	"SELECT Amenities FROM room_type WHERE type_ID = 10",
+			        	"SELECT Amenities FROM room_type WHERE type_ID = 20",
+			        	"SELECT Amenities FROM room_type WHERE type_ID = 30",
+			        	"SELECT Amenities FROM room_type WHERE type_ID = 40"
+			        };
+		        
+		        // Display text for labels
+		        for (int i = 0; i < numberOfRoomRype; i++) {
+		            try {
+		                prepare = connection.prepareStatement(amenQueries[i]);
+		                result = prepare.executeQuery();
+		                
+		                if (result.next()) {
+		                    String desc = result.getString("Amenities");
+		                    amenLabel[i].setText(desc);
+		                    amenLabel[i].setWrapText(true);
+		                } else {
+		                    System.out.println("Amenities: No data found for the given ID.");
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            } finally {
+		            	// since I'm reusing the connection, it is a good practice to close the resultset and preparedstatement
+		                try {
+		                    if (result != null) result.close();
+		                    if (prepare != null) prepare.close();
+		                } catch (SQLException e) {
+		                    e.printStackTrace();
+		                }
+		             }
+		        } // end of for loop
+		   }
     
 	
 	
@@ -188,8 +369,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 
     public void initialize(URL location, ResourceBundle resources) {
     	wrapBgImage();
-    	
-    	//roomTypeImage();
     	
     	// switches page depending on which button has been clicked
     	pageMap.put("homeBtn", welcomePage);
@@ -200,7 +379,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         pageMap.put("aboutUsBtn", aboutUsPage);
         pageMap.put("profileBtn", profilePage);
     	
-        displayData();
+        displayRoomPageData();
     	
     	
         // Set the desired width and height of the ImageView

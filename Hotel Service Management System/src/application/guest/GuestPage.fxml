@@ -129,7 +129,7 @@
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="aboutUsPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
+      <AnchorPane fx:id="aboutUsPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -233,7 +233,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="506.0" prefWidth="978.0" style="-fx-background-color: white; -fx-background-radius: 20;" styleClass="bg_shadow" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="115.0">
                <children>
-                  <Label layoutX="387.0" layoutY="99.0" text="ABOUT US PAGE" textFill="#98106c">
+                  <Label layoutX="519.0" layoutY="33.0" text="ABOUT OKADA MANILA" textFill="#98106c">
                      <font>
                         <Font name="Aharoni Bold" size="35.0" />
                      </font>
@@ -577,7 +577,7 @@
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="roomPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
+      <AnchorPane fx:id="roomPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -694,28 +694,33 @@
                               <Font name="AmasisMTW1G-Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_desc1" alignment="BASELINE_LEFT" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_desc1" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Description goes here..." textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_price1" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="10, 800" textFill="#98106c">
+                        <Label fx:id="rt_price1" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="PRICE" textFill="#98106c">
                            <font>
-                              <Font name="AmasisMTW1G-Bold" size="19.0" />
+                              <Font name="AmasisMTW1G-Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_am1" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="174.0" prefHeight="46.0" prefWidth="373.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_am1" alignment="BASELINE_LEFT" layoutX="24.0" layoutY="182.0" prefHeight="46.0" prefWidth="270.0" text="Lorem Ipsum Deluxe King" textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_betType1" graphicTextGap="15.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="143.0" text="Bed Type" textFill="#98106c">
+                        <Label fx:id="rt_betType1" graphicTextGap="10.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="188.0" text="Bed Type" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                            <graphic>
                               <FontAwesomeIcon fill="#98106c" glyphName="BED" selectionFill="#98106c" size="20" />
                            </graphic>
+                        </Label>
+                        <Label graphicTextGap="10.0" layoutX="24.0" layoutY="165.0" prefHeight="27.0" prefWidth="73.0" text="Amenities:" textFill="#98106c">
+                           <font>
+                              <Font name="Century Gothic Bold" size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </AnchorPane>
@@ -726,92 +731,107 @@
                               <Font name="AmasisMTW1G-Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_desc2" alignment="BASELINE_LEFT" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_desc2" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Description goes here..." textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_price2" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="10, 800" textFill="#98106c">
+                        <Label fx:id="rt_price2" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="PRICE" textFill="#98106c">
                            <font>
-                              <Font name="AmasisMTW1G-Bold" size="19.0" />
+                              <Font name="AmasisMTW1G-Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_am2" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="174.0" prefHeight="46.0" prefWidth="373.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_am2" alignment="BASELINE_LEFT" layoutX="28.0" layoutY="182.0" prefHeight="46.0" prefWidth="296.0" text="Lorem Ipsum Deluxe King" textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_betType2" graphicTextGap="15.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="143.0" text="Bed Type" textFill="#98106c">
+                        <Label fx:id="rt_betType2" graphicTextGap="10.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="210.0" text="Bed Type" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                            <graphic>
                               <FontAwesomeIcon fill="#98106c" glyphName="BED" selectionFill="#98106c" size="20" />
                            </graphic>
+                        </Label>
+                        <Label graphicTextGap="10.0" layoutX="28.0" layoutY="165.0" prefHeight="27.0" prefWidth="73.0" text="Amenities:" textFill="#98106c">
+                           <font>
+                              <Font name="Century Gothic Bold" size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="734.0" layoutY="127.0" prefHeight="221.0" prefWidth="389.0">
+                  <AnchorPane layoutX="730.0" layoutY="119.0" prefHeight="221.0" prefWidth="389.0">
                      <children>
-                        <Label fx:id="rt_name3" layoutX="24.0" prefHeight="46.0" prefWidth="168.0" text="DELUXE KING" textFill="#98106c">
+                        <Label fx:id="rt_name3" prefHeight="46.0" prefWidth="168.0" text="DELUXE KING" textFill="#98106c">
                            <font>
                               <Font name="AmasisMTW1G-Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_desc3" alignment="BASELINE_LEFT" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_desc3" layoutX="8.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Description goes here..." textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_price3" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="10, 800" textFill="#98106c">
+                        <Label fx:id="rt_price3" alignment="CENTER" layoutX="249.0" prefHeight="46.0" prefWidth="126.0" text="PRICE" textFill="#98106c">
                            <font>
-                              <Font name="AmasisMTW1G-Bold" size="19.0" />
+                              <Font name="AmasisMTW1G-Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_am3" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="174.0" prefHeight="46.0" prefWidth="373.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_am3" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="182.0" prefHeight="46.0" prefWidth="262.0" text="Lorem Ipsum Deluxe King" textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_betType3" graphicTextGap="15.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="143.0" text="Bed Type" textFill="#98106c">
+                        <Label fx:id="rt_betType3" graphicTextGap="10.0" layoutX="4.0" layoutY="32.0" prefHeight="27.0" prefWidth="209.0" text="Bed Type" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                            <graphic>
                               <FontAwesomeIcon fill="#98106c" glyphName="BED" selectionFill="#98106c" size="20" />
                            </graphic>
+                        </Label>
+                        <Label graphicTextGap="10.0" layoutX="8.0" layoutY="165.0" prefHeight="27.0" prefWidth="73.0" text="Amenities:" textFill="#98106c">
+                           <font>
+                              <Font name="Century Gothic Bold" size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="741.0" layoutY="370.0" prefHeight="221.0" prefWidth="389.0">
+                  <AnchorPane layoutX="734.0" layoutY="370.0" prefHeight="221.0" prefWidth="389.0">
                      <children>
-                        <Label fx:id="rt_name4" layoutX="24.0" prefHeight="46.0" prefWidth="168.0" text="DELUXE KING" textFill="#98106c">
+                        <Label fx:id="rt_name4" prefHeight="46.0" prefWidth="168.0" text="DELUXE KING" textFill="#98106c">
                            <font>
                               <Font name="AmasisMTW1G-Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_desc4" alignment="BASELINE_LEFT" layoutX="24.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_desc4" layoutX="5.0" layoutY="60.0" prefHeight="111.0" prefWidth="358.0" text="Description goes here..." textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_price4" alignment="CENTER" layoutX="260.0" prefHeight="46.0" prefWidth="126.0" text="10, 800" textFill="#98106c">
+                        <Label fx:id="rt_price4" alignment="CENTER" layoutX="249.0" prefHeight="46.0" prefWidth="126.0" text="PRICE" textFill="#98106c">
                            <font>
-                              <Font name="AmasisMTW1G-Bold" size="19.0" />
+                              <Font name="AmasisMTW1G-Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_am4" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="174.0" prefHeight="46.0" prefWidth="373.0" text="Lorem Ipsum Deluxe King" textFill="#98106c">
+                        <Label fx:id="rt_am4" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="182.0" prefHeight="46.0" prefWidth="296.0" text="Lorem Ipsum Deluxe King" textAlignment="JUSTIFY" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="rt_betType4" graphicTextGap="15.0" layoutX="28.0" layoutY="32.0" prefHeight="27.0" prefWidth="143.0" text="Bed Type" textFill="#98106c">
+                        <Label fx:id="rt_betType4" graphicTextGap="10.0" layoutX="4.0" layoutY="32.0" prefHeight="27.0" prefWidth="234.0" text="Bed Type" textFill="#98106c">
                            <font>
                               <Font name="Century Gothic" size="10.0" />
                            </font>
                            <graphic>
                               <FontAwesomeIcon fill="#98106c" glyphName="BED" selectionFill="#98106c" size="20" />
                            </graphic>
+                        </Label>
+                        <Label graphicTextGap="10.0" layoutX="5.0" layoutY="165.0" prefHeight="27.0" prefWidth="73.0" text="Amenities:" textFill="#98106c">
+                           <font>
+                              <Font name="Century Gothic Bold" size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </AnchorPane>
