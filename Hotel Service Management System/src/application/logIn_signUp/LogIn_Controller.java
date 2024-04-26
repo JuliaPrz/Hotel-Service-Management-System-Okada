@@ -14,11 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -113,11 +115,15 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     	        if (result.next()) {
             	        	
             	        	// Load the FXML file of the selected page
-            	            root = FXMLLoader.load(getClass().getResource("/application/hotelCoord/HotelCoordPage.fxml"));
+            	            root = FXMLLoader.load(getClass().getResource("/application/guest/GuestPage.fxml"));
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             	         // Set the scene in the stage
                 	        stage.setScene(scene);
+                	        stage.setResizable(false);
+                	        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                	        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                	        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
                 	        stage.show();
             	        }else {
             	            // Login failed

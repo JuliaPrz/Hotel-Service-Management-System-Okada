@@ -72,18 +72,12 @@ public class HotelCoordPage_Controller extends DB_Connection {
     @FXML
     private TableColumn<RoomType, Integer> rm_roomNum; 
     @FXML
-    private TableColumn<RoomType, String> rm_roomType;
+    private TableColumn<RoomType, String> rm_roomType, rm_status;
     @FXML
     private TableColumn<RoomType, Double> rm_price;
     @FXML
-    private TableColumn<RoomType, String> rm_status;
-    @FXML
     private TableColumn<RoomType, Button> rm_actions;
 
-
-
-    
- 
     ObservableList<RoomType> allRoomList = FXCollections.observableArrayList(); 
     
     void updateRoomTable() {
@@ -119,8 +113,6 @@ public class HotelCoordPage_Controller extends DB_Connection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
-    
     }
     
     
