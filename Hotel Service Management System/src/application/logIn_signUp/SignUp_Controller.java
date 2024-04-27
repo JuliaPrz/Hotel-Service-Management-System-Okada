@@ -32,13 +32,9 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
 	@FXML
     private TextField signUpEmail;
     @FXML
-    private PasswordField signUpPass;
+    private PasswordField signUpPass, ConfirmPass;
     @FXML
-    private PasswordField ConfirmPass;
-    @FXML
-    private TextField signUpFName;
-    @FXML
-    private TextField signUpLName;
+    private TextField signUpFName, signUpLName;
     @FXML
     private DatePicker signUp_bdate;
     @FXML

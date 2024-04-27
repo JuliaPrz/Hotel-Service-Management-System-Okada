@@ -104,7 +104,7 @@
                   <Insets left="15.0" />
                </padding></PasswordField>
             <FontAwesomeIcon glyphName="LOCK" layoutX="46.0" layoutY="334.0" size="13" text="" wrappingWidth="10.114310264587402" />
-            <DatePicker fx:id="signUp_bdate" editable="false" focusTraversable="false" layoutX="41.0" layoutY="417.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css" />
+            <DatePicker fx:id="signUp_bdate" focusTraversable="false" layoutX="41.0" layoutY="417.0" prefHeight="35.0" prefWidth="142.0" stylesheets="@LogIn%20SignUp.css" />
             <Label layoutX="60.0" layoutY="391.0" text="Birthdate" textFill="#98116d">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
