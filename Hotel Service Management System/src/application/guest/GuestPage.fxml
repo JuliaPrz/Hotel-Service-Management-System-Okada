@@ -2,14 +2,19 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.SVGPath?>
@@ -129,7 +134,7 @@
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="aboutUsPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
+      <AnchorPane fx:id="aboutUsPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -457,15 +462,242 @@
             </AnchorPane>
             <AnchorPane prefHeight="506.0" prefWidth="978.0" style="-fx-background-color: white; -fx-background-radius: 20;" styleClass="bg_shadow" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="115.0">
                <children>
-                  <Label layoutX="396.0" layoutY="47.0" text="FOOD PAGE" textFill="#98106c">
-                     <font>
-                        <Font name="Aharoni Bold" size="35.0" />
-                     </font>
-                  </Label>
+                  <AnchorPane layoutX="979.0" layoutY="19.0" prefHeight="602.0" prefWidth="426.0" style="-fx-background-color: #98106C; -fx-background-radius: 20;" styleClass="bg_shadow">
+                     <children>
+                        <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="64.0" prefWidth="338.0" text="Booking Summary" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="AmasisMTW1G-Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <Group layoutX="12.0" layoutY="78.0">
+                           <children>
+                              <Label alignment="CENTER" layoutX="17.0" prefHeight="33.0" prefWidth="102.0" text="Check-In" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="145.0" prefHeight="33.0" prefWidth="102.0" text="Check-Out" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="17.0" layoutY="25.0" prefHeight="33.0" prefWidth="102.0" text="After 2:00 PM" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="145.0" layoutY="25.0" prefHeight="33.0" prefWidth="102.0" text="Before 12 PM" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="273.0" layoutY="4.0" prefHeight="27.0" prefWidth="102.0" text="No. of Days" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="261.0" layoutY="28.0" prefHeight="27.0" prefWidth="126.0" text="3 Day 2 Night" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="103.0" layoutY="78.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label alignment="CENTER" layoutX="275.0" layoutY="219.0" prefHeight="27.0" prefWidth="126.0" text="(PHP tax included)" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="16.0" layoutY="115.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="231.0" layoutY="115.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="101.0" layoutY="186.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label layoutX="17.0" layoutY="198.0" prefHeight="27.0" prefWidth="177.0" text="TOTAL:" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="198.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="17.0" layoutY="142.0" prefHeight="27.0" prefWidth="177.0" text="Tax" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="142.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="16.0" layoutY="87.0" prefHeight="27.0" prefWidth="338.0" text="Sat, Apr 27, 2024 - Sun, Apr 28, 2024" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="102.0" layoutY="259.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label alignment="CENTER" layoutX="102.0" layoutY="272.0" prefHeight="27.0" prefWidth="199.0" text="Payment Information" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="bookCardNum" layoutX="46.0" layoutY="367.0" prefHeight="35.0" prefWidth="224.0" promptText="Card Number" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <HBox layoutX="58.0" layoutY="310.0" prefHeight="34.0" prefWidth="262.0" spacing="12.0">
+                                 <children>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/mastercard.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/BPI.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="58.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/VISA.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="106.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/UnionBank.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="47.0" layoutX="154.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/BDO.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <FontAwesomeIcon fill="WHITE" glyphName="CREDIT_CARD" layoutX="13.0" layoutY="391.0" size="20" text="" />
+                              <TextField fx:id="bookCCV1" layoutX="304.0" layoutY="367.0" prefHeight="35.0" prefWidth="82.0" promptText="CCV" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <TextField fx:id="bookExp1" layoutX="252.0" layoutY="416.0" prefHeight="35.0" prefWidth="134.0" promptText="Exp. (MM/YYYY)" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="15.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <FontAwesomeIcon fill="WHITE" glyphName="CALENDAR" layoutX="223.0" layoutY="440.0" selectionStart="0" size="20" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="LOCK" layoutX="281.0" layoutY="391.0" size="20" text="" />
+                              <TextField fx:id="bookNameCard" layoutX="46.0" layoutY="416.0" prefHeight="35.0" prefWidth="168.0" promptText="Name on Card" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="16.0" layoutY="440.0" size="20" />
+                              <Button fx:id="payBtn1" focusTraversable="false" layoutX="168.0" layoutY="467.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="91.0" styleClass="white_bg" text="PAY" textFill="#98106c">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Group>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="21.0" layoutY="19.0" prefHeight="602.0" prefWidth="91.0" style="-fx-background-color: #98106C; -fx-background-radius: 20;">
+                     <children>
+                        <VBox layoutY="162.0" prefHeight="318.0" prefWidth="242.0" spacing="5.0" stylesheets="@../vertical%20navigation.css">
+                           <children>
+                              <Button fx:id="dashboard_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Dashboard">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="HOME" size="25" />
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="room_btn" alignment="BASELINE_LEFT" graphicTextGap="23.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Room">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="BED" size="25" wrappingWidth="26.97142219543457" />
+                                 </graphic>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="booking_btn" alignment="BASELINE_LEFT" graphicTextGap="23.0" layoutX="10.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Accomodation">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="25" wrappingWidth="26.97142219543457" />
+                                 </graphic>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="food_btn" alignment="BASELINE_LEFT" graphicTextGap="30.0" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Food">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="CUTLERY" size="25" />
+                                 </graphic>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="hk_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="253.0" text="Housekeeping">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="transact_btn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="242.0" text="Transaction">
+                                 <font>
+                                    <Font name="Century" size="17.0" />
+                                 </font>
+                                 <graphic>
+                                    <SVGPath fx:id="transact_icon" content="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z" fill="WHITE" scaleX="1.5" scaleY="1.5" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="bookingPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
+      <AnchorPane fx:id="bookingPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -493,8 +725,20 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <HBox alignment="CENTER" layoutX="400.0" layoutY="2.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="730.0" spacing="5.0" AnchorPane.rightAnchor="28.0">
+                  <HBox alignment="CENTER" layoutX="400.0" layoutY="2.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="830.0" spacing="5.0" AnchorPane.rightAnchor="28.0">
                      <children>
+                        <Button fx:id="homeBtn" layoutX="55.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Home" textFill="WHITE">
+                           <font>
+                              <Font name="AmasisMTW1G-Bold" size="22.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="transparent_bg" />
+                              <String fx:value="hoributtons_hover" />
+                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
                         <Button fx:id="roomBtn" layoutX="17.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Rooms" textFill="WHITE">
                            <font>
                               <Font name="AmasisMTW1G-Bold" size="22.0" />
@@ -567,11 +811,286 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="506.0" prefWidth="978.0" style="-fx-background-color: white; -fx-background-radius: 20;" styleClass="bg_shadow" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="115.0">
+            <AnchorPane layoutX="112.8" layoutY="114.0" prefHeight="637.0" prefWidth="1293.0" style="-fx-background-color: white; -fx-background-radius: 20;" styleClass="bg_shadow" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="134.0" AnchorPane.topAnchor="114.0">
                <children>
-                  <Label layoutX="394.0" layoutY="64.0" text="BOOKING PAGE" textFill="#98106c">
+                  <Group layoutX="200.0" layoutY="19.0">
+                     <children>
+                        <DatePicker fx:id="book_checkInPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
+                           <opaqueInsets>
+                              <Insets left="20.0" />
+                           </opaqueInsets>
+                        </DatePicker>
+                        <Label layoutX="30.0" layoutY="7.0" text="Check-In Date" textFill="#98116d">
+                           <font>
+                              <Font name="AmasisMTW1G" size="18.0" />
+                           </font>
+                        </Label>
+                        <FontAwesomeIcon glyphName="CALENDAR" layoutX="8.0" layoutY="24.0" size="15" />
+                     </children>
+                  </Group>
+                  <Group layoutX="405.0" layoutY="18.0">
+                     <children>
+                        <DatePicker fx:id="book_checkOutPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
+                           <opaqueInsets>
+                              <Insets left="20.0" />
+                           </opaqueInsets>
+                        </DatePicker>
+                        <Label layoutX="34.0" layoutY="8.0" text="Check-Out Date" textFill="#98116d">
+                           <font>
+                              <Font name="AmasisMTW1G" size="18.0" />
+                           </font>
+                        </Label>
+                        <FontAwesomeIcon glyphName="CALENDAR" layoutX="9.0" layoutY="25.0" size="15" />
+                     </children>
+                  </Group>
+                  <AnchorPane layoutX="1001.0" layoutY="20.0" prefHeight="602.0" prefWidth="426.0" style="-fx-background-color: #98106C; -fx-background-radius: 20;" styleClass="bg_shadow" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="64.0" prefWidth="338.0" text="Booking Summary" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="AmasisMTW1G-Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <Group layoutX="12.0" layoutY="78.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" layoutX="17.0" prefHeight="33.0" prefWidth="102.0" text="Check-In" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="145.0" prefHeight="33.0" prefWidth="102.0" text="Check-Out" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="17.0" layoutY="25.0" prefHeight="33.0" prefWidth="102.0" text="After 2:00 PM" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="145.0" layoutY="25.0" prefHeight="33.0" prefWidth="102.0" text="Before 12 PM" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="273.0" layoutY="4.0" prefHeight="27.0" prefWidth="102.0" text="No. of Days" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="261.0" layoutY="28.0" prefHeight="27.0" prefWidth="126.0" text="3 Day 2 Night" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="103.0" layoutY="78.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label alignment="CENTER" layoutX="275.0" layoutY="219.0" prefHeight="27.0" prefWidth="126.0" text="(PHP tax included)" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="16.0" layoutY="115.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="231.0" layoutY="115.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="101.0" layoutY="186.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label layoutX="17.0" layoutY="198.0" prefHeight="27.0" prefWidth="177.0" text="TOTAL:" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="198.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="17.0" layoutY="142.0" prefHeight="27.0" prefWidth="177.0" text="Tax" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="142.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="16.0" layoutY="87.0" prefHeight="27.0" prefWidth="338.0" text="Sat, Apr 27, 2024 - Sun, Apr 28, 2024" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="298.6000061035156" layoutX="102.0" layoutY="259.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Label alignment="CENTER" layoutX="102.0" layoutY="272.0" prefHeight="27.0" prefWidth="199.0" text="Payment Information" textFill="WHITE">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="bookCardNum" layoutX="46.0" layoutY="367.0" prefHeight="35.0" prefWidth="224.0" promptText="Card Number" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <HBox layoutX="58.0" layoutY="310.0" prefHeight="34.0" prefWidth="262.0" spacing="12.0">
+                                 <children>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/mastercard.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/BPI.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="58.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/VISA.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="106.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/UnionBank.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="34.0" fitWidth="47.0" layoutX="154.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../../images/icons/BDO.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <FontAwesomeIcon fill="WHITE" glyphName="CREDIT_CARD" layoutX="13.0" layoutY="391.0" size="20" text="" />
+                              <TextField fx:id="bookCCV" layoutX="304.0" layoutY="367.0" prefHeight="35.0" prefWidth="82.0" promptText="CCV" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <TextField fx:id="bookExp" layoutX="252.0" layoutY="416.0" prefHeight="35.0" prefWidth="134.0" promptText="Exp. (MM/YYYY)" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="15.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <FontAwesomeIcon fill="WHITE" glyphName="CALENDAR" layoutX="223.0" layoutY="440.0" selectionStart="0" size="20" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="LOCK" layoutX="281.0" layoutY="391.0" size="20" text="" />
+                              <TextField fx:id="bookNameCard" layoutX="46.0" layoutY="416.0" prefHeight="35.0" prefWidth="168.0" promptText="Name on Card" style="-fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </TextField>
+                              <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="16.0" layoutY="440.0" size="20" />
+                              <Button fx:id="payBtn" focusTraversable="false" layoutX="168.0" layoutY="467.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="91.0" styleClass="white_bg" text="PAY" textFill="#98106c">
+                                 <font>
+                                    <Font name="AmasisMTW1G-Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Group>
+                        <Label fx:id="noEntry" alignment="CENTER" layoutX="150.0" layoutY="286.0" prefHeight="27.0" prefWidth="126.0" text="No entry" textFill="WHITE">
+                           <font>
+                              <Font name="AmasisMTW1G" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Rectangle fx:id="book_image1" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="185.0" layoutX="47.0" layoutY="123.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="338.0" />
+                  <Button fx:id="book_avail" layoutX="614.4" layoutY="55.0" mnemonicParsing="false" onAction="#checkButtonAction" prefHeight="40.0" prefWidth="168.0" text="Check Availability" textFill="WHITE" AnchorPane.leftAnchor="614.4">
                      <font>
-                        <Font name="Aharoni Bold" size="35.0" />
+                        <Font name="AmasisMTW1G-Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="hoverBooking_button" />
+                        <String fx:value="avail_button" />
+                     </styleClass>
+                  </Button>
+                  <Label alignment="CENTER" layoutY="36.0" prefHeight="44.0" prefWidth="177.0" style="-fx-background-color: #98106C;" text="Book a Room" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Playfair Display Regular" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="385.0" layoutY="67.0" text="to">
+                     <font>
+                        <Font name="AmasisMTW1G" size="13.0" />
+                     </font>
+                  </Label>
+                  <Rectangle fx:id="book_image2" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="185.0" layoutX="47.0" layoutY="373.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="338.0" />
+                  <Rectangle fx:id="book_image4" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="185.0" layoutX="445.0" layoutY="373.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="338.0" AnchorPane.leftAnchor="445.0" />
+                  <Rectangle fx:id="book_image3" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="185.0" layoutX="445.0" layoutY="123.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="338.0" AnchorPane.leftAnchor="445.0" />
+                  <Button fx:id="book1" layoutX="289.0" layoutY="321.0" mnemonicParsing="false" onAction="#bookButtonAction" prefHeight="27.0" prefWidth="91.0" text="BOOK" textFill="WHITE">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="hoverBooking_button" />
+                        <String fx:value="Booking_button" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="book2" layoutX="292.0" layoutY="568.0" mnemonicParsing="false" onAction="#bookButtonAction" prefHeight="27.0" prefWidth="91.0" text="BOOK" textFill="WHITE">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="hoverBooking_button" />
+                        <String fx:value="Booking_button" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="book3" layoutX="689.4" layoutY="321.0" mnemonicParsing="false" onAction="#bookButtonAction" prefHeight="27.0" prefWidth="91.0" text="BOOK" textFill="WHITE" AnchorPane.leftAnchor="689.4">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="hoverBooking_button" />
+                        <String fx:value="Booking_button" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="book4" layoutX="689.4" layoutY="569.0" mnemonicParsing="false" onAction="#bookButtonAction" prefHeight="27.0" prefWidth="91.0" text="BOOK" textFill="WHITE" AnchorPane.leftAnchor="689.4">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="hoverBooking_button" />
+                        <String fx:value="Booking_button" />
+                     </styleClass>
+                  </Button>
+                  <Label fx:id="book_stayCount" alignment="CENTER" layoutX="604.0" layoutY="18.0" prefHeight="34.0" prefWidth="188.0" textAlignment="CENTER" textFill="#98106c" AnchorPane.leftAnchor="604.0">
+                     <font>
+                        <Font name="AmasisMTW1G" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="bookName1" layoutX="52.0" layoutY="323.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="#98106c">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="bookName2" layoutX="52.0" layoutY="571.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="#98106c">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="bookName3" layoutX="449.0" layoutY="327.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="#98106c" AnchorPane.leftAnchor="449.0">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="bookName4" layoutX="457.0" layoutY="575.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="#98106c" AnchorPane.leftAnchor="457.0">
+                     <font>
+                        <Font name="AmasisMTW1G-Bold" size="17.0" />
                      </font>
                   </Label>
                </children></AnchorPane>

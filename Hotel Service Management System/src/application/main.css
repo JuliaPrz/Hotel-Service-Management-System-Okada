@@ -22,6 +22,13 @@
 	-fx-background-color: linear-gradient(#53093A, #901868);
 }
 
+.white_bg{
+	-fx-background-color: white;
+}
+.white_bg:hover{
+	-fx-background-color: linear-gradient(#ffffff, #ffade5);
+}
+
 /* button classes */
 .button_color{
 	-fx-background-color:#98106C;
@@ -44,6 +51,8 @@
 .svgbutton:hover{
 	-fx-fill: #54093B; 
 }
+
+
 .light_svgbutton:hover{
 	-fx-fill: linear-gradient(#ffffff, #ffade5);
 }
@@ -75,6 +84,19 @@
 	-fx-background-color:white;
 	-fx-text-fill: black;
 }
+
+ 
+ .Booking_button { 
+      -fx-background-color:#BB3A7F;
+}
+.hoverBooking_button:hover { 
+      -fx-background-color:linear-gradient(#6C0045, #B90079);
+}
+ .avail_button { 
+      -fx-background-color:#BB3A7F;
+}
+
+
 
 
 .text-field {  
