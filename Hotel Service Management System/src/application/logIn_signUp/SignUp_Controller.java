@@ -82,6 +82,8 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	
     	// used to find a pattern if the phone number is numeric numbers only; continues in the if else statement
 		boolean phoneIsNumeric = signUp_contact.matches("[0-9]+");
+		boolean fNameOnlyLetters = signUpFName.getText().matches("[a-zA-Z.]+");
+		boolean lNameOnlyLetters = signUpLName.getText().matches("[a-zA-Z.]+");
     	
     	// Calculate age using DeriveAge
         LocalDate currentDate = LocalDate.now();
@@ -98,6 +100,9 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     			|| signUpContact.getText().isEmpty()) 
     	
     		alert.errorMessage("Please fill up all details.");
+    	
+    	else if (!fNameOnlyLetters || ! lNameOnlyLetters)
+    		alert.errorMessage("Invalid name.");
     	
     	// verifies the email format
     	else if (isEmailValid(signUpEmail) == false ) 
@@ -121,7 +126,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	
     	// checks if the phone number starts with 09 or if phone is not numeric
     	else if (!firstTwoNum.equals("09") || !phoneIsNumeric) 
-    			 alert.errorMessage("Invalid phone number.");
+    		alert.errorMessage("Invalid phone number.");
     	
     	// check if the email is already taken
     	else {
