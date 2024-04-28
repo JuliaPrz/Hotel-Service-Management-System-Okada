@@ -697,7 +697,7 @@
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="bookingPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
+      <AnchorPane fx:id="bookingPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -815,7 +815,7 @@
                <children>
                   <Group layoutX="200.0" layoutY="19.0">
                      <children>
-                        <DatePicker fx:id="book_checkInPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
+                        <DatePicker fx:id="book_checkInPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" onAction="#datePickerAction" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
                            <opaqueInsets>
                               <Insets left="20.0" />
                            </opaqueInsets>
@@ -830,7 +830,7 @@
                   </Group>
                   <Group layoutX="405.0" layoutY="18.0">
                      <children>
-                        <DatePicker fx:id="book_checkOutPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
+                        <DatePicker fx:id="book_checkOutPicker" focusTraversable="false" layoutX="2.0" layoutY="37.0" onAction="#datePickerAction" prefHeight="40.0" prefWidth="170.0" promptText="Choose date" stylesheets="@../logIn_signUp/LogIn%20SignUp.css">
                            <opaqueInsets>
                               <Insets left="20.0" />
                            </opaqueInsets>
@@ -850,7 +850,7 @@
                               <Font name="AmasisMTW1G-Bold" size="30.0" />
                            </font>
                         </Label>
-                        <Group layoutX="12.0" layoutY="78.0" visible="false">
+                        <Group fx:id="bookingSummary" layoutX="12.0" layoutY="78.0">
                            <children>
                               <Label alignment="CENTER" layoutX="17.0" prefHeight="33.0" prefWidth="102.0" text="Check-In" textAlignment="CENTER" textFill="WHITE">
                                  <font>
@@ -877,7 +877,7 @@
                                     <Font name="AmasisMTW1G-Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" layoutX="261.0" layoutY="28.0" prefHeight="27.0" prefWidth="126.0" text="3 Day 2 Night" textAlignment="CENTER" textFill="WHITE">
+                              <Label fx:id="book_stayCount2" alignment="CENTER" layoutX="261.0" layoutY="28.0" prefHeight="27.0" prefWidth="126.0" text="3 Day 2 Night" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G" size="16.0" />
                                  </font>
@@ -888,12 +888,12 @@
                                     <Font name="AmasisMTW1G" size="13.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="16.0" layoutY="115.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="WHITE">
+                              <Label fx:id="chosenRoom" layoutX="16.0" layoutY="115.0" prefHeight="27.0" prefWidth="177.0" text="Grand Deluxe Family" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G-Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="231.0" layoutY="115.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                              <Label fx:id="roomPrice" alignment="CENTER_RIGHT" layoutX="231.0" layoutY="115.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G" size="16.0" />
                                  </font>
@@ -904,7 +904,7 @@
                                     <Font name="AmasisMTW1G-Bold" size="19.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="198.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                              <Label fx:id="booking_total" alignment="CENTER_RIGHT" layoutX="232.0" layoutY="198.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G-Bold" size="16.0" />
                                  </font>
@@ -914,12 +914,12 @@
                                     <Font name="AmasisMTW1G-Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="232.0" layoutY="142.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
+                              <Label fx:id="roomTax" alignment="CENTER_RIGHT" layoutX="232.0" layoutY="142.0" prefHeight="27.0" prefWidth="152.0" text="190,000 PHP" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="16.0" layoutY="87.0" prefHeight="27.0" prefWidth="338.0" text="Sat, Apr 27, 2024 - Sun, Apr 28, 2024" textFill="WHITE">
+                              <Label fx:id="dates" layoutX="16.0" layoutY="87.0" prefHeight="27.0" prefWidth="338.0" text="Sat, Apr 27, 2024 - Sun, Apr 28, 2024" textFill="WHITE">
                                  <font>
                                     <Font name="AmasisMTW1G" size="16.0" />
                                  </font>
@@ -995,11 +995,16 @@
                                  </opaqueInsets>
                               </TextField>
                               <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="16.0" layoutY="440.0" size="20" />
-                              <Button fx:id="payBtn" focusTraversable="false" layoutX="168.0" layoutY="467.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="91.0" styleClass="white_bg" text="PAY" textFill="#98106c">
+                              <Button fx:id="payBtn" focusTraversable="false" layoutX="168.0" layoutY="467.0" mnemonicParsing="false" onAction="#payButtonAction" prefHeight="27.0" prefWidth="91.0" styleClass="white_bg" text="PAY" textFill="#98106c">
                                  <font>
                                     <Font name="AmasisMTW1G-Bold" size="16.0" />
                                  </font>
                               </Button>
+                              <Label fx:id="roomNumLabel" alignment="CENTER" layoutX="305.0" layoutY="87.0" prefHeight="27.0" prefWidth="80.0" textFill="WHITE" visible="false">
+                                 <font>
+                                    <Font name="AmasisMTW1G" size="13.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </Group>
                         <Label fx:id="noEntry" alignment="CENTER" layoutX="150.0" layoutY="286.0" prefHeight="27.0" prefWidth="126.0" text="No entry" textFill="WHITE">
@@ -1068,7 +1073,7 @@
                         <String fx:value="Booking_button" />
                      </styleClass>
                   </Button>
-                  <Label fx:id="book_stayCount" alignment="CENTER" layoutX="604.0" layoutY="18.0" prefHeight="34.0" prefWidth="188.0" textAlignment="CENTER" textFill="#98106c" AnchorPane.leftAnchor="604.0">
+                  <Label fx:id="book_stayCount" alignment="CENTER" layoutX="604.0" layoutY="24.0" prefHeight="34.0" prefWidth="188.0" textAlignment="CENTER" textFill="#98106c" AnchorPane.leftAnchor="604.0">
                      <font>
                         <Font name="AmasisMTW1G" size="16.0" />
                      </font>
@@ -1362,7 +1367,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="welcomePage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
+      <AnchorPane fx:id="welcomePage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>

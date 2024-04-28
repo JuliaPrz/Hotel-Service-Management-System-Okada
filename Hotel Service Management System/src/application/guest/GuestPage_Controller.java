@@ -1,40 +1,38 @@
 package application.guest;
 
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import application.AlertMessage;
 import application.DB_Connection;
-
+import application.logIn_signUp.LogIn_Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 
 
 public class GuestPage_Controller extends DB_Connection implements Initializable{
-	
-	
-		//  ---------     SWITCH PAGE METHOD     --------
+	//  ---------     SWITCH PAGE METHOD     --------
 	 	@FXML
 	    private Button homeBtn, roomBtn , bookingBtn, foodBtn, hkBtn, aboutUsBtn, profileBtn;
 	    @FXML
@@ -73,7 +71,12 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 
 	 
 	    @FXML
-	    private Label book_stayCount;
+	    private Label book_stayCount, book_stayCount2; //count2 is the label in the summary
+	    
+	    @FXML
+	    private Group bookingSummary;
+	    @FXML
+	    private Label noEntry, dates, roomPrice, roomTax, chosenRoom, booking_total, roomNumLabel;
 	    
 	    
 	    
@@ -111,10 +114,8 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        	 
 	        	 BookingPageData bookingData = new BookingPageData(connection);
 	        	 bookingData.displayRoomPageData(targetNodes, nameLabel);
-	        	
-	        	
-	        	
-	        	
+	        	 bookingSummary.setVisible(false); // hide booking summary
+	        	 
 	        	connection = connect();
 	        	// Restricts the available date to check in to the current date and 5 years from now
 	    		LocalDate minDate = LocalDate.now();
@@ -131,6 +132,13 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    						super.updateItem(item, empty);
 	    		                setDisable(item.isAfter(maxDate) || item.isBefore(minDate));
 	    		               }});
+	    		
+	    		
+	    		//calculate the stay count based on check-in and check-out dates
+	    		// Bind calculateStayCount method to the valueProperty of date pickers
+	    	    book_checkInPicker.valueProperty().addListener((obs, oldVal, newVal) -> calculateStayCount());
+	    	    book_checkOutPicker.valueProperty().addListener((obs, oldVal, newVal) -> calculateStayCount());
+	    		calculateStayCount();
 	    		
 	    		// Disable all book buttons
 	    		Button[] bookButton = {book1, book2, book3, book4};
@@ -149,8 +157,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        } 
 	        
 	    }
-	    
-
+	   
 	    // SETS THE BACKGROUND IMAGE
 	    public void wrapBgImage() {
 
@@ -168,6 +175,59 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	/////////////////////////////       BOOKING PAGE           ///////////////////////////////////
 	    
 	   
+	 // Method to calculate the stay count based on check-in and check-out dates
+	    @FXML
+	    private Long calculateStayCount() {
+	        AlertMessage alert = new AlertMessage();
+	        LocalDate checkInDate = book_checkInPicker.getValue();
+	        LocalDate checkOutDate = book_checkOutPicker.getValue();
+
+	        String day, night;
+	        boolean errorMessageShown = false; // Flag to track if error message has been shown
+	      
+
+	        if (checkInDate == null || checkOutDate == null) {
+	            book_stayCount.setText("");
+	        } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) {
+	            if (!errorMessageShown) {
+	                alert.errorMessage("Check-out date cannot be before or during the check-in date.");
+	                errorMessageShown = true; // Set flag to true to indicate error message has been shown
+	            }
+	        } else {
+	            // Calculate the stay count
+	            long stayCount = ChronoUnit.DAYS.between(checkInDate, checkOutDate) + 1;
+	            long nightStayCount = 0;
+	            
+	            //set the count for night stay the number of days - 1
+	            nightStayCount = stayCount-1;
+	            
+	            if (stayCount > 1) day = " Days ";
+	            else day = " Day ";
+	            
+	            if (stayCount-1 > 1) night = " Nights";
+	            else night = " Night";
+	            
+	            book_stayCount.setText(stayCount + day + nightStayCount + night);
+	           // book_stayCount2.setText(stayCount + day + nightStayCount + night);
+	            
+	            return nightStayCount;
+	        }
+	        
+	        return null;
+	      
+	    }
+	    
+	    
+	    // disables the BOOK buttons if the user changed the date; they must check the availability first to enable it
+	    @FXML
+	    private void datePickerAction(ActionEvent event) {
+	    	 Button[] bookButtons = {book1, book2, book3, book4};
+
+	    	    // Disable all book buttons
+	    	    for (Button button : bookButtons) {
+	    	        button.setDisable(true);
+	    	    }
+	    }
 	    
 	    
 	    @FXML
@@ -185,10 +245,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 
 	    	    if (checkInDate == null || checkOutDate == null) {
 	    	        alert.errorMessage("Choose check-in and check-out date.");
-	    	    } else if (checkOutDate.isBefore(checkInDate)) {
-	    	    	alert.errorMessage("Check-out date cannot be before the check-in date.");
-	    	    }
-	    	    
+	    	    } 
 	    	    else {
 	    	        try {
 	    	            // Prepare the query to check room availability
@@ -224,11 +281,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	                     }
 	                 }
 	             }
-	    	            
-
-	    	            // Close resources
-	    	            result.close();
-	    	            prepare.close();
+	    
 	    	        } catch (SQLException e) {
 	    	            e.printStackTrace();
 	    	        }
@@ -241,42 +294,94 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	int[] typeIDs = {10, 20, 30, 40};
 	        Button clickedButton = (Button) event.getSource();
 	        int buttonIndex = Integer.parseInt(clickedButton.getId().substring(4)) - 1; 
-	        int roomTypeID = typeIDs[buttonIndex]; // Assuming typeIDs array contains the corresponding type IDs
+	        int roomTypeID = typeIDs[buttonIndex];
 	        
 	        LocalDate checkInDate = book_checkInPicker.getValue();
     	    LocalDate checkOutDate = book_checkOutPicker.getValue();
+    	    
+    	 // Create a DateTimeFormatter to format the dates
+    	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy");
+
+    	    // Format the dates into strings
+    	    String formattedCheckInDate = checkInDate.format(formatter);
+    	    String formattedCheckOutDate = checkOutDate.format(formatter);
+
+    	    // Concatenate the formatted dates and display them in the label
+    	    String labelValue = formattedCheckInDate + " - " + formattedCheckOutDate;
+    	    
+    	    
 	        try {
 	            // Establish connection
-	        	connection = connect();
+	        //	connection = connect();
 
 	        	// Find an available room of the selected type that is not occupied
-	            String findRoomQuery = "SELECT Room_no FROM room WHERE Status = 'Available' AND Type_ID = ? AND Room_no NOT IN (" +
-	                                   "SELECT Room_no FROM booking_transaction WHERE Room_no = room.Room_no AND (? < check_out_date AND ? > check_in_date)" +
-	                                   ")";
+	            String findRoomQuery = "SELECT r.Room_No, rtB.Name, rtB.Price_per_Night, rtB.Tax " +
+	                       "FROM room_type AS rtB " +
+	                       "INNER JOIN room AS r ON r.Type_ID = rtB.Type_ID " +
+	                       "WHERE r.Status = 'Available' " +
+	                       "AND rtB.Type_ID = ? " +
+	                       "AND r.Room_no NOT IN (" +
+	                       "SELECT Room_no FROM booking_transaction WHERE Room_no = r.Room_no AND (? < check_out_date AND ? > check_in_date)" +
+	                       ")";
+	            
 	            prepare = connection.prepareStatement(findRoomQuery);
 	            prepare.setInt(1, roomTypeID);
 	            prepare.setDate(2, Date.valueOf(checkOutDate)); 
 	            prepare.setDate(3, Date.valueOf(checkInDate)); 
 	            result = prepare.executeQuery();
 
-	            // If available room is found, assign it to the user
+	            // If available room is found, show the booking summary
 	            if (result.next()) {
+	            	String roomName = result.getString("Name");
+	            	String dbRoomPrice = result.getString("Price_per_Night");
+	            	String dbRoomTax = result.getString("Tax"); 	
+	            	int roomNo = result.getInt("Room_no");
 	            	
+	            	Long night = calculateStayCount();
 	            	
-	            	
-	            	
-	            	
-	               /* int roomNo = result.getInt("Room_no");
+	            	// Convert the price and tax to numbers
+	                double pricePerNight = Double.parseDouble(dbRoomPrice) * night;
+	                double tax = Double.parseDouble(dbRoomTax) * night;
 
-	                // Update room status to occupied
-	                String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
-	                prepare = connection.prepareStatement(updateStatusQuery);
-	                prepare.setInt(1, roomNo);
-	                prepare.executeUpdate();
-	                */
+	                // Calculate the total
+	                double total = pricePerNight + tax;
+	            	
+	            	// Create a DecimalFormat object for formatting the numbers
+	                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
-	           
-	                connection.close();
+	                // Format the price and tax with commas and a currency symbol
+	                String formattedPrice = decimalFormat.format(pricePerNight) + " PHP";
+	                String formattedTax = decimalFormat.format(tax) + " PHP";
+	                String formattedTotal = decimalFormat.format(total) + " PHP";
+	            	
+	                
+	                String dayString;
+	                String nightString;
+	                // Calculate the stay count
+		            long stayCount = ChronoUnit.DAYS.between(checkInDate, checkOutDate) + 1;
+		            long nightStayCount = 0;
+		             
+		            nightStayCount = stayCount-1;
+		            
+		            if (stayCount > 1) dayString = " Days ";
+		            else dayString = " Day ";
+		            
+		            if (stayCount-1 > 1) nightString = " Nights";
+		            else nightString = " Night";
+		            
+		            book_stayCount2.setText(stayCount + dayString + nightStayCount + nightString);
+		            roomNumLabel.setText(roomNo+ "");
+	                
+	            	dates.setText(labelValue);
+	                chosenRoom.setText(roomName);
+	                roomPrice.setText(formattedPrice);
+	                roomTax.setText(formattedTax);                
+	            	booking_total.setText("" +  formattedTotal);
+	            	
+	            	noEntry.setVisible(false);
+	            	bookingSummary.setVisible(true);
+
+	                //connection.close();
 
 	                // Update UI or display message to indicate successful booking
 	             //   System.out.println("Room " + roomNo + " has been assigned to the user.");
@@ -287,8 +392,121 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	            e.printStackTrace();
 	        }
 	    }
+	    
+	    @FXML
+	    private void payButtonAction(ActionEvent event) {
+	    	AlertMessage alert = new AlertMessage();
+	       	String labelValue = dates.getText(); 
 
-	    	
+        	// Split the dates text based on the delimiter "-"
+        	String[] dates = labelValue.split(" - ");
+
+        	// Extract the check-in date and check-out date
+        	String formattedCheckInDate = dates[0].trim(); // Remove leading/trailing whitespaces
+        	String formattedCheckOutDate = dates[1].trim(); // Remove leading/trailing whitespaces
+
+        	// Parse the formatted dates into LocalDate objects
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy");
+        	
+        	// used to find a pattern if the CCV is numeric numbers only; continues in the if else statement
+        	
+    		boolean CCVisNumeric = bookCCV.getText().matches("[0-9]+");
+    		boolean nameCardIsOnlyLetters = bookNameCard.getText().matches("[a-zA-Z\\s]+"); // will match any string that contains one or more letters (uppercase or lowercase) and/or spaces.
+    		
+    		// Get the expiry date from the bookExp TextField
+    		String expiryDate = bookExp.getText();
+
+    		// Regular expression to match the format "MM/YY"
+    		String regex = "^(0[1-9]|1[0-2])/(\\d{2})$";
+		
+    		    // Split the expiry date into month and year
+    		    String[] parts = expiryDate.split("/");
+    		
+        	if (bookCardNum.getText().isEmpty() || bookCCV.getText().isEmpty() || bookExp.getText().isEmpty() || bookNameCard.getText().isEmpty())
+        		alert.errorMessage("Please fill up all payment information.");
+        	else if (bookCardNum.getText().length() < 16 || bookCardNum.getText().length() > 16) 
+        		alert.errorMessage("Invalid card number.");
+        	else if (!CCVisNumeric || bookCCV.getText().length() > 3 ||  bookCCV.getText().length() < 3)
+        		alert.errorMessage("Invalid CCV (security code) number.");
+        	else if (!nameCardIsOnlyLetters)
+        		alert.errorMessage("Invalid card name.");
+        	else if (!expiryDate.matches(regex))  // Check if the expiry date matches the required format
+    		    alert.errorMessage("Invalid expiry date. Please use the format MM/YY.");
+        	else if (parts.length != 2) {
+        	    alert.errorMessage("Invalid expiry date format. Please use the format MM/YY.");
+        	} else {
+        	    try {
+        	        int expMonth = Integer.parseInt(parts[0]);
+        	        int expYear = Integer.parseInt(parts[1]);
+
+        	        // Get the current month and year
+        	        LocalDate currentDate = LocalDate.now();
+        	        int currentMonth = currentDate.getMonthValue();
+        	        int currentYear = currentDate.getYear() % 100; // Get the last two digits of the year
+
+        	        if (expYear < currentYear || (expYear == currentYear && expMonth < currentMonth)) {
+        	            alert.errorMessage("Card has expired.");
+        	        } else {
+        	        	try {
+                			// Get the total string from the booking_total label
+                			String totalString = booking_total.getText();
+                			// Remove commas and currency symbols from the string
+                			String cleanTotalString = totalString.replaceAll("[^\\d.]", "");
+
+        	                // Get the necessary information from the UI components
+        	        		int roomNo = Integer.parseInt(roomNumLabel.getText());
+        		            String transacType = "Booking Transaction";
+        		            Double total = Double.parseDouble(cleanTotalString);
+        		            LocalDate date =  LocalDate.now();
+        		            LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
+        		            LocalDate checkInDate = LocalDate.parse(formattedCheckInDate, formatter);
+        		        	LocalDate checkOutDate = LocalDate.parse(formattedCheckOutDate, formatter);
+
+        		        	int accountID = LogIn_Controller.getAccountID();
+        		        	
+        		            // Use a SQL query to insert the booking information into the database
+        		            String insertQuery = "INSERT INTO booking_transaction (guest_account_id, room_no, transaction_type, total_price, date, time, check_in_date, check_out_date) "
+        		            					+ "VALUES (?,?,?,?,?,?,?,?)";
+        		            prepare = connection.prepareStatement(insertQuery);
+        		            prepare.setInt(1, accountID);
+        		            prepare.setInt(2, roomNo);
+        		            prepare.setString(3, transacType);
+        		            prepare.setDouble(4, total);
+        		            prepare.setDate(5, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
+        		            prepare.setTime(6, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
+        		            prepare.setDate(7, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
+        		            prepare.setDate(8, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
+        		            // Execute the insert query
+        		            prepare.executeUpdate();
+
+        		            // Optionally, display a message to indicate successful payment
+        		           alert.infoMessage("Booked successfully! See you!");
+        		           clearPaymentFields(); //clear fields
+        	                // Update room status to occupied
+        	                String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
+        	                prepare = connection.prepareStatement(updateStatusQuery);
+        	                prepare.setInt(1, roomNo);
+        	                prepare.executeUpdate();
+        	               
+        	                connection.close();
+ 
+        	        } catch (SQLException e) {
+        	            e.printStackTrace();
+        	        }    		
+        	        }
+        	    } catch (NumberFormatException e) {
+        	        alert.errorMessage("Invalid expiry date format. Please use numeric values for month and year.");
+        	    }
+        	}	
+ }
+
+	    // clears the text fields
+	    public void clearPaymentFields() {
+	    	bookCardNum.setText("");
+	    	bookCCV.setText("");
+	    	bookExp.setText("");
+	    	bookNameCard.setText("");
+	    }	
 	    	
 	    
 	    
