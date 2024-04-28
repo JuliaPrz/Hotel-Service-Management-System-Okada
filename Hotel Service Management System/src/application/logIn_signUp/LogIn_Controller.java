@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import application.AlertMessage;
 import application.Choices;
 import application.DB_Connection;
-
+import application.guest.GuestPage_Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +43,17 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
         choice.userChoices(user);
     }
     
+
+    private static int accountID;
+    
+    // Method to retrieve the accountID
+    public static int getAccountID() {
+        return accountID;
+    }
+    // Method to set the accountID
+    public static void setAccountID(int id) {
+        accountID = id;
+    }
     
     // confirms if the email is a valid email by verifying its format
     // this is regular expression for email validation provided by the RFC (Request for comments) standards.
@@ -105,15 +116,19 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	                	    }
             	        }else {
             	        	// Query the database to check if email and password match
-                    	    String queryGuest = "SELECT Email, Password FROM guest WHERE email = ? AND password = ?";
+                    	    String queryGuest = "SELECT Guest_Account_ID, Email, Password FROM guest WHERE email = ? AND password = ?";
                     	    try {
                     	        prepare = connection.prepareStatement(queryGuest);
                     	        prepare.setString(1, email.getText());
                     	        prepare.setString(2, password.getText());
                     	        result = prepare.executeQuery();
                     	        
-                    	        if (result.next()) {
-            	        	
+                    	      if (result.next()) {
+                    	    	  
+                    	    	  // set the typeID; it is used in GuestPage_Controller class
+                    	        int accountID = result.getInt("Guest_Account_ID");
+                    	        LogIn_Controller.setAccountID(accountID);
+
             	        	// Load the FXML file of the selected page
             	            root = FXMLLoader.load(getClass().getResource("/application/guest/GuestPage.fxml"));
             	            scene = new Scene(root);

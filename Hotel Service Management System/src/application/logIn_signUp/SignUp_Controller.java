@@ -101,7 +101,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	
     		alert.errorMessage("Please fill up all details.");
     	
-    	else if (!fNameOnlyLetters || ! lNameOnlyLetters)
+    	else if (!fNameOnlyLetters || ! lNameOnlyLetters || signUpFName.getText().length() > 30 || signUpLName.getText().length() > 20)
     		alert.errorMessage("Invalid name.");
     	
     	// verifies the email format
