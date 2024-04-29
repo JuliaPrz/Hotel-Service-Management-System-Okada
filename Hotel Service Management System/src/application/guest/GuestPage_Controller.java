@@ -34,9 +34,9 @@ import javafx.scene.shape.Rectangle;
 public class GuestPage_Controller extends DB_Connection implements Initializable{
 	//  ---------     SWITCH PAGE METHOD     --------
 	 	@FXML
-	    private Button homeBtn, roomBtn , bookingBtn, foodBtn, hkBtn, aboutUsBtn, profileBtn;
+	    private Button homeBtn, roomBtn , bookingBtn, aboutUsBtn, profileBtn;
 	    @FXML
-	    private AnchorPane welcomePage, roomPage, bookingPage, foodPage, hkPage, aboutUsPage, profilePage;
+	    private AnchorPane welcomePage, roomPage, bookingPage, aboutUsPage, profilePage;
 	    @FXML
 	    private StackPane rootPane;
 	    // ROOM PAGE variable declaration
@@ -522,8 +522,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
     	pageMap.put("homeBtn", welcomePage);
         pageMap.put("roomBtn", roomPage);
         pageMap.put("bookingBtn", bookingPage);
-        pageMap.put("foodBtn", foodPage);
-        pageMap.put("hkBtn", hkPage);
         pageMap.put("aboutUsBtn", aboutUsPage);
         pageMap.put("profileBtn", profilePage);
     	

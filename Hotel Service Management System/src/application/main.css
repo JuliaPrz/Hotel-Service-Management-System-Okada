@@ -105,7 +105,13 @@
   -fx-focus-color: #98116D;
 }
 
+.cell-status-available {
+    -fx-text-fill: green; /* Set text color to green for available status */
+}
 
+.cell-status-not-available {
+    -fx-text-fill: red; /* Set text color to red for not available status */
+}
 
 
 /* table modification */
@@ -136,6 +142,12 @@
   -fx-alignment: CENTER;
   -fx-font-size: 15px;
 }
+.status_column{
+	-fx-alignment: CENTER;
+  	-fx-font-size: 15px;
+	-fx-font-weight:bold;
+}
+
 .table-view .column-header .arrow {
     -fx-background-color: white; /* Change the color of the arrows to red */
 }

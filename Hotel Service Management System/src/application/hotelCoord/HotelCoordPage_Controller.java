@@ -1,6 +1,7 @@
 package application.hotelCoord;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 import application.DB_Connection;
 import application.encapsulatedData.RoomType;
@@ -10,11 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 
 
@@ -23,9 +26,9 @@ public class HotelCoordPage_Controller extends DB_Connection {
 	
 	//          ---------     SWITCH PAGE     --------
 	@FXML
-	private AnchorPane dashboard_page, room_page, booking_page, food_page, hk_page, transact_page, profile_page;
+	private AnchorPane dashboard_page, room_page, booking_page, transact_page, profile_page;
 	@FXML
-	private Button dashboard_btn, room_btn, booking_btn, food_btn, hk_btn, transact_btn, profile_btn;
+	private Button dashboard_btn, room_btn, booking_btn, transact_btn, profile_btn;
 	
 	// Switches tab
 	@FXML
@@ -43,13 +46,7 @@ public class HotelCoordPage_Controller extends DB_Connection {
 	            break;
 	        case "booking_btn":
 	        	booking_page.toFront();
-	            break;
-	        case "food_btn":
-	        	food_page.toFront();
-	            break;
-	        case "hk_btn":
-	        	hk_page.toFront();
-	            break;
+	            break; 
 	        case "transact_btn":
 	        	transact_page.toFront();
 	            break;
@@ -80,73 +77,81 @@ public class HotelCoordPage_Controller extends DB_Connection {
 
     ObservableList<RoomType> allRoomList = FXCollections.observableArrayList(); 
     
-    void updateRoomTable() {
+    TableCell<RoomType, String> updateRoomTable() {
     	rmTable.setFixedCellSize(50);
    // 	rmTable.getSelectionModel().clearSelection();
     	connection = connect();
-    	String query = "SELECT room.Room_No, room_type.Type_ID, room_type.Price_per_Night, room.`Status`\r\n"
+    	String query = "SELECT room.Room_No, room_type.Name, room_type.Price_per_Night, room.`Status`\r\n"
     			+ "FROM room\r\n"
     			+ "INNER JOIN room_type ON room.Type_ID = room_type.Type_ID;";
     
     	try {
-			prepare = connection.prepareStatement(query);
-			result = prepare.executeQuery();
-			
-			while(result.next()) {
-				allRoomList.add(new RoomType(
-						result.getInt("Room_No"),
-						result.getInt("Type_ID"),
-						result.getDouble("Price_per_Night"),
-						result.getString("Status")
-					));
-				rmTable.setItems(allRoomList);
-			}
-		//	prepare.close();
-		//	result.close();
-			
+    	    prepare = connection.prepareStatement(query);
+    	    result = prepare.executeQuery();
+    	    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00 PHP");
+
+    	    while (result.next()) {
+    	        double pricePerNight = result.getDouble("Price_per_Night");
+    	        String formattedPrice = decimalFormat.format(pricePerNight);
+
+    	        String status = result.getString("Status");
+    	        allRoomList.add(new RoomType(
+    	                result.getInt("Room_No"),
+    	                result.getString("Name"),
+    	                formattedPrice,
+    	                status
+    	        ));
+    	    }
+
+    	    // Set the items to the table before applying cell factory
+    	    rmTable.setItems(allRoomList);
+    	    
+    	 // Apply CSS class to the status column
+    	    rm_status.setCellFactory(new Callback<TableColumn<RoomType, String>, TableCell<RoomType, String>>() {
+    	        @Override
+    	        public TableCell<RoomType, String> call(TableColumn<RoomType, String> param) {
+    	            return new TableCell<RoomType, String>() {
+    	                @Override
+    	                protected void updateItem(String item, boolean empty) {
+    	                    super.updateItem(item, empty);
+    	                    setText(item);
+    	                    if (!empty) {
+    	                        String status = getTableView().getItems().get(getIndex()).getRoomStatus();
+
+    	                        // Determine the CSS class based on the status
+    	                        String statusCssClass = "cell-status-default";
+    	                        if (status.equals("Available")) {
+    	                            statusCssClass = "cell-status-available";
+    	                        } else if (status.equalsIgnoreCase("Occupied")) {
+    	                            statusCssClass = "cell-status-not-available";
+    	                        }
+
+    	                        getStyleClass().clear(); // Clear existing style classes
+    	                        getStyleClass().add(statusCssClass); // Apply the CSS class
+    	                        getStyleClass().add("status_column");
+    	                       
+    	                    
+    	                    }
+    	                }
+    	            };
+    	        }
+    	    });
+
+    	} catch (SQLException e) {
+    	    e.printStackTrace();
+    	}
 			rm_roomNum.setCellValueFactory(new PropertyValueFactory<>("roomNum"));
-	    	rm_roomType.setCellValueFactory(new PropertyValueFactory<>("rtID"));
+	    	rm_roomType.setCellValueFactory(new PropertyValueFactory<>("rtName"));
 	    	rm_price.setCellValueFactory(new PropertyValueFactory<>("rtPrice"));
 	    	rm_status.setCellValueFactory(new PropertyValueFactory<>("roomStatus"));
+			return null;
 	    	
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    
+		
     }
     
     
-    /*
-    public ObservableList<RoomType> allRoomType(){
-    	ObservableList<RoomType> listData = FXCollections.observableArrayList();
-    	String query = "SELECT * FROM room_type " ;
-    	connection = connect();
-    	
-    	try {
-	        prepare = connection.prepareStatement(query);
-	        result = prepare.executeQuery();
-	        
-	        RoomType roomType;
-	        while(result.next()){
-	        roomType = new RoomType(
-	        		  result.getInt("rtID")
-	        		 ,result.getString("rtName")
-	        		 ,result.getDouble("rtPrice")
-	        		 ,result.getString("bedType")
-	        		 ,result.getString("rtDescription")
-	        		 ,result.getString("rtAmenities")
-	        		 ,result.getString("rtImage")
-	        		 );
-			listData.add(roomType);
-		} 
-    }
-	    catch (Exception e) {
-			e.printStackTrace();
-		} return listData;
-	}	*/
-    
-    
-    
+   
     
 	
     public void initialize() {
