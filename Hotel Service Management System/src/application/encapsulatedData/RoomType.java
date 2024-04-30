@@ -47,6 +47,15 @@ public class RoomType {
 		this.roomStatus = roomStatus;
 	}
 
+	/* Was used in debugging
+	@Override
+	public String toString() {
+	    return "Room Number: " + roomNum +
+	           ", Name: " + rtName +
+	           ", Price per Night: " + rtPrice +
+	           ", Status: " + roomStatus;
+	}
+	*/
 
 	
 

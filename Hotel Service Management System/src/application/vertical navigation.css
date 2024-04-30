@@ -22,7 +22,7 @@
 .button:hover .glyph-icon {
     -fx-fill: #54093B; /* Change the color to red when hovering */
 }
-
+/* 
 /* changes the color of the icon based on the downloaded png */
 #hk_btn{
 	-fx-graphic: url(../images/icons/white_hk_icon.png);
@@ -36,16 +36,16 @@
 }
 
 /* changes the color of the icon based on the downloaded svg */
-.button:hover #transact_icon {
+.button:hover #svgicon {
     /* Change the fill color of the SVG icon when the button is hovered */
     -fx-fill: #54093B; 
 }
 
-.button:hover #transact_icon {
+.button:hover #svgicon {
     /* Change the fill color of the SVG icon when the button is hovered */
     -fx-fill: #54093B; 
 }
-.button:focused #transact_icon {
+.button:focused #svgicon {
     -fx-fill: #54093B; 
 }
 #transact_btn{

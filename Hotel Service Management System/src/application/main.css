@@ -169,7 +169,45 @@
 }
 
 
-
+/* DatePicker customization */
+.date-picker{
+	-fx-background-color: #98116D;
+	-fx-border-radius:10;
+}
+.date-picker .text-field {
+    -fx-font-family: "Microsoft Sans Serif"; /* Set font family */
+    -fx-font-size: 15px; /* Set font size */
+}
+.date-picker .arrow-button {
+	-fx-background-color: #98116D;
+}
+.date-picker .arrow-button .arrow { /* white calendar icon */
+	-fx-background-color: white;
+}
+.date-picker-popup .month-year-pane {
+	-fx-background-color: #98116D;
+}
+.date-picker-popup .month-year-pane .label { /* changes the font color of month and year */
+	-fx-text-fill: white;
+}	
+.date-picker .cell:hover { /* changes the color when hovered on date in datepicker */
+	-fx-background-color: #98116D;
+}
+.date-picker .date-cell:hover {
+    -fx-text-fill: white; 
+}
+.date-picker .selected {
+	-fx-background-color: #98116D;
+	-fx-text-fill: white;
+}
+.date-picker .selected:focused {
+	-fx-background-color: #98116D;
+	-fx-text-fill: white;
+}
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+	-fx-background-color: white;
+}
 
 
 
