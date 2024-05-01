@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 import application.DB_Connection;
-import application.encapsulatedData.RoomType;
+import application.roomData.RoomType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,8 +79,7 @@ public class HotelCoordPage_Controller extends DB_Connection {
     private TableColumn<RoomType, String> rm_roomType, rm_status;
     @FXML
     private TableColumn<RoomType, Double> rm_price;
-    @FXML
-    private TableColumn<RoomType, Button> rm_actions;
+
 
   
     ObservableList<RoomType> allRoomList = FXCollections.observableArrayList(); 

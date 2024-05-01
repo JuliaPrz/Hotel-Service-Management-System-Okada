@@ -249,15 +249,20 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	    else {
 	    	        try {
 	    	            // Prepare the query to check room availability
-	    	        	// this query show the number of available room grouped by its type_id
-	    	        	String query = "SELECT COUNT(r.Room_no) AS numOfAvailRooms, Type_ID FROM room r " +
-	                            " LEFT JOIN booking_transaction bt ON r.Room_no = bt.Room_no " +
-	                            " WHERE r.Status = 'available' " +
-	                            " AND NOT EXISTS (SELECT * FROM booking_transaction " +
-	                            " WHERE Room_no = r.Room_no " +
-	                            " AND check_in_date <= ? AND check_out_date >= ?) " +
-	                            "GROUP BY Type_ID";
-	    	        	
+	    	        	// this query show the number of available room grouped by its type_id based on a specific date
+	    	        	String query = "SELECT COUNT(DISTINCT r.Room_no) AS numOfAvailRooms, r.Type_ID " + // Select the count of distinct room numbers and the room type ID
+	    	                    "FROM room r " +
+	    	                    "LEFT JOIN `Transaction` bt ON r.Room_no = bt.Room_no " +
+	    	                    "WHERE NOT EXISTS (" +	// Check for rooms where the following condition does not exist
+	    	                    "SELECT Room_no " +
+	    	                    "FROM `Transaction` " + // Select from the `Transaction` table (subquery)
+	    	                    "WHERE Room_no = r.Room_no " +
+	    	                    "AND (( ? BETWEEN check_in_date AND DATE_SUB(check_out_date, INTERVAL 1 DAY)) " + // Check if the specified check-out date is not included in any existing booking's date range
+	    	                    "OR ( ? BETWEEN check_in_date AND DATE_SUB(check_out_date, INTERVAL 1 DAY)))" +
+	    	                    ") " +
+	    	                    "GROUP BY r.Type_ID;";
+
+	    	        	 	        	
 	             prepare = connection.prepareStatement(query);
 	             prepare.setDate(1, Date.valueOf(checkInDate));
 	             prepare.setDate(2, Date.valueOf(checkOutDate));
@@ -265,7 +270,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	             // Execute the query
 	             result = prepare.executeQuery();
 
-	          // Store the type IDs in an array or a collection
+	          // Store the type IDs in an array
 	             int[] typeIDs = {10, 20, 30, 40};
 
 	             // Enable book buttons for available room types
@@ -311,25 +316,24 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
     	    
     	    
 	        try {
-	            // Establish connection
-	        //	connection = connect();
-
-	        	// Find an available room of the selected type that is not occupied
-	            String findRoomQuery = "SELECT r.Room_No, rtB.Name, rtB.Price_per_Night, rtB.Tax " +
-	                       "FROM room_type AS rtB " +
-	                       "INNER JOIN room AS r ON r.Type_ID = rtB.Type_ID " +
-	                       "WHERE r.Status = 'Available' " +
-	                       "AND rtB.Type_ID = ? " +
-	                       "AND r.Room_no NOT IN (" +
-	                       "SELECT Room_no FROM booking_transaction WHERE Room_no = r.Room_no AND (? < check_out_date AND ? > check_in_date)" +
-	                       ")";
+	        	// Construct the SQL query to find available rooms of a specific type for a given date range
+	        	String findRoomQuery = "SELECT r.Room_No, rt.Name, rt.Price_per_Night, rt.Tax " + // Select room number, name, price per night, and tax
+	        	                       "FROM room_type AS rt " + // From room_type table
+	        	                       "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " + // Join with room table based on Type_ID
+	        	                       "WHERE rt.Type_ID = ? " + // Filter by the specified room type
+	        	                       "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
+	        	                       "SELECT Room_no FROM `Transaction` " + // Subquery to find booked rooms
+	        	                       "WHERE Room_no = r.Room_no " + // Filter by room number
+	        	                       "AND (check_in_date <= ? AND check_out_date >= ?)"; // Condition to check for overlapping bookings
 	            
 	            prepare = connection.prepareStatement(findRoomQuery);
 	            prepare.setInt(1, roomTypeID);
 	            prepare.setDate(2, Date.valueOf(checkOutDate)); 
 	            prepare.setDate(3, Date.valueOf(checkInDate)); 
 	            result = prepare.executeQuery();
-
+	            
+	            
+	        
 	            // If available room is found, show the booking summary
 	            if (result.next()) {
 	            	String roomName = result.getString("Name");
@@ -454,8 +458,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
                 			String cleanTotalString = totalString.replaceAll("[^\\d.]", "");
 
         	                // Get the necessary information from the UI components
-        	        		int roomNo = Integer.parseInt(roomNumLabel.getText());
-        		            String transacType = "Booking Transaction";
+        	        		int roomNo = Integer.parseInt(roomNumLabel.getText()); 
         		            Double total = Double.parseDouble(cleanTotalString);
         		            LocalDate date =  LocalDate.now();
         		            LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
@@ -465,35 +468,101 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		        	int accountID = LogIn_Controller.getAccountID();
         		        	
         		            // Use a SQL query to insert the booking information into the database
-        		            String insertQuery = "INSERT INTO booking_transaction (guest_account_id, room_no, transaction_type, total_price, date, time, check_in_date, check_out_date) "
-        		            					+ "VALUES (?,?,?,?,?,?,?,?)";
-        		            prepare = connection.prepareStatement(insertQuery);
+        		            String insertBooking = "INSERT INTO `Transaction` (guest_account_id, room_no, date, time, check_in_date, check_out_date) "
+        		            					+ "VALUES (?,?,?,?,?,?,?)";
+        		            prepare = connection.prepareStatement(insertBooking);
         		            prepare.setInt(1, accountID);
         		            prepare.setInt(2, roomNo);
-        		            prepare.setString(3, transacType);
-        		            prepare.setDouble(4, total);
-        		            prepare.setDate(5, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
-        		            prepare.setTime(6, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
-        		            prepare.setDate(7, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
-        		            prepare.setDate(8, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
+        		            prepare.setDate(3, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
+        		            prepare.setTime(4, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
+        		            prepare.setDate(5, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
+        		            prepare.setDate(6, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
         		            // Execute the insert query
         		            prepare.executeUpdate();
+        		            
+        		            // add the payment details to the database
+        		            String payType = "Card Payment";
+        		            String insertPaymentDetails = "INSERT INTO payment_details (total_price, payment_type) "
+	            					+ "VALUES (?,?,?)";
+        		            prepare = connection.prepareStatement(insertPaymentDetails);
+        		            prepare.setDouble(1, total);
+        		            prepare.setString(2, payType);
+        		            prepare.executeUpdate(); 
+        		            
+        		         // Retrieve the generated payment_ID
+        		            result = prepare.getGeneratedKeys();
+        		            int paymentId = -1; // Initialize to a default value
+        		            if (result.next()) {
+        		                paymentId = result.getInt(1); // Get the generated payment_ID
+        		            }
+        		            
+        		            if (paymentId != -1) {
+        		                // Insert the card payment information with the retrieved payment_ID
+        		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Total_Price, Card_Number, Name_OnCard, CCV, Expiry_Date) VALUES (?, ?, ?, ?, ?, ?)";
+        		                prepare = connection.prepareStatement(insertCardInfo);
+        		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
+        		                prepare.setDouble(2, total);
+        		                prepare.setString(3, bookCardNum.getText());
+        		                prepare.setString(4, bookNameCard.getText());
+        		                prepare.setString(5, bookCCV.getText());
+        		                prepare.setString(6, bookExp.getText());
+        		                prepare.executeUpdate();
+        		            } else  // for debugging; failed to retrieve the payment_ID
+        		                System.out.println("Failed to retrieve payment_ID.");
+        		            
 
-        		            // Optionally, display a message to indicate successful payment
+        		            // indicate successful payment
         		           alert.infoMessage("Booked successfully! See you!");
+        		        //   noEntry.setVisible(true);
+        		        //   bookingSummary.setVisible(false);
         		           clearPaymentFields(); //clear fields
-        	                // Update room status to occupied
-        	                String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
-        	                prepare = connection.prepareStatement(updateStatusQuery);
-        	                prepare.setInt(1, roomNo);
-        	                prepare.executeUpdate();
+
+        		      // ////////////////////       STATUS LOGIC    //////////////////////
+
+        		        // Update room status to occupied if the booking is today
+        		           
+        		       
+        		        	String query = "SELECT r.Status, t.Check_In_Date "+ 
+        		        	                       "FROM Room AS r " + // From room_type table
+        		        	                       "INNER JOIN `Transaction` AS t ON r.room_no = t.room_no " + // Join with room table based on Type_ID
+        		        	                       "WHERE rt.Type_ID = ? " + // Filter by the specified room type
+        		        	                       "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
+        		        	                       "SELECT Room_no FROM `Transaction` " + // Subquery to find booked rooms
+        		        	                       "WHERE Room_no = r.Room_no " + // Filter by room number
+        		        	                       "AND (check_in_date <= ? AND check_out_date >= ?)"; // Condition to check for overlapping bookings
+        		            
+        		            prepare = connection.prepareStatement(findRoomQuery);
+        		            prepare.setInt(1, roomTypeID);
+        		            prepare.setDate(2, Date.valueOf(checkOutDate)); 
+        		            prepare.setDate(3, Date.valueOf(checkInDate)); 
+        		            result = prepare.executeQuery();
+        		            
+        		            
+        		        
+        		            // If available room is found, show the booking summary
+        		            if (result.next()) {
+        		            	String roomName = result.getString("Name");
+        		            	String dbRoomPrice = result.getString("Price_per_Night");
+        		            	String dbRo
+        		     
+        		           
+        		           String updateStatusQuery = "UPDATE room " +
+        		                                      "SET Status = 'Occupied' " +
+        		                                      "WHERE Room_no = ? " +
+        		                                      "AND date = ?"; // Add condition to check if the booking date matches today's date
+
+        		          
+        		               prepare = connection.prepareStatement(updateStatusQuery);
+        		               prepare.setInt(1, roomNo);
+        		               prepare.setDate(2, java.sql.Date.valueOf(LocalDate.now())); // Set the booking date to today's date
+        		               prepare.executeUpdate();
         	               
-        	                connection.close();
+        	               // connection.close();
  
         	        } catch (SQLException e) {
         	            e.printStackTrace();
         	        }    		
-        	        }
+        	       }
         	    } catch (NumberFormatException e) {
         	        alert.errorMessage("Invalid expiry date format. Please use numeric values for month and year.");
         	    }

@@ -1,24 +1,15 @@
 package application.hotelCoord;
 
 import java.io.File;
-import java.sql.Date;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
+
 
 import application.AlertMessage;
-import application.Choices;
 import application.DB_Connection;
-import application.encapsulatedData.RoomType;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
