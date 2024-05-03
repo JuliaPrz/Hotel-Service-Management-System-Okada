@@ -1,4 +1,4 @@
-package application.hotelCoord;
+package application.receptionist;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -22,7 +22,7 @@ import javafx.util.Callback;
 
 
 
-public class HotelCoordPage_Controller extends DB_Connection {
+public class ReceptionistPage_Controller extends DB_Connection {
 	
 	//          ---------     SWITCH PAGE     --------
 	@FXML

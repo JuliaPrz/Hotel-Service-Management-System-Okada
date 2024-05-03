@@ -3,6 +3,7 @@ package application.guest;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -69,16 +70,18 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private Label bookName1, bookName2, bookName3, bookName4;
 
-	 
 	    @FXML
 	    private Label book_stayCount, book_stayCount2; //count2 is the label in the summary
-	    
 	    @FXML
 	    private Group bookingSummary;
 	    @FXML
 	    private Label noEntry, dates, roomPrice, roomTax, chosenRoom, booking_total, roomNumLabel;
 	    
-	    
+	    // PROFILE PAGE
+	    @FXML
+	    private Label gBdateLabel, gEmailLabel, gPassLabel, gPhoneLabel, gNameLabel;
+
+
 	    
 		// Declare a HashMap to map button IDs to pages
 		private HashMap<String, AnchorPane> pageMap = new HashMap<>();
@@ -145,6 +148,8 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	    for (Button button : bookButton) {
 	    	        button.setDisable(true);
 	    	    }
+	        }else if (buttonId.equals(profileBtn.getId())) {
+	        	
 	        }
 	        
 
@@ -216,8 +221,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        return null;
 	      
 	    }
-	    
-	    
+
 	    // disables the BOOK buttons if the user changed the date; they must check the availability first to enable it
 	    @FXML
 	    private void datePickerAction(ActionEvent event) {
@@ -228,7 +232,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	        button.setDisable(true);
 	    	    }
 	    }
-	    
+
 	    
 	    @FXML
 	    private void checkButtonAction(ActionEvent event) {
@@ -249,7 +253,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	    else {
 	    	        try {
 	    	            // Prepare the query to check room availability
-	    	        	// this query show the number of available room grouped by its type_id based on a specific date
+	    	        	// this query show the number of available room grouped by its type_id based on a specific date range
 	    	        	String query = "SELECT COUNT(DISTINCT r.Room_no) AS numOfAvailRooms, r.Type_ID " + // Select the count of distinct room numbers and the room type ID
 	    	                    "FROM room r " +
 	    	                    "LEFT JOIN `Transaction` bt ON r.Room_no = bt.Room_no " +
@@ -293,7 +297,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        }
 	    }
 	        
-	    
 	    @FXML
 	    private void bookButtonAction(ActionEvent event) {
 	    	int[] typeIDs = {10, 20, 30, 40};
@@ -316,20 +319,20 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
     	    
     	    
 	        try {
-	        	// Construct the SQL query to find available rooms of a specific type for a given date range
+	        	// SQL query to find available rooms of a specific type for a given date range
 	        	String findRoomQuery = "SELECT r.Room_No, rt.Name, rt.Price_per_Night, rt.Tax " + // Select room number, name, price per night, and tax
-	        	                       "FROM room_type AS rt " + // From room_type table
-	        	                       "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " + // Join with room table based on Type_ID
-	        	                       "WHERE rt.Type_ID = ? " + // Filter by the specified room type
-	        	                       "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
-	        	                       "SELECT Room_no FROM `Transaction` " + // Subquery to find booked rooms
-	        	                       "WHERE Room_no = r.Room_no " + // Filter by room number
-	        	                       "AND (check_in_date <= ? AND check_out_date >= ?)"; // Condition to check for overlapping bookings
+	                       "FROM room_type AS rt " + // From room_type table
+	                       "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " + // Join with room table based on Type_ID
+	                       "WHERE rt.Type_ID = ? " + // Filter by the specified room type
+	                       "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
+	                       "SELECT Room_no FROM `Transaction` " + // Subquery to find booked rooms
+	                       "WHERE Room_no = r.Room_no " + // Filter by room number
+	                       "AND (check_in_date <= ? AND check_out_date >= ?))"; // Condition to check for overlapping bookings
 	            
 	            prepare = connection.prepareStatement(findRoomQuery);
 	            prepare.setInt(1, roomTypeID);
-	            prepare.setDate(2, Date.valueOf(checkOutDate)); 
-	            prepare.setDate(3, Date.valueOf(checkInDate)); 
+	            prepare.setDate(2, Date.valueOf(checkInDate)); 
+	            prepare.setDate(3, Date.valueOf(checkOutDate)); 
 	            result = prepare.executeQuery();
 	            
 	            
@@ -384,11 +387,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	            	
 	            	noEntry.setVisible(false);
 	            	bookingSummary.setVisible(true);
-
-	                //connection.close();
-
-	                // Update UI or display message to indicate successful booking
-	             //   System.out.println("Room " + roomNo + " has been assigned to the user.");
+  
 	            } else {
 	                System.out.println("No available rooms of type " + roomTypeID + " found.");
 	            }
@@ -400,7 +399,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private void payButtonAction(ActionEvent event) {
 	    	AlertMessage alert = new AlertMessage();
-	       	String labelValue = dates.getText(); 
+	       	String labelValue = dates.getText(); // dates label in the booking summary
 
         	// Split the dates text based on the delimiter "-"
         	String[] dates = labelValue.split(" - ");
@@ -412,8 +411,8 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         	// Parse the formatted dates into LocalDate objects
         	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy");
         	
-        	// used to find a pattern if the CCV is numeric numbers only; continues in the if else statement
-        	
+        	// used to find a pattern if the card number and CCV is numeric numbers only; continues in the if else statement
+        	boolean CardNumisNumeric = bookCardNum.getText().matches("[0-9]+");
     		boolean CCVisNumeric = bookCCV.getText().matches("[0-9]+");
     		boolean nameCardIsOnlyLetters = bookNameCard.getText().matches("[a-zA-Z\\s]+"); // will match any string that contains one or more letters (uppercase or lowercase) and/or spaces.
     		
@@ -428,7 +427,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
     		
         	if (bookCardNum.getText().isEmpty() || bookCCV.getText().isEmpty() || bookExp.getText().isEmpty() || bookNameCard.getText().isEmpty())
         		alert.errorMessage("Please fill up all payment information.");
-        	else if (bookCardNum.getText().length() < 16 || bookCardNum.getText().length() > 16) 
+        	else if (!CardNumisNumeric || bookCardNum.getText().length() < 16 || bookCardNum.getText().length() > 16) 
         		alert.errorMessage("Invalid card number.");
         	else if (!CCVisNumeric || bookCCV.getText().length() > 3 ||  bookCCV.getText().length() < 3)
         		alert.errorMessage("Invalid CCV (security code) number.");
@@ -465,29 +464,16 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		            LocalDate checkInDate = LocalDate.parse(formattedCheckInDate, formatter);
         		        	LocalDate checkOutDate = LocalDate.parse(formattedCheckOutDate, formatter);
 
-        		        	int accountID = LogIn_Controller.getAccountID();
+        		        	int accountID = LogIn_Controller.getAccountID();	// get the Guest account ID when they logged in
         		        	
-        		            // Use a SQL query to insert the booking information into the database
-        		            String insertBooking = "INSERT INTO `Transaction` (guest_account_id, room_no, date, time, check_in_date, check_out_date) "
-        		            					+ "VALUES (?,?,?,?,?,?,?)";
-        		            prepare = connection.prepareStatement(insertBooking);
-        		            prepare.setInt(1, accountID);
-        		            prepare.setInt(2, roomNo);
-        		            prepare.setDate(3, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
-        		            prepare.setTime(4, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
-        		            prepare.setDate(5, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
-        		            prepare.setDate(6, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
-        		            // Execute the insert query
-        		            prepare.executeUpdate();
-        		            
         		            // add the payment details to the database
         		            String payType = "Card Payment";
         		            String insertPaymentDetails = "INSERT INTO payment_details (total_price, payment_type) "
-	            					+ "VALUES (?,?,?)";
-        		            prepare = connection.prepareStatement(insertPaymentDetails);
+        		                + "VALUES (?,?)";
+        		            prepare = connection.prepareStatement(insertPaymentDetails, Statement.RETURN_GENERATED_KEYS);
         		            prepare.setDouble(1, total);
         		            prepare.setString(2, payType);
-        		            prepare.executeUpdate(); 
+        		            prepare.executeUpdate();
         		            
         		         // Retrieve the generated payment_ID
         		            result = prepare.getGeneratedKeys();
@@ -497,8 +483,24 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		            }
         		            
         		            if (paymentId != -1) {
+        		            	
+        		            	// insert the booking information into the transaction table in the database
+            		            String insertBooking = "INSERT INTO `Transaction` (guest_account_id, room_no, date, time, check_in_date, check_out_date, Payment_ID) "
+            		            					+ "VALUES (?,?,?,?,?,?,?)";
+            		            prepare = connection.prepareStatement(insertBooking);
+            		            prepare.setInt(1, accountID);
+            		            prepare.setInt(2, roomNo);
+            		            prepare.setDate(3, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
+            		            prepare.setTime(4, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
+            		            prepare.setDate(5, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
+            		            prepare.setDate(6, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
+            		            prepare.setInt(7, paymentId); // Set the retrieved payment_ID
+            		            // Execute the insert query
+            		            prepare.executeUpdate();
+        		            	
         		                // Insert the card payment information with the retrieved payment_ID
-        		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Total_Price, Card_Number, Name_OnCard, CCV, Expiry_Date) VALUES (?, ?, ?, ?, ?, ?)";
+        		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Total_Price, Card_Number, Name_OnCard, CCV, Expiry_Date) " +
+        		                						"VALUES (?, ?, ?, ?, ?, ?)";
         		                prepare = connection.prepareStatement(insertCardInfo);
         		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
         		                prepare.setDouble(2, total);
@@ -507,6 +509,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		                prepare.setString(5, bookCCV.getText());
         		                prepare.setString(6, bookExp.getText());
         		                prepare.executeUpdate();
+        		                
         		            } else  // for debugging; failed to retrieve the payment_ID
         		                System.out.println("Failed to retrieve payment_ID.");
         		            
@@ -520,52 +523,45 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		      // ////////////////////       STATUS LOGIC    //////////////////////
 
         		        // Update room status to occupied if the booking is today
-        		           
-        		       
-        		        	String query = "SELECT r.Status, t.Check_In_Date "+ 
-        		        	                       "FROM Room AS r " + // From room_type table
-        		        	                       "INNER JOIN `Transaction` AS t ON r.room_no = t.room_no " + // Join with room table based on Type_ID
-        		        	                       "WHERE rt.Type_ID = ? " + // Filter by the specified room type
-        		        	                       "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
-        		        	                       "SELECT Room_no FROM `Transaction` " + // Subquery to find booked rooms
-        		        	                       "WHERE Room_no = r.Room_no " + // Filter by room number
-        		        	                       "AND (check_in_date <= ? AND check_out_date >= ?)"; // Condition to check for overlapping bookings
-        		            
-        		            prepare = connection.prepareStatement(findRoomQuery);
-        		            prepare.setInt(1, roomTypeID);
-        		            prepare.setDate(2, Date.valueOf(checkOutDate)); 
-        		            prepare.setDate(3, Date.valueOf(checkInDate)); 
-        		            result = prepare.executeQuery();
-        		            
-        		            
-        		        
-        		            // If available room is found, show the booking summary
-        		            if (result.next()) {
-        		            	String roomName = result.getString("Name");
-        		            	String dbRoomPrice = result.getString("Price_per_Night");
-        		            	String dbRo
-        		     
-        		           
-        		           String updateStatusQuery = "UPDATE room " +
-        		                                      "SET Status = 'Occupied' " +
-        		                                      "WHERE Room_no = ? " +
-        		                                      "AND date = ?"; // Add condition to check if the booking date matches today's date
+        		           // check if the check_in date is today
+        		           String queryCheckInToday = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
+                                   "FROM Room AS r " +
+                                   "RIGHT JOIN `Transaction` AS t ON r.room_no = t.room_no " +
+                                   "WHERE r.Room_no IN ( " +
+                                   "SELECT Room_no " +
+                                   "FROM `Transaction` " +
+                                   "WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+                                   ");";
 
-        		          
-        		               prepare = connection.prepareStatement(updateStatusQuery);
-        		               prepare.setInt(1, roomNo);
-        		               prepare.setDate(2, java.sql.Date.valueOf(LocalDate.now())); // Set the booking date to today's date
-        		               prepare.executeUpdate();
-        	               
-        	               // connection.close();
- 
+        		            result = prepare.executeQuery(queryCheckInToday);
+
+        		            
+        		         // Iterating over the result set and change the status from "Available" to "Occupied"
+        		            while (result.next()) {
+        		                roomNo = result.getInt("Room_no");
+        		                String status = result.getString("Status");
+        		                Date checkIn_Date = result.getDate("Check_In_Date");
+        		                
+        		                if (status.equals("Available")) {
+        		                    // Check if the check-in date is today or in the future
+        		                    checkInDate = checkIn_Date.toLocalDate();
+        		                    if (checkInDate.isEqual(LocalDate.now())) {
+        		                        // Update room status to occupied
+        		                        String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
+        		                        prepare = connection.prepareStatement(updateStatusQuery);
+        		                        prepare.setInt(1, roomNo);
+        		                        prepare.executeUpdate();
+        		                    } 
+        		                }
+        		            }
+      
         	        } catch (SQLException e) {
         	            e.printStackTrace();
         	        }    		
-        	       }
-        	    } catch (NumberFormatException e) {
+        	     }
+        	  } catch (NumberFormatException e) {
         	        alert.errorMessage("Invalid expiry date format. Please use numeric values for month and year.");
-        	    }
+        	  }
         	}	
  }
 
@@ -578,7 +574,34 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    }	
 	    	
 	    
-	    
+	    public void showProfileInfo() {
+	    	int accountID = LogIn_Controller.getAccountID();	// get the Guest account ID when they logged in
+	    	try {
+	        	// SQL query to retrieve info from sign in page to get the personal information of user
+	        	String query = "SELECT CONCAT(First_Name, ' ', Last_Name) AS Name, Email, Password, Contact_No, Birthdate " + // Select room number, name, price per night, and tax
+	                       "FROM BOOKED_GUEST " +
+	                       "WHERE guest_account_id = ?"; // From room_type table
+
+	        	prepare = connection.prepareStatement(query);
+	            prepare.setInt(1, accountID); // Set the guest_acc_ID
+	        	result = prepare.executeQuery(query);
+	        	
+	        	 // If available room is found, show the booking summary
+	            if (result.next()) {
+	            	String name = result.getString("Name");
+	            	String email = result.getString("Emailt");
+	            	String pass = result.getString("Password"); 	
+	            	int contactNum = result.getInt("Contact_No");
+	            	int birthdate = result.getInt("Birthdate");
+	            	
+	            	gBdateLabel.setText(name);
+	            	
+	            } gBdateLabel, gEmailLabel, gPassLabel, gPhoneLabel, gNameLabel;
+	            	
+	    } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	  }
 	    
 	    
 	    

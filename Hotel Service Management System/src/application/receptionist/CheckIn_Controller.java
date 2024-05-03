@@ -1,4 +1,4 @@
-package application.hotelCoord;
+package application.receptionist;
 
 import java.io.File;
 

@@ -69,7 +69,7 @@
 	-fx-border-width: 0 0 2 0;
 }
 
-
+/* used in employee page */
 .oval_btn{
 	-fx-background-radius: 10, 10, 10, 10;
 	-fx-background-color:#98106C;
@@ -85,7 +85,6 @@
 	-fx-text-fill: black;
 }
 
- 
  .Booking_button { 
       -fx-background-color:#BB3A7F;
 }
@@ -97,13 +96,15 @@
 }
 
 
-
-
+/*    TEXT FIELD STYLE */
 .text-field {  
   -fx-text-box-border: #98116D;
   -fx-background-radius: 10, 10, 10, 10;
   -fx-focus-color: #98116D;
 }
+
+
+/*   TABLE STYLE */
 
 .cell-status-available {
     -fx-text-fill: green; /* Set text color to green for available status */
@@ -113,14 +114,12 @@
     -fx-text-fill: red; /* Set text color to red for not available status */
 }
 
-
 /* table modification */
 .table-view {
     -fx-background-color: transparent;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
-
 
 .table-view .column-header, .filter{
 	-fx-background-color:transparent;
