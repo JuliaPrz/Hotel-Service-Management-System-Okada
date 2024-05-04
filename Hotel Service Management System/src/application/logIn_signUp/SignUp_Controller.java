@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ResourceBundle;
@@ -131,7 +132,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	// check if the email is already taken
     	else {
     	   
-    		String checkEmail = "SELECT * FROM guest WHERE Email = ?";
+    		String checkEmail = "SELECT * FROM Booked_Guest WHERE Email = ?";
     		
     	    try {
     	    	//statement = connection.createStatement();
@@ -150,23 +151,41 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
 	    			    lastName = Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1);
 	    			}
     				
-	    			String insertData = "INSERT INTO guest " 
-	    						+ "(Last_Name, First_Name, Email, Password, Birthdate, Age, Contact_No) " 
-	    						+ "VALUES (?,?,?,?,?,?,?) ";
+	    			// Insert into GUEST table
+	    			String insertGuestData = "INSERT INTO GUEST " 
+	    						+ "(Last_Name, First_Name, Birthdate, Age, Contact_No, Guest_Type) " 
+	    						+ "VALUES (?,?,?,?,?,?) ";
 
-	    			prepare = connection.prepareStatement (insertData); 
+	    			prepare = connection.prepareStatement (insertGuestData, Statement.RETURN_GENERATED_KEYS); 
 	    			prepare.setString (1, lastName); 
 	    			prepare.setString (2, firstName); 
-	    			prepare.setString (3, signUpEmail.getText()); 
-	    			prepare.setString (4, signUpPass.getText());
 	    			 // Convert LocalDate to java.sql.Date
 	    		    Date bdate = Date.valueOf(birthdate);
-	    			prepare.setDate (5, bdate);
-	    			prepare.setInt (6, age);
-	    			prepare.setString (7, signUpContact.getText());
+	    			prepare.setDate (3, bdate);
+	    			prepare.setInt (4, age);
+	    			prepare.setString (5, signUpContact.getText());
+	    			prepare.setString (6, "Booked Guest");
 	    			
 	    			prepare.executeUpdate();
-	    	
+	    			
+	    			 result = prepare.getGeneratedKeys();
+ 		            int guestID = -1; // Initialize to a default value
+ 		            if (result.next()) {
+ 		                guestID = result.getInt(1); // Get the generated payment_ID
+ 		            }
+ 		            
+ 		            if (guestID != -1) {
+ 		            // Insert into BOOKED_GUEST table
+ 		    			String insertData = "INSERT INTO BOOKED_GUEST (Guest_ID, Email, Password) " 
+ 	    						+ "VALUES (?,?,?) ";
+
+ 		    			prepare = connection.prepareStatement (insertData); 
+ 		    			prepare.setInt(1, guestID);
+ 		    			prepare.setString (2, signUpEmail.getText()); 
+ 		    			prepare.setString (3, signUpPass.getText());
+ 		    		
+ 		    			prepare.executeUpdate(); 	
+ 		            }
 	    			
 	    			alert.infoMessage("Signed In Successfully!");
 	    			clearSignUpFields();

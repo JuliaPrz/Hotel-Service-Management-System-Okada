@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 
 import application.DB_Connection;
 
-
+// ROOM PAGE - DISPLAY DATA
 public class RoomTypeData extends DB_Connection{
 
 	    private int numberOfRoomType = 4; //there are 4 room types
@@ -35,7 +35,6 @@ public class RoomTypeData extends DB_Connection{
 	        };
 	        
 	  
-
 	        // Display images
 	        for (int i = 0; i < numberOfRoomType; i++) {
 	            roomType_displayImage(connection, imageQueries[i], targetNodes[i]);

@@ -1,13 +1,13 @@
 package application.roomData;
 
-public class RoomType {
+public class Room {
 
 	private Integer roomNum;
 	private String rtName;
 	private String rtPrice;
 	private String roomStatus;
 	
-	public RoomType (Integer roomNum, String rtName, String rtPrice, String roomStatus) {
+	public Room (Integer roomNum, String rtName, String rtPrice, String roomStatus) {
 		
 		this.roomNum = roomNum;
 		this.rtName = rtName;
@@ -47,15 +47,6 @@ public class RoomType {
 		this.roomStatus = roomStatus;
 	}
 
-	/* Was used in debugging
-	@Override
-	public String toString() {
-	    return "Room Number: " + roomNum +
-	           ", Name: " + rtName +
-	           ", Price per Night: " + rtPrice +
-	           ", Status: " + roomStatus;
-	}
-	*/
 
 	
 

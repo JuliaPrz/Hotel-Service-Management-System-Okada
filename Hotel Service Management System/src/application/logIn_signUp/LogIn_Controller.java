@@ -116,18 +116,20 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	                	    }
             	        }else {
             	        	// Query the database to check if email and password match
-                    	    String queryGuest = "SELECT Guest_Account_ID, Email, Password FROM guest WHERE email = ? AND password = ?";
-                    	    try {
-                    	        prepare = connection.prepareStatement(queryGuest);
-                    	        prepare.setString(1, email.getText());
-                    	        prepare.setString(2, password.getText());
-                    	        result = prepare.executeQuery();
-                    	        
-                    	      if (result.next()) {
-                    	    	  
-                    	    	  // set the typeID; it is used in GuestPage_Controller class
-                    	        int accountID = result.getInt("Guest_Account_ID");
-                    	        LogIn_Controller.setAccountID(accountID);
+            	        	String queryGuest = "SELECT BG.Guest_ID, BG.Email, BG.Password " +
+            	                    "FROM BOOKED_GUEST BG " +
+            	                    "INNER JOIN guest G ON BG.Guest_ID = G.Guest_ID " +
+            	                    "WHERE BG.Email = ? AND BG.Password = ?";
+			            	try {
+			            	    prepare = connection.prepareStatement(queryGuest);
+			            	    prepare.setString(1, email.getText());
+			            	    prepare.setString(2, password.getText());
+			            	    result = prepare.executeQuery();
+			            	    
+			            	    if (result.next()) {
+			            	    	  // get the accountID; it is used in GuestPage_Controller class
+			            	        int accountID = result.getInt("Guest_ID");
+			            	        LogIn_Controller.setAccountID(accountID);
 
             	        	// Load the FXML file of the selected page
             	            root = FXMLLoader.load(getClass().getResource("/application/guest/GuestPage.fxml"));
