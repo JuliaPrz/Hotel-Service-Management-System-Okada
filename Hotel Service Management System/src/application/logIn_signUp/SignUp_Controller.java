@@ -42,11 +42,9 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     private TextField signUpContact;
     @FXML
     private Button logInLink;
-    @FXML
-    private Button signUp_button;
      
     // Class to calculate the age based on birthdate given
-    class DeriveAge {
+    public class DeriveAge {
         public static int calculateAge(LocalDate birthDate, LocalDate currentDate) {
            if ((birthDate != null) && (currentDate != null)) {
                     return Period.between(birthDate, currentDate).getYears();

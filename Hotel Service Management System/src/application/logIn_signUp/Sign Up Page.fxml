@@ -51,7 +51,7 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Label>
-            <Button fx:id="signUp_button" focusTraversable="false" layoutX="105.0" layoutY="509.0" mnemonicParsing="false" onAction="#signUp" prefHeight="42.0" prefWidth="147.0" stylesheets="@LogIn%20SignUp.css" text="Sign Up" textFill="WHITE">
+            <Button focusTraversable="false" layoutX="105.0" layoutY="509.0" mnemonicParsing="false" onAction="#signUp" prefHeight="42.0" prefWidth="147.0" stylesheets="@LogIn%20SignUp.css" text="Sign Up" textFill="WHITE">
                <font>
                   <Font name="Aharoni Bold" size="22.0" />
                </font>

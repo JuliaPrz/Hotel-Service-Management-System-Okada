@@ -139,7 +139,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    		                setDisable(item.isAfter(maxDate) || item.isBefore(minDate));
 	    		               }});
 	    		
-	    		
 	    		//calculate the stay count based on check-in and check-out dates
 	    		// Bind calculateStayCount method to the valueProperty of date pickers
 	    	    book_checkInPicker.valueProperty().addListener((obs, oldVal, newVal) -> calculateStayCount());
@@ -154,10 +153,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        }else if (buttonId.equals(profileBtn.getId())) {
 	        	connection = connect(); 	// connect to database
 	        	showProfileInfo();
-	        	
-	        	
-	        	
-	        	
 	        }
 	        
 
@@ -196,17 +191,14 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	        LocalDate checkOutDate = book_checkOutPicker.getValue();
 
 	        String day, night;
-	        boolean errorMessageShown = false; // Flag to track if error message has been shown
+	       
 	      
 
 	        if (checkInDate == null || checkOutDate == null) {
 	            book_stayCount.setText("");
-	        } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) {
-	            if (!errorMessageShown) {
-	                alert.errorMessage("Check-out date cannot be before or during the check-in date.");
-	                errorMessageShown = true; // Set flag to true to indicate error message has been shown
-	            }
-	        } else {
+	        } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) 
+	                alert.errorMessage("Check-out date cannot be before or during the check-in date.");  
+	         else {
 	            // Calculate the stay count
 	            long stayCount = ChronoUnit.DAYS.between(checkInDate, checkOutDate) + 1;
 	            long nightStayCount = 0;

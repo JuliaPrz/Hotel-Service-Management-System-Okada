@@ -5,7 +5,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -385,21 +390,12 @@
                         </TableView>
                         <Group layoutX="563.0" layoutY="18.0" AnchorPane.rightAnchor="15.000006103515602">
                            <children>
-                              <TextField fx:id="rmSearch" layoutX="-50.0" layoutY="-3.0" prefHeight="38.0" prefWidth="262.0" promptText="Search">
+                              <TextField fx:id="rmSearch_txtField" layoutX="-50.0" layoutY="-3.0" prefHeight="38.0" prefWidth="262.0" promptText="Search">
                                  <padding>
                                     <Insets left="30.0" />
                                  </padding>
                               </TextField>
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
-                              <Button layoutX="134.0" layoutY="5.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="69.0" text="Search" textFill="WHITE">
-                                 <font>
-                                    <Font name="Century Gothic Bold" size="12.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="hover_button" />
-                                    <String fx:value="oval_btn" />
-                                 </styleClass>
-                              </Button>
                            </children>
                         </Group>
                      </children>
@@ -449,9 +445,9 @@
                   </AnchorPane>
                   <AnchorPane layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
                      <children>
-                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="136.0" prefWidth="887.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                        <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="136.0" prefWidth="887.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
                            <children>
-                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="136.0" prefWidth="408.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="136.0" prefWidth="344.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="bg_radius" />
                                     <String fx:value="bg_color" />
@@ -469,16 +465,16 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="136.0" prefWidth="363.0" styleClass="bg_radius" HBox.hgrow="NEVER">
+                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="136.0" prefWidth="541.0" styleClass="bg_radius" HBox.hgrow="NEVER">
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="40.79999999999998" layoutY="63.0" prefHeight="18.0" prefWidth="110.0" text="Check-In Date" textFill="#98116d" AnchorPane.rightAnchor="305.6">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="61.0" prefHeight="18.0" prefWidth="110.0" text="Check-In Date" textFill="#98116d" AnchorPane.rightAnchor="409.20000000000005">
                                        <font>
                                           <Font name="Century Gothic" size="10.0" />
                                        </font>
                                     </Label>
-                                    <DatePicker fx:id="checkIn_datePicker" focusTraversable="false" layoutX="41.599999999999994" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="110.0" AnchorPane.rightAnchor="304.8" />
-                                    <DatePicker fx:id="checkOut_datePicker" focusTraversable="false" layoutX="172.79999999999998" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="109.0" AnchorPane.rightAnchor="174.40000000000003" />
-                                    <Button fx:id="check_Btn" layoutX="299.20000000000005" layoutY="91.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Check" textFill="WHITE" AnchorPane.rightAnchor="67.19999999999999">
+                                    <DatePicker fx:id="checkIn_datePicker" focusTraversable="false" layoutX="16.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="110.0" AnchorPane.rightAnchor="407.20000000000005" />
+                                    <DatePicker fx:id="checkOut_datePicker" focusTraversable="false" layoutX="146.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="109.0" AnchorPane.rightAnchor="278.0" />
+                                    <Button fx:id="check_Btn" layoutX="411.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkBtnAction" prefHeight="30.0" prefWidth="90.0" text="Check" textFill="WHITE" AnchorPane.rightAnchor="32.200000000000045">
                                        <font>
                                           <Font name="Century Gothic Bold" size="12.0" />
                                        </font>
@@ -487,19 +483,20 @@
                                           <String fx:value="oval_btn" />
                                        </styleClass>
                                     </Button>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="19.19999999999999" layoutY="10.0" prefHeight="35.0" prefWidth="417.0" text="CHECK ROOM AVAILABILITY" textAlignment="CENTER" textFill="#98106c" AnchorPane.rightAnchor="20.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="14.0" prefHeight="35.0" prefWidth="417.0" text="CHECK ROOM AVAILABILITY" textAlignment="CENTER" textFill="#98106c" AnchorPane.rightAnchor="41.39999999999998">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="171.99999999999997" layoutY="61.0" prefHeight="18.0" prefWidth="106.0" text="Check-Out Date" textFill="#98116d" AnchorPane.rightAnchor="178.40000000000003">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="145.0" layoutY="59.0" prefHeight="18.0" prefWidth="106.0" text="Check-Out Date" textFill="#98116d" AnchorPane.rightAnchor="282.20000000000005">
                                        <font>
                                           <Font name="Century Gothic" size="10.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="indicator_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="277.6" layoutY="60.0" prefHeight="18.0" prefWidth="134.0" text="Room is available" textFill="#98116d" AnchorPane.rightAnchor="44.80000000000001">
+                                    <ComboBox fx:id="roomType_cbb" layoutX="269.0" layoutY="87.0" prefHeight="36.0" prefWidth="126.0" promptText="Deluxe King" scaleShape="false" stylesheets="@EmployeePopUps.css" AnchorPane.rightAnchor="138.20000000000005" />
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="61.0" prefHeight="18.0" prefWidth="106.0" text="Room Type" textFill="#98116d">
                                        <font>
-                                          <Font name="Century Gothic Bold" size="12.0" />
+                                          <Font name="Century Gothic" size="10.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -549,15 +546,6 @@
                                  </padding>
                               </TextField>
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
-                              <Button fx:id="wSearch_Btn" layoutX="134.0" layoutY="5.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="69.0" text="Search" textFill="WHITE">
-                                 <font>
-                                    <Font name="Century Gothic Bold" size="12.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="hover_button" />
-                                    <String fx:value="oval_btn" />
-                                 </styleClass>
-                              </Button>
                            </children>
                         </Group>
                         <Button fx:id="checkIn_Btn" layoutX="530.0" layoutY="18.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="116.0" text="Check-In" textFill="WHITE" AnchorPane.rightAnchor="144.39999999999998">
@@ -594,7 +582,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="28.0" layoutY="54.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -648,12 +636,12 @@
                                     <Insets />
                                  </HBox.margin>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="PENDING" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL BOOKING" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="totalBooking_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -666,12 +654,12 @@
                                     <String fx:value="bg_color" />
                                  </styleClass>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="19.0" prefHeight="35.0" prefWidth="238.0" text="CHECKED-IN " textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="19.0" prefHeight="35.0" prefWidth="238.0" text="TODAY" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="todayNum_Label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -684,12 +672,12 @@
                                     <String fx:value="bg_color" />
                                  </styleClass>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefHeight="35.0" prefWidth="245.0" text="CHECKED-OUT" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefHeight="35.0" prefWidth="245.0" text="INCOMING" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="58.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="incomingNum_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="58.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -710,13 +698,13 @@
                         <String fx:value="bg_shadow" />
                      </styleClass>
                      <children>
-                        <TableView layoutY="64.0" prefHeight="271.0" prefWidth="790.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+                        <TableView fx:id="booking_table" layoutY="64.0" prefHeight="271.0" prefWidth="790.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
                            <columns>
-                              <TableColumn fx:id="rm_roomType1" prefWidth="141.60003662109375" text="Transaction No." />
-                              <TableColumn fx:id="rm_roomType11" prefWidth="207.20004272460938" text="Guest Name" />
-                              <TableColumn prefWidth="195.199951171875" text="Arrival Date" />
-                              <TableColumn prefWidth="230.39990234375" text="Departure Date" />
-                              <TableColumn prefWidth="140.800048828125" text="Room No." />
+                              <TableColumn fx:id="bTransaction_col" prefWidth="141.60003662109375" text="Transaction No." />
+                              <TableColumn fx:id="bGuestName_col" prefWidth="207.20004272460938" text="Guest Name" />
+                              <TableColumn fx:id="bArrivalDate_col" prefWidth="195.199951171875" text="Arrival Date" />
+                              <TableColumn fx:id="bDepartureDate_col" prefWidth="230.39990234375" text="Departure Date" />
+                              <TableColumn fx:id="bRoomNo_col" prefWidth="140.800048828125" text="Room No." />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -725,23 +713,14 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </TableView>
-                        <Group layoutX="672.0" layoutY="17.0" AnchorPane.rightAnchor="14.80000610351567">
+                        <Group layoutX="212.0" layoutY="16.0" AnchorPane.leftAnchor="162.0">
                            <children>
-                              <TextField layoutX="-50.0" layoutY="-3.0" prefHeight="38.0" prefWidth="262.0" promptText="Search">
+                              <TextField fx:id="bookingSearch_TxtField" layoutX="-50.0" layoutY="-3.0" prefHeight="38.0" prefWidth="262.0" promptText="Search">
                                  <padding>
                                     <Insets left="30.0" />
                                  </padding>
                               </TextField>
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
-                              <Button layoutX="134.0" layoutY="5.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="69.0" text="Search" textFill="WHITE">
-                                 <font>
-                                    <Font name="Century Gothic Bold" size="12.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="hover_button" />
-                                    <String fx:value="oval_btn" />
-                                 </styleClass>
-                              </Button>
                            </children>
                         </Group>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" prefHeight="35.0" prefWidth="148.0" text="All Rooms" textFill="#98116d" AnchorPane.leftAnchor="14.0">
@@ -749,6 +728,21 @@
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
+                        <Button fx:id="bookingCheckOut_Btn" layoutX="751.0" layoutY="16.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="123.0" text="Check-Out" textFill="WHITE" AnchorPane.rightAnchor="25.000000000000043">
+                           <font>
+                              <Font name="Century Gothic Bold" size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <styleClass>
+                              <String fx:value="hover_red" />
+                              <String fx:value="red_button" />
+                           </styleClass>
+                           <graphic>
+                              <SVGPath content="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " fill="WHITE" scaleX="0.7" scaleY="0.7" stroke="WHITE" />
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>
@@ -794,33 +788,95 @@
                         </Button>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="card_bg" layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_radius" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                  <AnchorPane fx:id="card_bg" layoutX="20.0" layoutY="93.0" maxWidth="1.7976931348623157E308" prefHeight="166.0" prefWidth="790.0" style="-fx-background-color: #fff;" styleClass="bg_shadow" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
                      <children>
                         <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                            <children>
-                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane layoutX="10.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="bg_radius" />
                                     <String fx:value="bg_color" />
                                  </styleClass>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL GUEST" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="totalBooking_label11" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane layoutX="628.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="bg_radius" />
                                     <String fx:value="bg_color" />
                                  </styleClass>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="BOOKED GUEST" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="totalBooking_label111" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="306.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane layoutX="10.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="bg_radius" />
                                     <String fx:value="bg_color" />
                                  </styleClass>
+                                 <children>
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="WA" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Aharoni Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="totalBooking_label112" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="35.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
                               </AnchorPane>
                            </children>
                         </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="20.0" layoutY="276.8" prefHeight="425.0" prefWidth="901.0" style="-fx-background-color: #fff;" styleClass="bg_shadow" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="277.0">
+                     <children>
+                        <AreaChart layoutX="7.0" layoutY="63.0" prefHeight="358.0" prefWidth="590.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="303.20000000000005" AnchorPane.topAnchor="63.19999999999999">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </AreaChart>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="19.0" prefHeight="35.0" prefWidth="148.0" text="Revenue" textFill="#98116d">
+                           <font>
+                              <Font name="Century Gothic" size="25.0" />
+                           </font>
+                        </Label>
+                        <PieChart layoutX="645.0" layoutY="248.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="55.80000000000007" AnchorPane.topAnchor="248.0" />
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="19.0" prefHeight="35.0" prefWidth="242.0" text="Room Type Usage" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="19.0">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                        </Label>
+                        <PieChart layoutX="645.0" layoutY="54.0" prefHeight="146.0" prefWidth="150.0" AnchorPane.bottomAnchor="221.99999999999997" AnchorPane.rightAnchor="55.80000000000007" />
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="213.0" prefHeight="35.0" prefWidth="242.0" text="Guest Type" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="213.0">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </children>

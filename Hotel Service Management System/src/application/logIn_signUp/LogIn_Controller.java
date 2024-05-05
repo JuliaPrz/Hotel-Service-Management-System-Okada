@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import application.AlertMessage;
-import application.Choices;
 import application.DB_Connection;
-import application.guest.GuestPage_Controller;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,11 +37,8 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	@FXML
 	private ComboBox<String> user;
 	
-	 // Method to display the user type options
-    public void userChoices() {
-        Choices choice = new Choices(); 
-        choice.userChoices(user);
-    }
+
+	
     
 
     private static int accountID;
@@ -80,12 +77,14 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
     	else {
     		
         	         // Login successful
-        	        userChoices();
+    		String[] userOptions = {"Guest", "Employee"};
+    		ObservableList<String> userTypeList = FXCollections.observableArrayList(userOptions);
+    		user.setItems(userTypeList);
         	        	
             	       String userType = user.getValue();
             	       String promptText = user.getPromptText();
 
-            	  if ("Employee".equals(userType) || "Employee".equals(promptText)) {
+            	  if (userOptions[1].equals(userType) || userOptions[1].equals(promptText)) {
             	        	
             	     // Query the database to check if email and password match
             		 String queryEmployee = "SELECT Email, Password FROM hotel_coordinator WHERE email = ? AND password = ?";
@@ -174,7 +173,9 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		userChoices();
+		String[] userOptions = {"Guest", "Employee"};
+		ObservableList<String> userTypeList = FXCollections.observableArrayList(userOptions);
+		user.setItems(userTypeList);
 	}
 	
 	
