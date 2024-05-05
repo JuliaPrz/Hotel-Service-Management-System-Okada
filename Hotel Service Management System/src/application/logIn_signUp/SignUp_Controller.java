@@ -61,7 +61,8 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     // A Request for Comments (RFC) is a formal document from the Internet Engineering Task Force (IETF) that contains specifications and organizational notes about topics related to the Internet and computer networking
     public static boolean isEmailValid(TextField email) 
     { 
-        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        String regexPattern =  "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        
         
         Pattern pat = Pattern.compile(regexPattern); 
         if (email == null || email.getText().isEmpty()) 
