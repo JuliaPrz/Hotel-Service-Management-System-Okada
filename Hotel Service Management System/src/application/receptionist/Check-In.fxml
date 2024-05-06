@@ -84,7 +84,7 @@
                         <Font name="Century Gothic" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="roomType_cbb" layoutX="396.0" layoutY="104.0" prefHeight="27.0" prefWidth="119.0" promptText="Deluxe King" scaleShape="false" />
+                  <ComboBox fx:id="roomType_cbb" layoutX="396.0" layoutY="104.0" prefHeight="27.0" prefWidth="119.0" scaleShape="false" />
                   <ComboBox fx:id="roomNum_cbb" layoutX="395.0" layoutY="145.0" prefHeight="27.0" prefWidth="119.0" scaleShape="false" />
                </children>
             </Group>
@@ -103,7 +103,7 @@
             </Label>
             <Line endX="194.39996337890625" endY="101.4000244140625" fill="#53093a" layoutX="414.0" layoutY="209.0" startX="-382.0" startY="101.4000244140625" stroke="#53093a" />
             <ComboBox fx:id="paymentOption_cbb" layoutX="186.0" layoutY="323.0" prefHeight="27.0" prefWidth="76.0" promptText="CASH" scaleShape="false" />
-            <Group layoutX="176.0" layoutY="372.0">
+            <Group fx:id="cashGroup" layoutX="176.0" layoutY="372.0" visible="false">
                <children>
                   <TextField fx:id="cashAmount_txtField" focusTraversable="false" layoutX="120.0" prefHeight="28.0" prefWidth="119.0" styleClass="textfield">
                      <font>
@@ -115,19 +115,20 @@
                         <Font name="Century Gothic" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutY="39.0" prefHeight="19.0" prefWidth="110.0" text="Change:">
+                  <Label layoutX="1.0" layoutY="42.0" prefHeight="19.0" prefWidth="110.0" text="Change:">
                      <font>
                         <Font name="Century Gothic" size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="cashChange_txtField" focusTraversable="false" layoutX="120.0" layoutY="30.0" prefHeight="28.0" prefWidth="119.0" styleClass="textfield">
+                  <Line endX="-260.79998779296875" endY="101.4000244140625" fill="#53093a" layoutX="498.0" layoutY="-38.0" startX="-376.0" startY="101.4000244140625" stroke="#53093a" strokeWidth="0.8" />
+                  <Label fx:id="change_label" layoutX="122.0" layoutY="33.0" prefHeight="31.0" prefWidth="116.0">
                      <font>
-                        <Font name="Microsoft Sans Serif" size="2150.0" />
+                        <Font name="Century Gothic" size="25.0" />
                      </font>
-                  </TextField>
+                  </Label>
                </children>
             </Group>
-            <Group layoutX="47.0" layoutY="372.0" visible="false">
+            <Group fx:id="cardGroup" layoutX="47.0" layoutY="372.0">
                <children>
                   <Label graphicTextGap="6.0" layoutY="4.0" prefHeight="20.0" prefWidth="110.0" text="Card No:">
                      <font>

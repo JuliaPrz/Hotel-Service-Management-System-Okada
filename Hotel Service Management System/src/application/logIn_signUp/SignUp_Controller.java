@@ -167,7 +167,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
 	    			
 	    			prepare.executeUpdate();
 	    			
-	    			 result = prepare.getGeneratedKeys();
+	    			result = prepare.getGeneratedKeys();
  		            int guestID = -1; // Initialize to a default value
  		            if (result.next()) {
  		                guestID = result.getInt(1); // Get the generated payment_ID
