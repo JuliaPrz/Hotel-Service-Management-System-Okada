@@ -3,14 +3,17 @@ package application.receptionist;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import application.AlertMessage;
 import application.DB_Connection;
+import application.guest.GuestPage_Controller;
 import application.logIn_signUp.LogIn_Controller;
 import application.logIn_signUp.SignUp_Controller.DeriveAge;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +43,8 @@ public class CheckIn_Controller extends DB_Connection {
     private TextField contact_txtField;
 
     @FXML
+    private Button checkAvail_Btn;
+    @FXML
     private ComboBox<String> roomType_cbb;
     @FXML
     private ComboBox<String> roomNum_cbb;
@@ -55,16 +60,17 @@ public class CheckIn_Controller extends DB_Connection {
     @FXML
     private TextField cashAmount_txtField;
     @FXML
-    private Label change_label;
+    private Label change_label, total_label;
     @FXML
     private TextField cardNum_txtField, nameOnCard_txtField, CCV_txtField, expiryDate_txtField;
 
- //   @FXML
-    // private Button checkIn_Btn;
+    @FXML
+     private Button checkIn_Btn;
+    private int roomTypeID = -1;
     
     
     
-    
+    @FXML
     void checkIn(){
     	connection = connect();
     	AlertMessage alert = new AlertMessage();
@@ -153,6 +159,79 @@ public class CheckIn_Controller extends DB_Connection {
     	    e.printStackTrace();
     	}
 	 }
+	    
+	 // Attach an event listener to the ComboBox for room types to get the type_ID
+        roomType_cbb.setOnAction(event -> {
+            String selectedRoomType = roomType_cbb.getSelectionModel().getSelectedItem();
+            if (selectedRoomType != null) {
+                try {
+                    //  query to retrieve the Type_ID based on the selected room type
+                    String getTypeIDQuery = "SELECT Type_ID " +
+                                            "FROM room_type " +
+                                            "WHERE Name = ?";
+                    prepare = connection.prepareStatement(getTypeIDQuery);
+                    prepare.setString(1, selectedRoomType);
+                    result = prepare.executeQuery();
+                    
+                    // Check if a result is found
+                    if (result.next()) {
+                         roomTypeID = result.getInt("Type_ID"); //Type_ID corresponding to the selected room type 
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	    
+	  
+     // RETRIEVE DATA OF ROOM TO CALCULATE THE TOTAL
+        // SQL query to find available rooms of a specific type for a given date range
+	       String findRoomQuery = "SELECT rt.Name, rt.Price_per_Night, rt.Tax " + // Select room number, name, price per night, and tax
+	    		   			"FROM room_type AS rt " + // From room_type table
+	                        "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " + // Join with room table based on Type_ID
+	                        "WHERE rt.Type_ID = ? " + // Filter by the specified room type
+	                        "AND r.Room_no NOT IN (" + // Exclude rooms that are already booked for the specified date range
+	                       		"SELECT Room_no " +
+	                       		"FROM `Transaction` " + // Subquery to find booked rooms
+	                       		"WHERE Room_no = r.Room_no " + // Filter by room number
+	                       		"AND (check_in_date <= ? AND check_out_date >= ?))"; // Condition to check for overlapping bookings
+	            
+	       try {
+	    	   prepare = connection.prepareStatement(findRoomQuery);
+	    	   prepare.setInt(1, roomTypeID);
+	    	   if (checkOutDate != null)
+		       prepare.setDate(2, Date.valueOf(checkOutDate)); 
+		       if (checkInDate != null)  
+		       prepare.setDate(3, Date.valueOf(checkInDate)); 
+		       result = prepare.executeQuery();
+		            
+		            
+		       // If available room is found
+		        if (result.next()) {
+		            String roomPrice = result.getString("Price_per_Night");
+		           	String roomTax = result.getString("Tax"); 	
+		         
+		       // Calculate the stay count
+		            long stayCount = ChronoUnit.DAYS.between(checkInDate, checkOutDate) + 1;
+		            long nightStayCount = 0;
+		            
+		            //set the count for night stay the number of days - 1
+		            nightStayCount = stayCount-1;
+		       // Convert the price and tax to numbers
+	             double pricePerNight = Double.parseDouble(roomPrice) * nightStayCount;
+	             double tax = Double.parseDouble(roomTax) * nightStayCount;
+
+	             // Calculate the total
+	             double total = pricePerNight + tax;
+	      // Create a DecimalFormat object for formatting the numbers
+	           DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+	           String formattedTotal = decimalFormat.format(total) + " PHP";
+	           total_label.setText("" +  formattedTotal);
+		        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	       
         
 	    String[] paymentOptions = {"CASH", "CARD"};
 		ObservableList<String> options = FXCollections.observableArrayList(paymentOptions);
@@ -160,12 +239,13 @@ public class CheckIn_Controller extends DB_Connection {
     	        
        String paymentOption = paymentOption_cbb.getValue();
        String promptText = paymentOption_cbb.getPromptText();
+
        
        // used to find a pattern if the card number and CCV is numeric numbers only; continues in the if else statement
    		boolean CardNumisNumeric = cardNum_txtField.getText().matches("[0-9]+");
 		boolean CCVisNumeric = CCV_txtField.getText().matches("[0-9]+");
 		boolean nameCardIsOnlyLetters = nameOnCard_txtField.getText().matches("[a-zA-Z\\s]+"); // will match any string that contains one or more letters (uppercase or lowercase) and/or spaces.
-		
+		boolean CashisNumeric = cashAmount_txtField.getText().matches("[0-9]+");
 		// Get the expiry date from the bookExp TextField
 		String expiryDate = expiryDate_txtField.getText();
 
@@ -192,7 +272,7 @@ public class CheckIn_Controller extends DB_Connection {
     		// checks if cash amount 
     	else if (paymentOptions[0].equals(paymentOption) || paymentOptions[0].equals(promptText) && cashAmount_txtField.getText().isEmpty())
     		alert.errorMessage("Please fill up all details.");
-    	else if (paymentOptions[1].equals(paymentOption) || paymentOptions[1].equals(promptText) 
+    	else if (paymentOptions[1].equals(paymentOption) 
     			&& cardNum_txtField.getText().isEmpty() 
     			|| nameOnCard_txtField.getText().isEmpty()
     			|| CCV_txtField.getText().isEmpty()
@@ -209,27 +289,28 @@ public class CheckIn_Controller extends DB_Connection {
     	// checks if the phone number starts with 09 or if phone is not numeric
     	else if (!firstTwoNum.equals("09") || !phoneIsNumeric) 
     		alert.errorMessage("Invalid phone number.");
-    	else if (!CardNumisNumeric || cardNum_txtField.getText().length() < 16 || cardNum_txtField.getText().length() > 16) 
+    	else if (paymentOptions[1].equals(paymentOption) && !CardNumisNumeric || cardNum_txtField.getText().length() < 16 || cardNum_txtField.getText().length() > 16) 
     		alert.errorMessage("Invalid card number.");
-    	else if (!CCVisNumeric || CCV_txtField.getText().length() > 3 ||  CCV_txtField.getText().length() < 3)
+    	else if (paymentOptions[1].equals(paymentOption)  && !CCVisNumeric || CCV_txtField.getText().length() > 3 ||  CCV_txtField.getText().length() < 3)
     		alert.errorMessage("Invalid CCV (security code) number.");
-    	else if (!nameCardIsOnlyLetters)
+    	else if (paymentOptions[1].equals(paymentOption)  && !nameCardIsOnlyLetters)
     		alert.errorMessage("Invalid card name.");
-    	else if (!expiryDate.matches(regex))  // Check if the expiry date matches the required format
+    	else if (paymentOptions[1].equals(paymentOption)  && !expiryDate.matches(regex))  // Check if the expiry date matches the required format
 		    alert.errorMessage("Invalid expiry date. Please use the format MM/YY.");
-    	else if (parts.length != 2) 
+    	else if (paymentOptions[1].equals(paymentOption)  && parts.length != 2) 
     	    alert.errorMessage("Invalid expiry date format. Please use the format MM/YY.");
+    	else if (paymentOptions[0].equals(paymentOption) && !CashisNumeric || cashAmount_txtField.getText().length() > 16) 
+    		alert.errorMessage("Invalid cash amount.");
     	else {
     		try {
     	        int expMonth = Integer.parseInt(parts[0]);
     	        int expYear = Integer.parseInt(parts[1]);
 
-    	        // Get the current month and year
-    	        LocalDate currentDate = LocalDate.now();
+    	        // Get the current month and year  	        
     	        int currentMonth = currentDate.getMonthValue();
     	        int currentYear = currentDate.getYear() % 100; // Get the last two digits of the year
 
-    	        if (expYear < currentYear || (expYear == currentYear && expMonth < currentMonth)) {
+    	        if (paymentOptions[1].equals(paymentOption) && expYear < currentYear || (expYear == currentYear && expMonth < currentMonth)) {
     	            alert.errorMessage("Card has expired.");
     	        } else {
     	        	try {
@@ -272,120 +353,102 @@ public class CheckIn_Controller extends DB_Connection {
     	    		    			prepare.setInt(1, guestID);
     	    		    			prepare.executeUpdate(); 	
     	    		            }
-    	        		
-    	        		
-    	        		
-    	        		
-    	        		//ilagay toatal
-    	    		            // check availability button
-    	        		
-    	        		
-    	        		
-    	        		
-            			// Get the total string from the booking_total label
-            			String totalString = booking_total.getText();
-            			// Remove commas and currency symbols from the string
-            			String cleanTotalString = totalString.replaceAll("[^\\d.]", "");
+    	        	
+    	// INSERT DATA TO PAYMENT DETAILS
+    	    		            
+    	    		         // Get the total string from the booking_total label
+                    			String totalString = total_label.getText();
+                    			// Remove commas and currency symbols from the string
+                    			String cleanTotalString = totalString.replaceAll("[^\\d.]", "");
+                    	
+                    			 // Get the necessary information from the UI components
+                    			int roomNo = Integer.parseInt(roomNum_cbb.getValue());
+                    			Double total = Double.parseDouble(cleanTotalString);
+             		            LocalDate date =  LocalDate.now();
+             		            LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
+             		            
+             		        // Get the selected payment option from the ComboBox
+             		           String payType = paymentOption_cbb.getValue();
 
-    	                // Get the necessary information from the UI components
-    	        		int roomNo = Integer.parseInt(roomNumLabel.getText()); 
-    		            Double total = Double.parseDouble(cleanTotalString);
-    		            LocalDate date =  LocalDate.now();
-    		            LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
-    		            LocalDate checkInDate = LocalDate.parse(formattedCheckInDate, formatter);
-    		        	LocalDate checkOutDate = LocalDate.parse(formattedCheckOutDate, formatter);
+             		           // If no value is selected, use the prompt text as the payment option
+             		           if (payType == null || payType.isEmpty()) {
+             		               payType = paymentOption_cbb.getPromptText();
+             		           }
+             		           
+             		           String payment_type = "";
+             		           if (paymentOptions[1].equals(paymentOption)) 
+             		        	  payment_type = "Card Payment";
+             		           else 
+             		        	  payment_type = "Cash Payment";
+             		           
 
-    		        	int accountID = LogIn_Controller.getAccountID();	// get the Guest account ID when they logged in
-    		        	
-    		            // add the payment details to the database
-    		            String payType = "Card Payment";
-    		            String insertPaymentDetails = "INSERT INTO payment_details (Total_Price, payment_type) "
-    		                + "VALUES (?,?)";
-    		            prepare = connection.prepareStatement(insertPaymentDetails, Statement.RETURN_GENERATED_KEYS);
-    		            prepare.setDouble(1, total);
-    		            prepare.setString(2, payType);
-    		            prepare.executeUpdate();
-    		            
-    		         // Retrieve the generated payment_ID
-    		            result = prepare.getGeneratedKeys();
-    		            int paymentId = -1; // Initialize to a default value
-    		            if (result.next()) {
-    		                paymentId = result.getInt(1); // Get the generated payment_ID
-    		            }
-    		            
-    		            if (paymentId != -1) {
-    		            	
-    		            	// insert the booking information into the transaction table in the database
-        		            String insertBooking = "INSERT INTO `Transaction` (Guest_ID, Room_no, Payment_ID,  Date, Time, Check_in_date, Check_out_date) "
-        		            					+ "VALUES (?,?,?,?,?,?,?)";
-        		            prepare = connection.prepareStatement(insertBooking);
-        		            prepare.setInt(1, accountID);
-        		            prepare.setInt(2, roomNo);
-        		            prepare.setInt(3, paymentId); // Set the retrieved payment_ID
-        		            prepare.setDate(4, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
-        		            prepare.setTime(5, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
-        		            prepare.setDate(6, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
-        		            prepare.setDate(7, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
-        		            
-        		            // Execute the insert query
-        		            prepare.executeUpdate();
-    		            	
-    		                // Insert the card payment information with the retrieved payment_ID
-    		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Card_Number, Name_OnCard, CCV, Expiry_Date) " +
-    		                						"VALUES (?, ?, ?, ?, ?)";
-    		                prepare = connection.prepareStatement(insertCardInfo);
-    		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
-    		                prepare.setString(2, bookCardNum.getText());
-    		                prepare.setString(3, bookNameCard.getText());
-    		                prepare.setString(4, bookCCV.getText());
-    		                prepare.setString(5, bookExp.getText());
-    		                prepare.executeUpdate();
-    		                
-    		            } else  // for debugging; failed to retrieve the payment_ID
-    		                System.out.println("Failed to retrieve payment_ID.");
-    		            
-
-    		            // indicate successful payment
-    		           alert.infoMessage("Booked successfully! See you!");
-    		        //   noEntry.setVisible(true);
-    		        //   bookingSummary.setVisible(false);
-    		           clearPaymentFields(); //clear fields
-
-    		      // ////////////////////       STATUS LOGIC    //////////////////////
-
-    		        // Update room status to occupied if the booking is today
-    		           // check if the check_in date is today
-    		           String queryCheckInToday = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
-                               "FROM Room AS r " +
-                               "RIGHT JOIN `Transaction` AS t ON r.room_no = t.room_no " +
-                               "WHERE r.Room_no IN ( " +
-                               "SELECT Room_no " +
-                               "FROM `Transaction` " +
-                               "WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
-                               ");";
-
-    		            result = prepare.executeQuery(queryCheckInToday);
-
-    		            
-    		         // Iterating over the result set and change the status from "Available" to "Occupied"
-    		            while (result.next()) {
-    		                roomNo = result.getInt("Room_no");
-    		                String status = result.getString("Status");
-    		                Date checkIn_Date = result.getDate("Check_In_Date");
-    		                
-    		                if (status.equals("Available")) {
-    		                    // Check if the check-in date is today
-    		                    checkInDate = checkIn_Date.toLocalDate();
-    		                    if (checkInDate.isEqual(LocalDate.now())) {
-    		                        // Update room status to occupied
-    		                        String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
-    		                        prepare = connection.prepareStatement(updateStatusQuery);
-    		                        prepare.setInt(1, roomNo);
-    		                        prepare.executeUpdate();
-    		                    } 
-    		                }
-    		            }
-  
+           		            String insertPaymentDetails = "INSERT INTO payment_details (Total_Price, payment_type) "
+           		                + "VALUES (?,?)";
+           		            prepare = connection.prepareStatement(insertPaymentDetails, Statement.RETURN_GENERATED_KEYS);
+           		            prepare.setDouble(1, total);
+           		            prepare.setString(2, payment_type);
+           		            prepare.executeUpdate();
+           		            
+           		         // Retrieve the generated payment_ID
+           		            result = prepare.getGeneratedKeys();
+           		            int paymentId = -1; // Initialize to a default value
+           		            if (result.next()) {
+           		                paymentId = result.getInt(1); // Get the generated payment_ID
+           		            }
+    	    		            
+           		         if (paymentId != -1) {
+     		            	
+     		            	// insert the booking information into the transaction table in the database
+         		            String insertBooking = "INSERT INTO `Transaction` (Guest_ID, Room_no, Payment_ID,  Date, Time, Check_in_date, Check_out_date) "
+         		            					+ "VALUES (?,?,?,?,?,?,?)";
+         		            prepare = connection.prepareStatement(insertBooking);
+         		            prepare.setInt(1, guestID);
+         		            prepare.setInt(2, roomNo);
+         		            prepare.setInt(3, paymentId); // Set the retrieved payment_ID
+         		            prepare.setDate(4, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
+         		            prepare.setTime(5, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
+         		            prepare.setDate(6, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
+         		            prepare.setDate(7, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
+         		            
+         		            // Execute the insert query
+         		            prepare.executeUpdate();
+     		            	
+         		            
+         		            if (paymentOptions[1].equals(paymentOption)) {
+         		            	
+         		            	 // Insert the card payment information with the retrieved payment_ID
+         		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Card_Number, Name_OnCard, CCV, Expiry_Date) " +
+         		                						"VALUES (?, ?, ?, ?, ?)";
+         		                prepare = connection.prepareStatement(insertCardInfo);
+         		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
+         		                prepare.setString(2, cardNum_txtField.getText());
+         		                prepare.setString(3, nameOnCard_txtField.getText());
+         		                prepare.setString(4, CCV_txtField.getText());
+         		                prepare.setString(5, expiryDate_txtField.getText());
+         		                prepare.executeUpdate();
+         		                
+         		            } else if (paymentOptions[0].equals(paymentOption))  {
+         		            // Insert the card payment information with the retrieved payment_ID
+         		                String insertCashInfo = "INSERT INTO CASH_PAYMENT (Payment_ID, Cash_Amount, Change) " +
+         		                						"VALUES (?, ?, ?)";
+         		                prepare = connection.prepareStatement(insertCashInfo);
+         		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
+         		                prepare.setString(2, cashAmount_txtField.getText());
+         		                prepare.setString(3, change_label.getText());
+         		                prepare.executeUpdate();
+   	
+         		            }else
+         		            	// for debugging; failed to retrieve the payment_ID
+         		                System.out.println("Failed to retrieve payment_ID.");
+         		            	// indicate successful payment
+         		            	alert.infoMessage("Checked-in successfully!");
+         		            	clearFields();
+         		            	
+         		            	// UPDATE THE STATUS OF THE ROOM
+         		            	GuestPage_Controller updateStatus = new GuestPage_Controller();
+         		            	updateStatus.updateRoomStatus();
+         		            	
+           		 }	
     	        } catch (SQLException e) {
     	            e.printStackTrace();
     	        }    		
@@ -393,28 +456,7 @@ public class CheckIn_Controller extends DB_Connection {
     	  } catch (NumberFormatException e) {
     	        alert.errorMessage("Invalid expiry date format. Please use numeric values for month and year.");
     	  }
-    		
-			
-			
-				
-	    	
-			
-			// INSERT INTO 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-    	
-			
-    	
-    	
+
     	} // end of else statement
   } // end of method
 	
@@ -423,6 +465,26 @@ public class CheckIn_Controller extends DB_Connection {
     
     
     public void clearFields() {
+    	fName_txtField.setText("");
+    	lName_txtField.setText("");
+    	bdate_datePicker.setValue(null);
+    	contact_txtField.setText("");
+    	
+    	checkIn_datePicker.setValue(null);
+    	checkOut_datePicker.setValue(null);
+    	roomType_cbb.setValue(null);
+    	roomNum_cbb.setValue(null);
+    	
+    	total_label.setText("");
+    	
+    	cardNum_txtField.setText("");
+    	nameOnCard_txtField.setText("");
+    	CCV_txtField.setText("");
+    	expiryDate_txtField.setText("");
+    	
+    	cashAmount_txtField.setText("");
+    	change_label.setText("");
+    	
 
     }
 	
@@ -460,7 +522,7 @@ public class CheckIn_Controller extends DB_Connection {
 		// Restricts the available date in check-in datepicker
 		LocalDate checkInMinDate = LocalDate.now();
 		LocalDate checkInMaxDate = LocalDate.now();
-		bdate_datePicker.setDayCellFactory(d -> new DateCell() {
+		checkIn_datePicker.setDayCellFactory(d -> new DateCell() {
 			@Override 
 			public void updateItem(LocalDate item, boolean empty) {
 			super.updateItem(item, empty);
@@ -471,7 +533,7 @@ public class CheckIn_Controller extends DB_Connection {
 		// Restricts the available date in check-out datepicker
 		LocalDate checkOutMinDate = LocalDate.now();
 		LocalDate checkOutMaxDate = LocalDate.now().plusYears(5);
-		bdate_datePicker.setDayCellFactory(d -> new DateCell() {
+		checkOut_datePicker.setDayCellFactory(d -> new DateCell() {
 			@Override 
 			public void updateItem(LocalDate item, boolean empty) {
 			super.updateItem(item, empty);
@@ -479,6 +541,43 @@ public class CheckIn_Controller extends DB_Connection {
 		}});
 				
 		
+		// Bind the text property of the change_label to the difference between total and cashAmount_txtfield value
+		change_label.textProperty().bind(
+		    Bindings.createStringBinding(() -> {
+		        String cashText = cashAmount_txtField.getText();
+		        double cashAmount = 0.0;
+		        
+		        // Check if the text in cashAmount_txtfield is numeric
+		        boolean cashIsNumeric = cashText.matches("[0-9]+");
+		        
+		        // If it's numeric, parse it to double
+		        if (cashIsNumeric) {
+		            cashAmount = Double.parseDouble(cashText);
+		        }
+		        
+		        
+		     // Get the total string from the booking_total label
+		        String totalString = total_label.getText();
+		        // Remove commas and currency symbols from the string
+		        String cleanTotalString = totalString.replaceAll("[^\\d.]", "");
+		        // Parse total as Double if it's not empty
+		        Double total = cleanTotalString.isEmpty() ? 0.0 : Double.parseDouble(cleanTotalString);
+
+		        // Check if the total is empty
+		        if (cleanTotalString.isEmpty()) {
+		            // If total is empty, set the visibility of the label to false
+		            change_label.setVisible(false);
+		        } else {
+		            // If total is not empty, calculate the change
+		            double change = total > 0 ? total - cashAmount : 0.00;
+
+		            // Format the change as a string and return it
+		            return String.format("%.2f", change);
+		        }
+				return null;
+
+		    }, cashAmount_txtField.textProperty())
+		);
 
 		
     	
