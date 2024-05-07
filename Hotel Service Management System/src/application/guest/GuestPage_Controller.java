@@ -161,6 +161,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	            currentPage.setVisible(true);
 	        } else {
 	        	// for debugging purposes
+	        	
 	            System.out.println("Invalid button ID: " + buttonId);
 	        } 
 	        
@@ -519,41 +520,8 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		        //   noEntry.setVisible(true);
         		        //   bookingSummary.setVisible(false);
         		           clearPaymentFields(); //clear fields
-
-        		      // ////////////////////       STATUS LOGIC    //////////////////////
-
-        		        // Update room status to occupied if the booking is today
-        		           // check if the check_in date is today
-        		           String queryCheckInToday = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
-                                   "FROM Room AS r " +
-                                   "RIGHT JOIN `Transaction` AS t ON r.room_no = t.room_no " +
-                                   "WHERE r.Room_no IN ( " +
-                                   "SELECT Room_no " +
-                                   "FROM `Transaction` " +
-                                   "WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
-                                   ");";
-
-        		            result = prepare.executeQuery(queryCheckInToday);
-
-        		            
-        		         // Iterating over the result set and change the status from "Available" to "Occupied"
-        		            while (result.next()) {
-        		                roomNo = result.getInt("Room_no");
-        		                String status = result.getString("Status");
-        		                Date checkIn_Date = result.getDate("Check_In_Date");
-        		                
-        		                if (status.equals("Available")) {
-        		                    // Check if the check-in date is today
-        		                    checkInDate = checkIn_Date.toLocalDate();
-        		                    if (checkInDate.isEqual(LocalDate.now())) {
-        		                        // Update room status to occupied
-        		                        String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
-        		                        prepare = connection.prepareStatement(updateStatusQuery);
-        		                        prepare.setInt(1, roomNo);
-        		                        prepare.executeUpdate();
-        		                    } 
-        		                }
-        		            }
+        		           updateRoomStatus();
+        		     
       
         	        } catch (SQLException e) {
         	            e.printStackTrace();
@@ -572,6 +540,109 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    	bookExp.setText("");
 	    	bookNameCard.setText("");
 	    }	
+	    
+	   public void updateRoomStatus(){
+		   		connection = connect();
+			    String statusQuery = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
+	                        "FROM Room AS r " +
+	                        "JOIN `Transaction` AS t ON r.room_no = t.room_no " +
+	                        "WHERE r.Room_no IN ( " +
+	                        "    SELECT Room_no " +
+	                        "    FROM `Transaction` " +
+	                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+	                        ")";
+
+			    try {
+			        prepare = connection.prepareStatement(statusQuery);
+			        result = prepare.executeQuery();
+
+			        // Iterating over the result set and change the status from "Available" to "Occupied"
+			        while (result.next()) {
+			            int roomNo = result.getInt("Room_no");
+			            String status = result.getString("Status");
+			       //     LocalDate checkInDate = result.getDate("Check_In_Date").toLocalDate();
+
+			            if (status.equals("Available")) {
+			                // Update room status to occupied
+			                String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
+			                prepare = connection.prepareStatement(updateStatusQuery);
+			                prepare.setInt(1, roomNo);
+			                prepare.executeUpdate();
+			            }
+			        }
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
+			    
+			    String queryStatus = "SELECT r.Room_no, r.Status, t.Check_Out_Date " +
+                        "FROM Room AS r " +
+                        "JOIN `Transaction` AS t ON r.room_no = t.room_no " +
+                        "WHERE r.Room_no NOT IN ( " +
+                        "    SELECT Room_no " +
+                        "    FROM `Transaction` " +
+                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+                        ")";
+           
+			    try {
+			        prepare = connection.prepareStatement(queryStatus);
+			        result = prepare.executeQuery();
+
+			        // Iterating over the result set and change the status from "Available" to "Occupied"
+			        while (result.next()) {
+			            int roomNo = result.getInt("Room_no");
+			            String status = result.getString("Status");
+			          //  LocalDate checkOutDate = result.getDate("Check_Out_Date").toLocalDate();
+
+			            if (status.equals("Occupied")) {
+			                // Update room status to occupied
+			                String updateStatusQuery = "UPDATE room SET Status = 'Available' WHERE Room_no = ?";
+			                prepare = connection.prepareStatement(updateStatusQuery);
+			                prepare.setInt(1, roomNo);
+			                prepare.executeUpdate();
+			            }
+			        }
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
+			
+
+		   
+		   
+		   // ////////////////////  TT     STATUS LOGIC    //////////////////////
+
+	        // Update room status to occupied if the booking is today
+	           // check if the check_in date is today
+	       /*    String queryCheckInToday = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
+                      "FROM Room AS r " +
+                      "RIGHT JOIN `Transaction` AS t ON r.room_no = t.room_no " +
+                      "WHERE r.Room_no IN ( " +
+                      "SELECT Room_no " +
+                      "FROM `Transaction` " +
+                      "WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+                      ");";
+
+	            result = prepare.executeQuery(queryCheckInToday);
+
+	            
+	         // Iterating over the result set and change the status from "Available" to "Occupied"
+	            while (result.next()) {
+	                roomNo = result.getInt("Room_no");
+	                String status = result.getString("Status");
+	                Date checkIn_Date = result.getDate("Check_In_Date");
+	                
+	                if (status.equals("Available")) {
+	                    // Check if the check-in date is today
+	                    checkInDate = checkIn_Date.toLocalDate();
+	                    if (checkInDate.isEqual(LocalDate.now())) {
+	                        // Update room status to occupied
+	                        String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
+	                        prepare = connection.prepareStatement(updateStatusQuery);
+	                        prepare.setInt(1, roomNo);
+	                        prepare.executeUpdate();
+	                    }  
+	                }
+	            } */
+	    }
 	    	
 	    
 	    public void showProfileInfo() {
@@ -644,6 +715,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
  
 
     public void initialize(URL location, ResourceBundle resources) {
+    	
     	wrapBgImage();
     	
     	// switches page depending on which button has been clicked
@@ -653,7 +725,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         pageMap.put("aboutUsBtn", aboutUsPage);
         pageMap.put("profileBtn", profilePage);
     	
-        
+        updateRoomStatus();
     	
     	
         // Set the desired width and height of the ImageView
