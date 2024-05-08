@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import application.AlertMessage;
 import application.DB_Connection;
+import application.guest.GuestPage_Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,7 +88,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
             	  if (userOptions[1].equals(userType) || userOptions[1].equals(promptText)) {
             	        	
             	     // Query the database to check if email and password match
-            		 String queryEmployee = "SELECT Email, Password FROM hotel_coordinator WHERE email = ? AND password = ?";
+            		 String queryEmployee = "SELECT Employee_ID, Email, Password FROM RECEPTIONIST WHERE email = ? AND password = ?";
                      try {
                     	   prepare = connection.prepareStatement(queryEmployee);
                     	   prepare.setString(1, email.getText());
@@ -95,12 +96,21 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     	   result = prepare.executeQuery();
                     	        
                     	 if (result.next()) {
+                    		// get the accountID; it is used in CheckIn_Controller class
+		            	        int accountID = result.getInt("Employee_ID");
+		            	        LogIn_Controller.setAccountID(accountID);
+                    		 
+                    		 
             	        	// Load the FXML file of the selected page
-            	            root = FXMLLoader.load(getClass().getResource("/application/hotelCoord/HotelCoordPage.fxml"));
+            	            root = FXMLLoader.load(getClass().getResource("/application/receptionist/ReceptionistPage.fxml"));
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             	         // Set the scene in the stage
                 	        stage.setScene(scene);
+                	        // shows the window to the center of the monitor screen
+                	        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                	        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                	        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
                 	        stage.show();
             	     
                     	  } else {
@@ -173,6 +183,9 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		GuestPage_Controller updateStatus = new GuestPage_Controller();
+     	updateStatus.updateRoomStatus();
+     	
 		String[] userOptions = {"Guest", "Employee"};
 		ObservableList<String> userTypeList = FXCollections.observableArrayList(userOptions);
 		user.setItems(userTypeList);

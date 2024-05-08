@@ -549,7 +549,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	                        "WHERE r.Room_no IN ( " +
 	                        "    SELECT Room_no " +
 	                        "    FROM `Transaction` " +
-	                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+	                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date > CURRENT_DATE() " +
 	                        ")";
 
 			    try {
@@ -580,7 +580,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
                         "WHERE r.Room_no NOT IN ( " +
                         "    SELECT Room_no " +
                         "    FROM `Transaction` " +
-                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
+                        "    WHERE check_in_date <= CURRENT_DATE() AND check_out_date > CURRENT_DATE() " +
                         ")";
            
 			    try {

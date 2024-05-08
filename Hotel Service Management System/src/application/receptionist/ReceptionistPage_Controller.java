@@ -1,5 +1,6 @@
 package application.receptionist;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 import application.AlertMessage;
 import application.DB_Connection;
+import application.guest.GuestPage_Controller;
 import application.roomData.Booked;
 import application.roomData.Room;
 import application.roomData.WalkIn;
@@ -18,7 +20,11 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -30,13 +36,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 
 
 
 public class ReceptionistPage_Controller extends DB_Connection {
-	
+
 	//          ---------     SWITCH PAGE     --------
 	@FXML
 	private AnchorPane dashboard_page, room_page, booking_page, walkIn_page, transact_page, profile_page;
@@ -53,7 +61,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     private TextField bookingSearch_TxtField;
 
     @FXML
-    private TableView<Booked> booking_table;
+    public TableView<Booked> booking_table;
     @FXML
     private TableColumn<Booked, Integer> bTransaction_col;
     @FXML
@@ -79,7 +87,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     private TextField wSearch_txtField;
     
     @FXML
-    private TableView<WalkIn> walkIn_table;
+    public TableView<WalkIn> walkIn_table;
     @FXML
     private TableColumn<WalkIn, LocalDate> wArrival_col, wDeparture_col;
     @FXML
@@ -91,7 +99,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     @FXML
     private TextField rmSearch_txtField;
     @FXML
-    private TableView<Room> rmTable;
+    public TableView<Room> rmTable;
     @FXML
     private TableColumn<Room, Integer> rm_roomNum; 
     @FXML
@@ -136,9 +144,12 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	
 	//             ---------     SHOW DATA IN THE TABLE     --------
 	
-	ObservableList<Booked> allBookedList = FXCollections.observableArrayList(); 
+	
     // UPDATES THE TABLE IN THE BOOKING PAGE
     TableCell<Booked, String> updateBookedTable() {
+    	GuestPage_Controller updateStatus = new GuestPage_Controller();
+     	updateStatus.updateRoomStatus();
+    	ObservableList<Booked> allBookedList = FXCollections.observableArrayList(); 
     	booking_table.setFixedCellSize(50);
     	
     	String query = "SELECT t.Transaction_ID, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date, t.Room_No "
@@ -150,7 +161,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     		//	+ "AND t.Check_In_Date <= CURDATE() " // Check if check_in_date is today or before today
     		//	+ "AND t.Check_Out_Date >= CURDATE();"; // Check if check_out_date is today
     	try {
-    		//connection = connect();
+    	
     	    prepare = connection.prepareStatement(query);
     	    result = prepare.executeQuery();
 
@@ -220,9 +231,12 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	return null;
     }
 	
-    ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
+    
     // UPDATES THE TABLE IN THE WALK-IN PAGE
     TableCell<WalkIn, String> updateWalkInTable() {
+    	GuestPage_Controller updateStatus = new GuestPage_Controller();
+     	updateStatus.updateRoomStatus();
+    	ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
     	walkIn_table.setFixedCellSize(50);
     	
     	String query = "SELECT r.Room_No, rt.Name AS RoomType_Name, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date "
@@ -305,9 +319,12 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	return null;
     }
 	
-	ObservableList<Room> allRoomList = FXCollections.observableArrayList(); 
+	
     // UPDATES THE TABLE IN THE ROOM PAGE
     TableCell<Room, String> updateRoomTable() {
+    	GuestPage_Controller updateStatus = new GuestPage_Controller();
+     	updateStatus.updateRoomStatus();
+    	ObservableList<Room> allRoomList = FXCollections.observableArrayList(); 
     	rmTable.setFixedCellSize(50);
    // 	rmTable.getSelectionModel().clearSelection();
     	
@@ -461,8 +478,8 @@ public class ReceptionistPage_Controller extends DB_Connection {
                 "WHERE r.Room_no NOT IN ( " +
                 "    SELECT Room_no " +
                 "    FROM `transaction` " +
-                "    WHERE check_in_date <= CURDATE() " +
-                "    AND check_out_date >= CURDATE() " +
+                "    WHERE check_in_date <= CURRENT_DATE() " +
+                "    AND check_out_date > CURRENT_DATE() " +
                 ")";
     
     	try {
@@ -546,7 +563,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 			                    "    SELECT Room_no " +
 			                    "    FROM `transaction` " +
 			                    "    WHERE check_in_date <= ? " +
-			                    "    AND check_out_date >= ? " +
+			                    "    AND check_out_date > ? " +
 			                    ")";
 	    	try {
 				  prepare = connection.prepareStatement(checkQuery);
@@ -585,12 +602,37 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	
     }
     
-    
+    @FXML
+    void checkInButtonAction(ActionEvent event) throws IOException {
+        // Load the FXML file and create a new scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/receptionist/Check-In.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+
+        // Create a new stage for the scene
+        Stage checkInStage = new Stage();
+        checkInStage.setScene(scene);
+
+        // Set the owner of the new stage to the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        checkInStage.initOwner(currentStage);
+
+        // Position the new stage relative to the current stage
+        checkInStage.setX(currentStage.getX() + 50); // Example: Offset the new stage by 50 pixels from the current stage's X position
+        checkInStage.setY(currentStage.getY() + 50); // Example: Offset the new stage by 50 pixels from the current stage's Y position
+        checkInStage.setResizable(false);
+        // Show the new stage
+        checkInStage.show();
+    }
+
     
     
 	
     public void initialize() {
 
+    	GuestPage_Controller updateStatus = new GuestPage_Controller();
+     	updateStatus.updateRoomStatus();
+    	
     	connection = connect();
     	
     	walkInController();

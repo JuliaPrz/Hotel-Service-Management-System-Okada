@@ -548,7 +548,7 @@
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
                            </children>
                         </Group>
-                        <Button fx:id="checkIn_Btn" layoutX="530.0" layoutY="18.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="116.0" text="Check-In" textFill="WHITE" AnchorPane.rightAnchor="144.39999999999998">
+                        <Button fx:id="checkIn_Btn" layoutX="530.0" layoutY="18.0" mnemonicParsing="false" onAction="#checkInButtonAction" prefHeight="32.0" prefWidth="116.0" text="Check-In" textFill="WHITE" AnchorPane.rightAnchor="144.39999999999998">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
@@ -582,7 +582,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="28.0" layoutY="54.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -728,21 +728,6 @@
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
-                        <Button fx:id="bookingCheckOut_Btn" layoutX="751.0" layoutY="16.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="123.0" text="Check-Out" textFill="WHITE" AnchorPane.rightAnchor="25.000000000000043">
-                           <font>
-                              <Font name="Century Gothic Bold" size="13.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <styleClass>
-                              <String fx:value="hover_red" />
-                              <String fx:value="red_button" />
-                           </styleClass>
-                           <graphic>
-                              <SVGPath content="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " fill="WHITE" scaleX="0.7" scaleY="0.7" stroke="WHITE" />
-                           </graphic>
-                        </Button>
                      </children>
                   </AnchorPane>
                </children>

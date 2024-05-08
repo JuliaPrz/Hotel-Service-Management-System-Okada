@@ -122,12 +122,12 @@
                      </font>
                   </Label>
                   <Line endX="-260.79998779296875" endY="101.4000244140625" fill="#53093a" layoutX="498.0" layoutY="-38.0" startX="-376.0" startY="101.4000244140625" stroke="#53093a" strokeWidth="0.8" />
-                  <Label fx:id="change_label" layoutX="122.0" layoutY="33.0" prefHeight="31.0" prefWidth="116.0">
+                  <Label fx:id="change_label" layoutX="122.0" layoutY="33.0" prefHeight="31.0" prefWidth="151.0">
                      <font>
                         <Font name="Century Gothic" size="20.0" />
                      </font>
                      <padding>
-                        <Insets left="20.0" />
+                        <Insets left="15.0" />
                      </padding>
                   </Label>
                </children>
@@ -193,7 +193,7 @@
                   <Font name="Century Gothic" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="total_label" layoutX="378.0" layoutY="327.0" prefHeight="19.0" prefWidth="198.0">
+            <Label fx:id="total_label" layoutX="378.0" layoutY="327.0" prefHeight="19.0" prefWidth="198.0" text=" ">
                <font>
                   <Font name="Century Gothic" size="15.0" />
                </font>
