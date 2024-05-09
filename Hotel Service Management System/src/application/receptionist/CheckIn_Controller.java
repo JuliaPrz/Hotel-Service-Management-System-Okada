@@ -13,6 +13,7 @@ import application.DB_Connection;
 import application.guest.GuestPage_Controller;
 import application.logIn_signUp.LogIn_Controller;
 import application.logIn_signUp.SignUp_Controller.DeriveAge;
+import application.roomData.WalkIn;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,12 +24,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 
-public class CheckIn_Controller extends DB_Connection {
-	
+public class CheckIn_Controller extends ReceptionistPage_Controller {
 
+	
     @FXML
     private TextField fName_txtField, lName_txtField;
     @FXML
@@ -127,15 +129,17 @@ public class CheckIn_Controller extends DB_Connection {
 		        || checkOut_datePicker.getValue() == null
 		        || roomType_cbb.getValue() == null
 		        || roomNum_cbb.getValue() == null) {
-		    alert.errorMessage("Please fill up all details.");
-		} else if ((paymentOptions[0].equals(paymentOption) || paymentOptions[0].equals(promptText)) && cashAmount_txtField.getText().isEmpty()) {
-		    alert.errorMessage("Please fill up all details.");
+			alert.errorMessage("Please fill up all details.");
+		} else if (paymentOptions[0].equals(paymentOption) && cashAmount_txtField.getText().isEmpty()) {
+			alert.errorMessage("Please fill up all details.");
+		} else if ((paymentOptions[0].equals(promptText) && !paymentOptions[1].equals(paymentOption)) && cashAmount_txtField.getText().isEmpty()) {
+			alert.errorMessage("Please fill up all details.");
 		} else if (paymentOptions[1].equals(paymentOption) 
-		        && (cardNum_txtField.getText().isEmpty() 
+		        && ((cardNum_txtField.getText().isEmpty() 
 		            || nameOnCard_txtField.getText().isEmpty()
 		            || CCV_txtField.getText().isEmpty()
-		            || expiryDate_txtField.getText().isEmpty())) {
-		    alert.errorMessage("Please fill up all details.");
+		            || expiryDate_txtField.getText().isEmpty()))) {
+			alert.errorMessage("Please fill up all details.");
 		} else if (!fNameOnlyLetters || !lNameOnlyLetters || fName_txtField.getText().length() > 30 || lName_txtField.getText().length() > 20) {
 		    alert.errorMessage("Invalid name.");
 		} else if (age < 18) {
@@ -205,9 +209,7 @@ public class CheckIn_Controller extends DB_Connection {
     	    		            }
     	        	
     	// INSERT DATA TO PAYMENT DETAILS
-    	    		            
-    	    		         
-                    	
+    	    		                     	
                     			 // Get the necessary information from the UI components
                     			int roomNo = Integer.parseInt(roomNum_cbb.getValue());
                     			Double total = Double.parseDouble(cleanTotalString);
@@ -309,9 +311,8 @@ public class CheckIn_Controller extends DB_Connection {
          		            	// UPDATE THE STATUS OF THE ROOM
          		            	GuestPage_Controller updateStatus = new GuestPage_Controller();
          		            	updateStatus.updateRoomStatus();
-         		            	ReceptionistPage_Controller updateTable = new ReceptionistPage_Controller();
-         		            	updateTable.updateWalkInTable();
-         		            	updateTable.updateRoomTable();
+         		              
+         		            	updateWalkInTable();   
          		            	
            		 }	
     	        } catch (SQLException e) {
@@ -346,8 +347,6 @@ public class CheckIn_Controller extends DB_Connection {
     	expiryDate_txtField.setText("");
     	
     	cashAmount_txtField.setText("");
-    	
-
     }
 
 	

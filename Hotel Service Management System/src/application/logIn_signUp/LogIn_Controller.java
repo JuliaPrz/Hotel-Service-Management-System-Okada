@@ -39,8 +39,6 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	private ComboBox<String> user;
 	
 
-	
-    
 
     private static int accountID;
     
