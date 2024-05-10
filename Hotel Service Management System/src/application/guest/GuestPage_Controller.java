@@ -15,11 +15,11 @@ import java.util.ResourceBundle;
 import application.AlertMessage;
 import application.DB_Connection;
 import application.logIn_signUp.LogIn_Controller;
+import application.receptionist.ReceptionistPage_Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -33,6 +33,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class GuestPage_Controller extends DB_Connection implements Initializable{
+	
+	private static GuestPage_Controller instance;
+	public GuestPage_Controller () {
+		instance = this;
+	}
+	public static GuestPage_Controller getInstance() {
+		return instance;
+	}
 	
 	//  ---------     SWITCH PAGE METHOD     --------
 	 	@FXML
@@ -399,7 +407,14 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private void payButtonAction(ActionEvent event) {
 	    	AlertMessage alert = new AlertMessage();
+	    	
+	    	ReceptionistPage_Controller.getInstance().walkInController();
+	    	ReceptionistPage_Controller.getInstance().roomController();
+	    	ReceptionistPage_Controller.getInstance().bookingController();
+	    	
+	    	
 	       	String labelValue = dates.getText(); // dates label in the booking summary
+	       	
 
         	// Split the dates text based on the delimiter "-"
         	String[] dates = labelValue.split(" - ");
@@ -559,7 +574,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 			        while (result.next()) {
 			            int roomNo = result.getInt("Room_no");
 			            String status = result.getString("Status");
-			       //     LocalDate checkInDate = result.getDate("Check_In_Date").toLocalDate();
 
 			            if (status.equals("Available")) {
 			                // Update room status to occupied
@@ -603,44 +617,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 			    } catch (SQLException e) {
 			        e.printStackTrace();
 			    }
-			
-
-		   
-		   
-		   // ////////////////////  TT     STATUS LOGIC    //////////////////////
-
-	        // Update room status to occupied if the booking is today
-	           // check if the check_in date is today
-	       /*    String queryCheckInToday = "SELECT r.Room_no, r.Status, t.Check_In_Date " +
-                      "FROM Room AS r " +
-                      "RIGHT JOIN `Transaction` AS t ON r.room_no = t.room_no " +
-                      "WHERE r.Room_no IN ( " +
-                      "SELECT Room_no " +
-                      "FROM `Transaction` " +
-                      "WHERE check_in_date <= CURRENT_DATE() AND check_out_date >= CURRENT_DATE() " +
-                      ");";
-
-	            result = prepare.executeQuery(queryCheckInToday);
-
-	            
-	         // Iterating over the result set and change the status from "Available" to "Occupied"
-	            while (result.next()) {
-	                roomNo = result.getInt("Room_no");
-	                String status = result.getString("Status");
-	                Date checkIn_Date = result.getDate("Check_In_Date");
-	                
-	                if (status.equals("Available")) {
-	                    // Check if the check-in date is today
-	                    checkInDate = checkIn_Date.toLocalDate();
-	                    if (checkInDate.isEqual(LocalDate.now())) {
-	                        // Update room status to occupied
-	                        String updateStatusQuery = "UPDATE room SET Status = 'Occupied' WHERE Room_no = ?";
-	                        prepare = connection.prepareStatement(updateStatusQuery);
-	                        prepare.setInt(1, roomNo);
-	                        prepare.executeUpdate();
-	                    }  
-	                }
-	            } */
 	    }
 	    	
 	    

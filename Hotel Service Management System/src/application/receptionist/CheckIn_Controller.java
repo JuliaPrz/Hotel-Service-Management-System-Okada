@@ -28,7 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 
-public class CheckIn_Controller extends ReceptionistPage_Controller {
+public class CheckIn_Controller extends DB_Connection{
 
 	
     @FXML
@@ -70,6 +70,7 @@ public class CheckIn_Controller extends ReceptionistPage_Controller {
     void checkIn(){
     	connection = connect();
     	AlertMessage alert = new AlertMessage();
+    	
     	
     	// used to verify the length of the phone number; continues in the if else statement
     	String contact = contact_txtField.getText();
@@ -158,11 +159,16 @@ public class CheckIn_Controller extends ReceptionistPage_Controller {
 		    alert.errorMessage("Invalid expiry date. Please use the format MM/YY.");
 		} else if (paymentOptions[1].equals(paymentOption) && parts.length != 2) {
 		    alert.errorMessage("Invalid expiry date format. Please use the format MM/YY.");
-		} else if ((paymentOptions[0].equals(paymentOption) || (paymentOptions[0].equals(promptText))) && !CashisNumeric) {
+		} else if (paymentOptions[0].equals(paymentOption) && !CashisNumeric) {
 		    alert.errorMessage("Invalid cash amount.");
-		} else if ((paymentOptions[0].equals(paymentOption) || (paymentOptions[0].equals(promptText)))
+		} else if ((paymentOptions[0].equals(promptText) && !paymentOptions[1].equals(paymentOption)) && !CashisNumeric) {
+			alert.errorMessage("Invalid cash amount.");
+		} else if (paymentOptions[0].equals(paymentOption) 
 		        && (Double.parseDouble(cashAmount_txtField.getText()) < Double.parseDouble(cleanTotalString))) {
-		    alert.errorMessage("Insufficient cash.");
+			alert.errorMessage("Insufficient cash.");
+		}   else if ((paymentOptions[0].equals(promptText) && !paymentOptions[1].equals(paymentOption)) 
+				  && (Double.parseDouble(cashAmount_txtField.getText()) < Double.parseDouble(cleanTotalString))) {
+			  alert.errorMessage("Insufficient cash.");
 		} else if ((paymentOptions[0].equals(paymentOption) || (paymentOptions[0].equals(promptText)))
 		        && (cashAmount_txtField.getText().length() > 10)) {
 		    alert.errorMessage("Invalid cash amount.");
@@ -309,10 +315,10 @@ public class CheckIn_Controller extends ReceptionistPage_Controller {
          		            	clearFields();
          		            	
          		            	// UPDATE THE STATUS OF THE ROOM
-         		            	GuestPage_Controller updateStatus = new GuestPage_Controller();
-         		            	updateStatus.updateRoomStatus();
-         		              
-         		            	updateWalkInTable();   
+         		            	GuestPage_Controller.getInstance().updateRoomStatus();
+         		            	ReceptionistPage_Controller.getInstance().walkInController();
+         		            	ReceptionistPage_Controller.getInstance().updateRoomTable();
+         		            
          		            	
            		 }	
     	        } catch (SQLException e) {
@@ -353,6 +359,7 @@ public class CheckIn_Controller extends ReceptionistPage_Controller {
     public void initialize() {
     	connection = connect();
     	// populate the paymentOption_cbb with either cash or card
+
     	String[] paymentOptions = {"CASH", "CARD"};
 		ObservableList<String> options = FXCollections.observableArrayList(paymentOptions);
 		paymentOption_cbb.setItems(options);

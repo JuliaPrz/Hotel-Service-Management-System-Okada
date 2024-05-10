@@ -89,7 +89,7 @@
                   <ComboBox fx:id="roomNum_cbb" layoutX="395.0" layoutY="145.0" prefHeight="27.0" prefWidth="119.0" scaleShape="false" />
                </children>
             </Group>
-            <Button layoutX="523.0" layoutY="421.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="28.0" prefWidth="92.0" style="-fx-background-color: #BB3A7F;" text="Check-In" textFill="WHITE">
+            <Button fx:id="checkIn_Btn" layoutX="523.0" layoutY="421.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="28.0" prefWidth="92.0" style="-fx-background-color: #BB3A7F;" text="Check-In" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="13.0" />
                </font>

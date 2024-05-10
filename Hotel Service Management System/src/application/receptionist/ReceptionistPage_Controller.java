@@ -44,6 +44,14 @@ import javafx.util.Callback;
 
 
 public class ReceptionistPage_Controller extends DB_Connection {
+	
+	private static ReceptionistPage_Controller instance;
+	public ReceptionistPage_Controller() {
+		instance = this;
+	}
+	public static ReceptionistPage_Controller getInstance() {
+		return instance;
+	}
 
 	//          ---------     SWITCH PAGE     --------
 	@FXML
@@ -54,7 +62,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     // BOOKING PAGE
     
     @FXML
-    private Label incomingNum_label, todayNum_Label, totalBooking_label;
+    private Label incomingNum_label, todayNum_Label;
     @FXML
     private Button bookingCheckOut_Btn;
     @FXML
@@ -82,31 +90,33 @@ public class ReceptionistPage_Controller extends DB_Connection {
     @FXML 
     private ComboBox<String> roomType_cbb;
     @FXML
-    private Label availRoom_label;
+    protected Label availRoom_label;
     @FXML
-    private TextField wSearch_txtField;
+    protected TextField wSearch_txtField;
     
     @FXML
-    private TableView<WalkIn> walkIn_table;
+    protected TableView<WalkIn> walkIn_table;
 
     @FXML
-    private TableColumn<WalkIn, LocalDate> wArrival_col, wDeparture_col;
+    protected TableColumn<WalkIn, LocalDate> wArrival_col, wDeparture_col;
     @FXML
-    private TableColumn<WalkIn, Integer> wRoomNum_col;
+	protected TableColumn<WalkIn, Integer> wRoomNum_col;
     @FXML
-    private TableColumn<WalkIn, String> wRoomType_col, wGuest_col;
+    protected TableColumn<WalkIn, String> wRoomType_col, wGuest_col;
     
     // ROOM (MANAGEMENT) PAGE
     @FXML
-    private TextField rmSearch_txtField;
+    protected Label totalRoom_label, occupied_label;
     @FXML
-    public TableView<Room> rmTable;
+    protected TextField rmSearch_txtField;
     @FXML
-    private TableColumn<Room, Integer> rm_roomNum; 
+    protected TableView<Room> rmTable;
     @FXML
-    private TableColumn<Room, String> rm_roomType, rm_status;
+    protected TableColumn<Room, Integer> rm_roomNum; 
     @FXML
-    private TableColumn<Room, Double> rm_price;
+    protected TableColumn<Room, String> rm_roomType, rm_status;
+    @FXML
+    protected TableColumn<Room, Double> rm_price;
     
 	
 	// Switches tab
@@ -142,162 +152,13 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	    }
 	}
 
-	
-	
-	
-	
-	
-    
-    
-    /*				TO BE CONTINUEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-//  ---------     BOOKING TAB COMPONENT ACTIONS    --------
-    void bookingController() {
-    	// update the table
-    	updateBookedTable();
-    	// query to count all of the available rooms today
-    	String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
-                "FROM room_type AS rt " +
-                "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
-                "WHERE r.Room_no NOT IN ( " +
-                "    SELECT Room_no " +
-                "    FROM `transaction` " +
-                "    WHERE check_in_date <= CURDATE() " +
-                "    AND check_out_date >= CURDATE() " +
-                ")";
-    
-    	try {
-    	    prepare = connection.prepareStatement(countAvailRoomQuery);
-    	    result = prepare.executeQuery();
-    	    
-    	    // AVAILABLE ROOMS TODAY
-    	 // Move cursor to the first row of the result set
-    	    if (result.next()) {
-    	        // Retrieve the value of NumOfAvailRooms from the result set
-    	        int totalAvailRooms = result.getInt("NumOfAvailRooms");
-    	        // Set the text of the availRoom_label using the retrieved value
-    	        availRoom_label.setText(String.valueOf(totalAvailRooms));
-    	    }
-    	} catch (SQLException e) {
-    	    e.printStackTrace();
-    	 
-    	}	
-    }
-    
-    */
-    
-    
-
-    @FXML
-    void checkBtnAction (ActionEvent event) {
-    	AlertMessage alert = new AlertMessage();
-    	
-    	LocalDate checkInDate = checkIn_datePicker.getValue();
-	    LocalDate checkOutDate = checkOut_datePicker.getValue();
-	    if (checkInDate == null || checkOutDate == null)
-	        alert.errorMessage("Choose check-in and check-out date.");
-	    else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) 
-            alert.errorMessage("Check-out date cannot be before or during the check-in date.");
-	    else  {
-	    	
-	    	String roomType = roomType_cbb.getValue();
-		    String promptText =  roomType_cbb.getPromptText();
-		    
-		 // Check if a value is selected; if not, use the prompt text
-		    String selectedRoomType = roomType != null ? roomType : promptText;
-	    	
-	    	String checkQuery = "SELECT r.Room_No AS NumOfRooms " +
-			                    "FROM room_type AS rt " +
-			                    "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
-			                    "WHERE rt.`Name` = ? " +
-			                    "AND r.Room_No NOT IN ( " +
-			                    "    SELECT Room_no " +
-			                    "    FROM `transaction` " +
-			                    "    WHERE check_in_date <= ? " +
-			                    "    AND check_out_date > ? " +
-			                    ")";
-	    	try {
-				  prepare = connection.prepareStatement(checkQuery);
-				  prepare.setString(1, selectedRoomType);
-				  prepare.setDate(2, java.sql.Date.valueOf(checkOutDate));
-				  prepare.setDate(3, java.sql.Date.valueOf(checkInDate));
-				  result = prepare.executeQuery();
-	    		
-				  ArrayList<String> availableRooms = new ArrayList<>(); // List to store available room numbers
-
-				    while (result.next()) {
-				        String roomNumber = result.getString("NumOfRooms");
-				        availableRooms.add(roomNumber); // Add room number to the list
-				    }
-
-				 // Get the number of available rooms
-				    int numOfAvailableRooms = availableRooms.size();
-				    if (numOfAvailableRooms > 0) { 		// Check if there are available rooms
-				    	 // If there is more than one available room, join the room numbers with a comma
-				        String roomNumbersMessage = String.join(", ", availableRooms);
-				        alert.infoMessage("Available rooms: " + roomNumbersMessage);
-				    } else if (numOfAvailableRooms == 1) { 
-				        alert.infoMessage("Available rooms: " + availableRooms);
-				    } else {
-				        // If there are no available rooms, display a message indicating so
-				        alert.infoMessage("No available rooms.");
-				    }
-
-	    	}catch (SQLException e) {
-	    		e.printStackTrace();
-	    	}
-           
-	    	
-	    	
-	    }
-    	
-    }
-    
-    @FXML
-    void checkInButtonAction(ActionEvent event) throws IOException {
-        // Load the FXML file and create a new scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/receptionist/Check-In.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-
-        // Create a new stage for the scene
-        Stage checkInStage = new Stage();
-        checkInStage.setScene(scene);
-
-        // Set the owner of the new stage to the current stage
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        checkInStage.initOwner(currentStage);
-
-        // Position the new stage relative to the current stage
-        checkInStage.setX(currentStage.getX() + 50); // Example: Offset the new stage by 50 pixels from the current stage's X position
-        checkInStage.setY(currentStage.getY() + 50); // Example: Offset the new stage by 50 pixels from the current stage's Y position
-        checkInStage.setResizable(false);
-        // Show the new stage
-        checkInStage.show();
-    }
-
-    
-    
-	
-    public void initialize() {
-    	
-    	connection = connect();
-    	
-    	walkInController();
-    	//bookingController();
-    	
-    	updateBookedTable();
-    	updateRoomTable();
-    
-    	
-    }
-    
 	//  ---------     SHOW DATA IN THE TABLE     --------
-		
-		
+	
+	
 	// UPDATES THE TABLE IN THE BOOKING PAGE
 	TableCell<Booked, String> updateBookedTable() {
-	GuestPage_Controller updateStatus = new GuestPage_Controller();
-	updateStatus.updateRoomStatus();
+		
+	GuestPage_Controller.getInstance().updateRoomStatus();
 	ObservableList<Booked> allBookedList = FXCollections.observableArrayList(); 
 	booking_table.setFixedCellSize(50);
 	
@@ -383,13 +244,12 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	
 	// UPDATES THE TABLE IN THE WALK-IN PAGE
 	TableCell<WalkIn, String> updateWalkInTable() {
-	GuestPage_Controller updateStatus = new GuestPage_Controller();
-	updateStatus.updateRoomStatus();
+	GuestPage_Controller.getInstance().updateRoomStatus();
 	
 	ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
 	// Update the data in the ObservableList that populates the TableView
-    allWalkInList.clear(); // Clear the existing data
-    allWalkInList.addAll();
+   // allWalkInList.clear(); // Clear the existing data
+  //  allWalkInList.addAll();
 	
 	String query = "SELECT r.Room_No, rt.Name AS RoomType_Name, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date "
 			+ "FROM Room AS r "
@@ -447,7 +307,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	 	            // If the search text is empty, display all items
 	 	            return true;
 	 	        }
-	
 	 	        // Convert the search text to lowercase for case-insensitive search
 	 	        String searchKeyword = newValue.toLowerCase();
 	
@@ -475,8 +334,8 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	
 	// UPDATES THE TABLE IN THE ROOM PAGE
 	TableCell<Room, String> updateRoomTable() {
-	GuestPage_Controller updateStatus = new GuestPage_Controller();
-	updateStatus.updateRoomStatus();
+		
+	GuestPage_Controller.getInstance().updateRoomStatus();
 	ObservableList<Room> allRoomList = FXCollections.observableArrayList(); 
 	rmTable.setFixedCellSize(50);
 	// 	rmTable.getSelectionModel().clearSelection();
@@ -580,7 +439,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	    
 		//  ---------     WALK-IN TAB COMPONENT ACTIONS    ---------------------------
 		    
-		void walkInController() {
+		public void walkInController() {
 		updateWalkInTable(); // update the table
 		
 		// query to count all of the available rooms today
@@ -598,17 +457,16 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		prepare = connection.prepareStatement(countAvailRoomQuery);
 		result = prepare.executeQuery();
 		
-		// AVAILABLE ROOMS TODAY
-		// Move cursor to the first row of the result set
-		if (result.next()) {
-		 // Retrieve the value of NumOfAvailRooms from the result set
-		 int totalAvailRooms = result.getInt("NumOfAvailRooms");
-		 // Set the text of the availRoom_label using the retrieved value
-		 availRoom_label.setText(String.valueOf(totalAvailRooms));
-		}
+	// AVAILABLE ROOMS TODAY
+			// Move cursor to the first row of the result set
+			if (result.next()) {
+			 // Retrieve the value of NumOfAvailRooms from the result set
+			 int totalAvailRooms = result.getInt("NumOfAvailRooms");
+			 // Set the text of the availRoom_label using the retrieved value
+			 availRoom_label.setText(String.valueOf(totalAvailRooms));
+			}
 		} catch (SQLException e) {
-		e.printStackTrace();
-		
+			e.printStackTrace();
 		}	
 		
 		// DATEPICKERS
@@ -649,6 +507,238 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		
 		}	
 	}
+	
+		
+	//  ---------     ROOM TAB COMPONENT ACTIONS    --------------------
+		public void roomController() {
+			updateRoomTable(); // update the table
+			
+			// query to count all of the available rooms today
+			String countTotallRoomQuery = "SELECT COUNT(*) AS 'Total Rooms' FROM ROOM";
+			
+			String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
+					 "FROM room_type AS rt " +
+					 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+					 "WHERE r.Room_no NOT IN ( " +
+					 "    SELECT Room_no " +
+					 "    FROM `transaction` " +
+					 "    WHERE check_in_date <= CURRENT_DATE() " +
+					 "    AND check_out_date > CURRENT_DATE() " +
+					 ")";
+			
+			String countOccupiedRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfOccupiedRooms " +
+					 "FROM room_type AS rt " +
+					 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+					 "WHERE r.Room_no IN ( " +
+					 "    SELECT Room_no " +
+					 "    FROM `transaction` " +
+					 "    WHERE check_in_date <= CURRENT_DATE() " +
+					 "    AND check_out_date > CURRENT_DATE() " +
+					 ")";
+			
+			try {
+				prepare = connection.prepareStatement(countTotallRoomQuery);
+				result = prepare.executeQuery();
+			
+	// AVAILABLE ROOMS TODAY
+		
+			if (result.next()) {
+			 int totalRooms = result.getInt("NumOfAvailRooms");
+			 availRoom_label.setText(String.valueOf(totalRooms));
+			}
+			
+				prepare = connection.prepareStatement(countAvailRoomQuery);
+				result = prepare.executeQuery();
+			
+	// AVAILABLE ROOMS TODAY
+		
+			if (result.next()) {
+			 int totalAvailRooms = result.getInt("NumOfAvailRooms");
+			 availRoom_label.setText(String.valueOf(totalAvailRooms));
+			}
+					
+				
+				prepare = connection.prepareStatement(countOccupiedRoomQuery);
+				result = prepare.executeQuery();
+			
+	// AVAILABLE ROOMS TODAY
+		
+			if (result.next()) {
+			 int totalOccupiedRooms = result.getInt("NumOfAvailRooms");
+			 availRoom_label.setText(String.valueOf(totalOccupiedRooms));
+			}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
+		}
+	
+	
+    
+    
+   
+//  ---------     BOOKING TAB COMPONENT ACTIONS    --------
+    public void bookingController() {
+    	// update the table
+    	updateBookedTable();
+    	// query to count all of the BOOKED rooms today
+    	String countBookedRoomsToday = "SELECT COUNT(*) AS NumBookedGuests " +
+                "FROM GUEST AS g " +
+                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
+                "WHERE g.Guest_Type = 'Booked Guest' " +
+                "AND t.Check_In_Date = CURRENT_DATE();";
+    	
+    	String countBookedRoomsIncoming = "SELECT COUNT(*) AS IncomingBookedGuests " +
+                "FROM GUEST AS g " +
+                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
+                "WHERE g.Guest_Type = 'Booked Guest' " +
+                "AND t.Check_In_Date > CURRENT_DATE();";
+    
+    	try {
+    	    prepare = connection.prepareStatement(countBookedRoomsToday);
+    	    result = prepare.executeQuery();
+    	    
+    	    // BOOKED GUESTS TODAY
+ 
+    	    if (result.next()) {
+    	        // Retrieve the value of NumOfBookedGuests from the result set
+    	        int numOfBookedRoomsToday = result.getInt("NumBookedGuests");
+    	        // Set the text of the availRoom_label using the retrieved value
+    	        todayNum_Label.setText(String.valueOf(numOfBookedRoomsToday));
+    	    }
+    	    
+    	    prepare = connection.prepareStatement(countBookedRoomsIncoming);
+    	    result = prepare.executeQuery();
+    	    
+    	    // INCOMING BOOKED GUESTS 
+ 
+    	    if (result.next()) {
+    	        // Retrieve the value of NumOfBookedGuests from the result set
+    	        int numOfBookedRoomsIncoming = result.getInt("IncomingBookedGuests");
+    	        // Set the text of the availRoom_label using the retrieved value
+    	        incomingNum_label.setText(String.valueOf(numOfBookedRoomsIncoming));
+    	    }
+    	} catch (SQLException e) {
+    	    e.printStackTrace();
+    	 
+    	}	
+    }
+    
+    
+    
+    
+
+    @FXML
+    void checkBtnAction (ActionEvent event) {
+    	AlertMessage alert = new AlertMessage();
+    	
+    	LocalDate checkInDate = checkIn_datePicker.getValue();
+	    LocalDate checkOutDate = checkOut_datePicker.getValue();
+	    if (checkInDate == null || checkOutDate == null)
+	        alert.errorMessage("Choose check-in and check-out date.");
+	    else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) 
+            alert.errorMessage("Check-out date cannot be before or during the check-in date.");
+	    else  {
+	    	
+	    	String roomType = roomType_cbb.getValue();
+		    String promptText =  roomType_cbb.getPromptText();
+		    
+		 // Check if a value is selected; if not, use the prompt text
+		    String selectedRoomType = roomType != null ? roomType : promptText;
+	    	
+	    	String checkQuery = "SELECT r.Room_No AS NumOfRooms " +
+			                    "FROM room_type AS rt " +
+			                    "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+			                    "WHERE rt.`Name` = ? " +
+			                    "AND r.Room_No NOT IN ( " +
+			                    "    SELECT Room_no " +
+			                    "    FROM `transaction` " +
+			                    "    WHERE check_in_date <= ? " +
+			                    "    AND check_out_date > ? " +
+			                    ")";
+	    	try {
+				  prepare = connection.prepareStatement(checkQuery);
+				  prepare.setString(1, selectedRoomType);
+				  prepare.setDate(2, java.sql.Date.valueOf(checkOutDate));
+				  prepare.setDate(3, java.sql.Date.valueOf(checkInDate));
+				  result = prepare.executeQuery();
+	    		
+				  ArrayList<String> availableRooms = new ArrayList<>(); // List to store available room numbers
+
+				    while (result.next()) {
+				        String roomNumber = result.getString("NumOfRooms");
+				        availableRooms.add(roomNumber); // Add room number to the list
+				    }
+
+				 // Get the number of available rooms
+				    int numOfAvailableRooms = availableRooms.size();
+				    if (numOfAvailableRooms > 0) { 		// Check if there are available rooms
+				    	 // If there is more than one available room, join the room numbers with a comma
+				        String roomNumbersMessage = String.join(", ", availableRooms);
+				        alert.infoMessage("Available rooms: " + roomNumbersMessage);
+				    } else if (numOfAvailableRooms == 1) { 
+				        alert.infoMessage("Available rooms: " + availableRooms);
+				    } else {
+				        // If there are no available rooms, display a message indicating so
+				        alert.infoMessage("No available rooms.");
+				    }
+
+	    	}catch (SQLException e) {
+	    		e.printStackTrace();
+	    	}
+           
+	    	
+	    	
+	    }
+    	
+    }
+    
+    @FXML
+    void checkInButtonAction(ActionEvent event) throws IOException {
+        // Load the FXML file and create a new scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/receptionist/Check-In.fxml"));
+    
+        
+    
+        Parent root = loader.load();
+       
+        Scene scene = new Scene(root);
+
+        // Create a new stage for the scene
+        Stage checkInStage = new Stage();
+        checkInStage.setScene(scene);
+
+        // Set the owner of the new stage to the current stage
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        checkInStage.initOwner(currentStage);
+
+        // Position the new stage relative to the current stage
+        checkInStage.setX(currentStage.getX() + 50); // Offset the new stage by 50 pixels from the current stage's X position
+        checkInStage.setY(currentStage.getY() + 50); // Offset the new stage by 50 pixels from the current stage's Y position
+        checkInStage.setResizable(false);
+        // Show the new stage
+        checkInStage.show();
+        if (walkIn_table == null)
+    		System.out.println(walkIn_table);
+    }
+
+    
+    
+	
+    public void initialize() {
+    	
+    	connection = connect();
+    	
+    	walkInController();
+    	roomController();
+    	bookingController();
+    	
+    	
+    
+    
+    	
+    }
+    
+
     
     
     
