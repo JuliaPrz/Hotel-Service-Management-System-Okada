@@ -92,6 +92,10 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private Button hidePass_Btn, showPass_Btn;
 	    String password, hiddenPassword;
+	    private boolean alertShown = false; // Flag to track if alert has been shown
+	    private int errorCount = 0;
+	    private final int MAX_ERROR_COUNT = 3; // Set the maximum number of times the error message can be shown
+	    
 	    
 		// Declare a HashMap to map button IDs to pages
 		private HashMap<String, AnchorPane> pageMap = new HashMap<>();
@@ -204,8 +208,13 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 
 	        if (checkInDate == null || checkOutDate == null) {
 	            book_stayCount.setText("");
-	        } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) 
-	                alert.errorMessage("Check-out date cannot be before or during the check-in date.");  
+	        } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) {
+	            // Show alert only if it hasn't been shown before
+	            if (!alertShown) {
+	                alert.errorMessage("Check-out date cannot be before or during the check-in date.");
+	                alertShown = true; // Set flag to true to indicate that alert has been shown
+	            }
+	        }
 	         else {
 	            // Calculate the stay count
 	            long stayCount = ChronoUnit.DAYS.between(checkInDate, checkOutDate) + 1;
@@ -257,9 +266,16 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 
 	    	    if (checkInDate == null || checkOutDate == null) {
 	    	        alert.errorMessage("Choose check-in and check-out date.");
-	    	    } 
-	    	    else {
+	    	     } else if (checkOutDate.isBefore(checkInDate) || checkOutDate.isEqual(checkInDate)) {
+	    	        // Show alert only if error count is less than the maximum allowed
+	    	        if (errorCount < MAX_ERROR_COUNT) {
+	    	            alert.errorMessage("Check-out date cannot be before or during the check-in date.");
+	    	            errorCount++; // Increment error count
+	    	        }
+	    	     } else {
+	    	    	errorCount = 0;
 	    	        try {
+	    	        
 	    	            // Prepare the query to check room availability
 	    	        	// this query show the number of available room grouped by its type_id based on a specific date range
 	    	        	String query = "SELECT COUNT(DISTINCT r.Room_no) AS numOfAvailRooms, r.Type_ID " + // Select the count of distinct room numbers and the room type ID
@@ -407,12 +423,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private void payButtonAction(ActionEvent event) {
 	    	AlertMessage alert = new AlertMessage();
-	    	
-	    	ReceptionistPage_Controller.getInstance().walkInController();
-	    	ReceptionistPage_Controller.getInstance().roomController();
-	    	ReceptionistPage_Controller.getInstance().bookingController();
-	    	
-	    	
+
 	       	String labelValue = dates.getText(); // dates label in the booking summary
 	       	
 
@@ -527,16 +538,10 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		                
         		            } else  // for debugging; failed to retrieve the payment_ID
         		                System.out.println("Failed to retrieve payment_ID.");
-        		            
-
         		            // indicate successful payment
         		           alert.infoMessage("Booked successfully! See you!");
-        		        //   noEntry.setVisible(true);
-        		        //   bookingSummary.setVisible(false);
         		           clearPaymentFields(); //clear fields
         		           updateRoomStatus();
-        		     
-      
         	        } catch (SQLException e) {
         	            e.printStackTrace();
         	        }    		

@@ -22,9 +22,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -106,7 +113,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     
     // ROOM (MANAGEMENT) PAGE
     @FXML
-    protected Label totalRoom_label, occupied_label;
+    protected Label totalRoom_label, occupied_label, availroom_label;
     @FXML
     protected TextField rmSearch_txtField;
     @FXML
@@ -118,6 +125,17 @@ public class ReceptionistPage_Controller extends DB_Connection {
     @FXML
     protected TableColumn<Room, Double> rm_price;
     
+ // DASHBOARD PAGE
+    @FXML
+    private BarChart<String, Number> barChart;
+    @FXML
+    private PieChart roomType_pieChart, guestType_pieChart;
+    @FXML
+    private Label dAvailRooms_label;
+    @FXML
+    private Label dBookedGuests_label;
+    @FXML
+    private Label dTotalGuests_label;
 	
 	// Switches tab
 	@FXML
@@ -244,12 +262,10 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	
 	// UPDATES THE TABLE IN THE WALK-IN PAGE
 	TableCell<WalkIn, String> updateWalkInTable() {
-	GuestPage_Controller.getInstance().updateRoomStatus();
-	
-	ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
-	// Update the data in the ObservableList that populates the TableView
-   // allWalkInList.clear(); // Clear the existing data
-  //  allWalkInList.addAll();
+		// Update the data in the ObservableList that populates the TableView
+		GuestPage_Controller.getInstance().updateRoomStatus();
+		ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
+
 	
 	String query = "SELECT r.Room_No, rt.Name AS RoomType_Name, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date "
 			+ "FROM Room AS r "
@@ -437,6 +453,94 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		return null;
 	}
 	    
+	
+	public void revenueChart() {
+		String revenueQuery = "SELECT DATE(t.`Date`) AS Transaction_Date, SUM(pd.Total_Price) AS Revenue " +
+	             "FROM `transaction` t " +
+	             "INNER JOIN payment_details pd ON t.Payment_ID = pd.Payment_ID " +
+	             "WHERE t.`Date` >= CURRENT_DATE() - INTERVAL 5 DAY " +
+	             "GROUP BY DATE(t.`Date`) " +
+	             "ORDER BY DATE(t.`Date`) ASC;";
+		try {
+			XYChart.Series<String, Number> chartData = new Series<String, Number>();
+			prepare = connection.prepareStatement(revenueQuery);
+    	    result = prepare.executeQuery();
+ 
+    	    
+    	    while (result.next()) {
+    	    	XYChart.Data<String, Number> data = new XYChart.Data<>(result.getString(1), result.getInt(2));
+                chartData.getData().add(data);
+    	    }
+    	    
+    	    barChart.setLegendVisible(false);
+    	    barChart.getData().add(chartData);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+	
+//  ---------     DASHBOARD TAB COMPONENT ACTIONS    --------
+    public void dashboardController() {
+    	
+    	
+    	
+    	
+    	
+    }
+	
+	
+
+//  ---------     BOOKING TAB COMPONENT ACTIONS    --------
+    public void bookingController() {
+    	// update the table
+    	updateBookedTable();
+    	// query to count all of the BOOKED rooms today
+    	String countBookedRoomsToday = "SELECT COUNT(*) AS NumBookedGuests " +
+                "FROM GUEST AS g " +
+                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
+                "WHERE g.Guest_Type = 'Booked Guest' " +
+                "AND t.Check_In_Date = CURRENT_DATE();";
+    	
+    	String countBookedRoomsIncoming = "SELECT COUNT(*) AS IncomingBookedGuests " +
+                "FROM GUEST AS g " +
+                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
+                "WHERE g.Guest_Type = 'Booked Guest' " +
+                "AND t.Check_In_Date > CURRENT_DATE();";
+    
+    	try {
+    	    prepare = connection.prepareStatement(countBookedRoomsToday);
+    	    result = prepare.executeQuery();
+    	    
+    	    // BOOKED GUESTS TODAY
+ 
+    	    if (result.next()) {
+    	        // Retrieve the value of NumOfBookedGuests from the result set
+    	        int numOfBookedRoomsToday = result.getInt("NumBookedGuests");
+    	        // Set the text of the availRoom_label using the retrieved value
+    	        todayNum_Label.setText(String.valueOf(numOfBookedRoomsToday));
+    	    }
+    	    
+    	    prepare = connection.prepareStatement(countBookedRoomsIncoming);
+    	    result = prepare.executeQuery();
+    	    
+    	    // INCOMING BOOKED GUESTS 
+ 
+    	    if (result.next()) {
+    	        // Retrieve the value of NumOfBookedGuests from the result set
+    	        int numOfBookedRoomsIncoming = result.getInt("IncomingBookedGuests");
+    	        // Set the text of the availRoom_label using the retrieved value
+    	        incomingNum_label.setText(String.valueOf(numOfBookedRoomsIncoming));
+    	    }
+    	} catch (SQLException e) {
+    	    e.printStackTrace();
+    	 
+    	}	
+    }
+	
+	
+	
 		//  ---------     WALK-IN TAB COMPONENT ACTIONS    ---------------------------
 		    
 		public void walkInController() {
@@ -514,7 +618,19 @@ public class ReceptionistPage_Controller extends DB_Connection {
 			updateRoomTable(); // update the table
 			
 			// query to count all of the available rooms today
-			String countTotallRoomQuery = "SELECT COUNT(*) AS 'Total Rooms' FROM ROOM";
+			String countTotalRoomQuery = "SELECT COUNT(*) AS 'Total Rooms' FROM ROOM";
+			
+			try {
+				prepare = connection.prepareStatement(countTotalRoomQuery);
+				result = prepare.executeQuery();
+	// ALL ROOMS
+				if (result.next()) {
+				 int totalRooms = result.getInt("Total Rooms");
+				 totalRoom_label.setText(String.valueOf(totalRooms));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
 			
 			String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
 					 "FROM room_type AS rt " +
@@ -525,7 +641,19 @@ public class ReceptionistPage_Controller extends DB_Connection {
 					 "    WHERE check_in_date <= CURRENT_DATE() " +
 					 "    AND check_out_date > CURRENT_DATE() " +
 					 ")";
+			try {
+				prepare = connection.prepareStatement(countAvailRoomQuery);
+				result = prepare.executeQuery();
 			
+	// AVAILABLE ROOMS TODAY
+		
+				if (result.next()) {
+				 int totalAvailRooms = result.getInt("NumOfAvailRooms");
+				 availroom_label.setText(String.valueOf(totalAvailRooms));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			String countOccupiedRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfOccupiedRooms " +
 					 "FROM room_type AS rt " +
 					 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
@@ -537,91 +665,29 @@ public class ReceptionistPage_Controller extends DB_Connection {
 					 ")";
 			
 			try {
-				prepare = connection.prepareStatement(countTotallRoomQuery);
-				result = prepare.executeQuery();
-			
-	// AVAILABLE ROOMS TODAY
-		
-			if (result.next()) {
-			 int totalRooms = result.getInt("NumOfAvailRooms");
-			 availRoom_label.setText(String.valueOf(totalRooms));
-			}
-			
-				prepare = connection.prepareStatement(countAvailRoomQuery);
-				result = prepare.executeQuery();
-			
-	// AVAILABLE ROOMS TODAY
-		
-			if (result.next()) {
-			 int totalAvailRooms = result.getInt("NumOfAvailRooms");
-			 availRoom_label.setText(String.valueOf(totalAvailRooms));
-			}
-					
-				
 				prepare = connection.prepareStatement(countOccupiedRoomQuery);
 				result = prepare.executeQuery();
 			
-	// AVAILABLE ROOMS TODAY
+	// OCCUPIED ROOMS TODAY
 		
 			if (result.next()) {
-			 int totalOccupiedRooms = result.getInt("NumOfAvailRooms");
-			 availRoom_label.setText(String.valueOf(totalOccupiedRooms));
+			 int totalOccupiedRooms = result.getInt("NumOfOccupiedRooms");
+			 occupied_label.setText(String.valueOf(totalOccupiedRooms));
 			}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}	
+
+			
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
 		}
 	
 	
     
-    
+	
+		
+		
    
-//  ---------     BOOKING TAB COMPONENT ACTIONS    --------
-    public void bookingController() {
-    	// update the table
-    	updateBookedTable();
-    	// query to count all of the BOOKED rooms today
-    	String countBookedRoomsToday = "SELECT COUNT(*) AS NumBookedGuests " +
-                "FROM GUEST AS g " +
-                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
-                "WHERE g.Guest_Type = 'Booked Guest' " +
-                "AND t.Check_In_Date = CURRENT_DATE();";
-    	
-    	String countBookedRoomsIncoming = "SELECT COUNT(*) AS IncomingBookedGuests " +
-                "FROM GUEST AS g " +
-                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
-                "WHERE g.Guest_Type = 'Booked Guest' " +
-                "AND t.Check_In_Date > CURRENT_DATE();";
-    
-    	try {
-    	    prepare = connection.prepareStatement(countBookedRoomsToday);
-    	    result = prepare.executeQuery();
-    	    
-    	    // BOOKED GUESTS TODAY
- 
-    	    if (result.next()) {
-    	        // Retrieve the value of NumOfBookedGuests from the result set
-    	        int numOfBookedRoomsToday = result.getInt("NumBookedGuests");
-    	        // Set the text of the availRoom_label using the retrieved value
-    	        todayNum_Label.setText(String.valueOf(numOfBookedRoomsToday));
-    	    }
-    	    
-    	    prepare = connection.prepareStatement(countBookedRoomsIncoming);
-    	    result = prepare.executeQuery();
-    	    
-    	    // INCOMING BOOKED GUESTS 
- 
-    	    if (result.next()) {
-    	        // Retrieve the value of NumOfBookedGuests from the result set
-    	        int numOfBookedRoomsIncoming = result.getInt("IncomingBookedGuests");
-    	        // Set the text of the availRoom_label using the retrieved value
-    	        incomingNum_label.setText(String.valueOf(numOfBookedRoomsIncoming));
-    	    }
-    	} catch (SQLException e) {
-    	    e.printStackTrace();
-    	 
-    	}	
-    }
+
     
     
     
@@ -727,6 +793,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     public void initialize() {
     	
     	connection = connect();
+    	revenueChart();
     	
     	walkInController();
     	roomController();

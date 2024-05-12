@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
@@ -312,7 +312,7 @@
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="totalRoom_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -330,7 +330,7 @@
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="availroom_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -348,7 +348,7 @@
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="58.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="occupied_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="58.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -582,7 +582,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="28.0" layoutY="54.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -627,27 +627,6 @@
                      <children>
                         <HBox layoutX="34.4" layoutY="11.2" maxWidth="1.7976931348623157E308" prefHeight="134.0" prefWidth="746.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                            <children>
-                              <AnchorPane maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
-                                 <styleClass>
-                                    <String fx:value="bg_radius" />
-                                    <String fx:value="bg_color" />
-                                 </styleClass>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL BOOKING" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <font>
-                                          <Font name="Aharoni Bold" size="25.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="totalBooking_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <font>
-                                          <Font name="Century Gothic Bold" size="35.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
                               <AnchorPane layoutX="40.0" layoutY="10.0" maxWidth="Infinity" prefHeight="134.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="bg_radius" />
@@ -732,7 +711,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="DASHBOARD" fx:id="dashboard_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.2" prefWidth="830.4" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="DASHBOARD" fx:id="dashboard_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.2" prefWidth="830.4" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" stylesheets="@../main.css" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -783,12 +762,12 @@
                                     <String fx:value="bg_color" />
                                  </styleClass>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL GUEST" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="TOTAL GUESTS" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="totalBooking_label11" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="dTotalGuests_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -801,12 +780,12 @@
                                     <String fx:value="bg_color" />
                                  </styleClass>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="BOOKED GUEST" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="BOOKED GUESTS" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="totalBooking_label111" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="dBookedGuests_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -819,12 +798,12 @@
                                     <String fx:value="bg_color" />
                                  </styleClass>
                                  <children>
-                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="WA" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="21.0" prefHeight="35.0" prefWidth="143.0" text="AVAILABLE ROOMS" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Aharoni Bold" size="25.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="totalBooking_label112" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <Label fx:id="dAvailRooms_label" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="68.0" prefHeight="42.0" prefWidth="227.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Century Gothic Bold" size="35.0" />
                                        </font>
@@ -837,31 +816,31 @@
                   </AnchorPane>
                   <AnchorPane layoutX="20.0" layoutY="276.8" prefHeight="425.0" prefWidth="901.0" style="-fx-background-color: #fff;" styleClass="bg_shadow" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="277.0">
                      <children>
-                        <AreaChart layoutX="7.0" layoutY="63.0" prefHeight="358.0" prefWidth="590.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="303.20000000000005" AnchorPane.topAnchor="63.19999999999999">
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="19.0" prefHeight="35.0" prefWidth="148.0" text="Revenue" textFill="#98116d">
+                           <font>
+                              <Font name="Century Gothic" size="25.0" />
+                           </font>
+                        </Label>
+                        <PieChart fx:id="guestType_pieChart" layoutX="645.0" layoutY="248.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="55.80000000000007" AnchorPane.topAnchor="248.0" />
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="19.0" prefHeight="35.0" prefWidth="242.0" text="Room Type Usage" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="19.0">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                        </Label>
+                        <PieChart fx:id="roomType_pieChart" layoutX="645.0" layoutY="54.0" prefHeight="146.0" prefWidth="150.0" AnchorPane.bottomAnchor="221.99999999999997" AnchorPane.rightAnchor="55.80000000000007" />
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="213.0" prefHeight="35.0" prefWidth="242.0" text="Guest Type" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="213.0">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                        </Label>
+                        <BarChart fx:id="barChart" layoutX="6.0" layoutY="60.0" prefHeight="338.0" prefWidth="578.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="5.600000000000023" AnchorPane.rightAnchor="316.4000000000001" AnchorPane.topAnchor="60.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
                           <yAxis>
                             <NumberAxis side="LEFT" />
                           </yAxis>
-                        </AreaChart>
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="19.0" prefHeight="35.0" prefWidth="148.0" text="Revenue" textFill="#98116d">
-                           <font>
-                              <Font name="Century Gothic" size="25.0" />
-                           </font>
-                        </Label>
-                        <PieChart layoutX="645.0" layoutY="248.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="55.80000000000007" AnchorPane.topAnchor="248.0" />
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="19.0" prefHeight="35.0" prefWidth="242.0" text="Room Type Usage" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="19.0">
-                           <font>
-                              <Font name="Century Gothic" size="20.0" />
-                           </font>
-                        </Label>
-                        <PieChart layoutX="645.0" layoutY="54.0" prefHeight="146.0" prefWidth="150.0" AnchorPane.bottomAnchor="221.99999999999997" AnchorPane.rightAnchor="55.80000000000007" />
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="213.0" prefHeight="35.0" prefWidth="242.0" text="Guest Type" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="213.0">
-                           <font>
-                              <Font name="Century Gothic" size="20.0" />
-                           </font>
-                        </Label>
+                        </BarChart>
                      </children>
                   </AnchorPane>
                </children>

@@ -317,7 +317,7 @@ public class CheckIn_Controller extends DB_Connection{
          		            	// UPDATE THE STATUS OF THE ROOM
          		            	GuestPage_Controller.getInstance().updateRoomStatus();
          		            	ReceptionistPage_Controller.getInstance().walkInController();
-         		            	ReceptionistPage_Controller.getInstance().updateRoomTable();
+         		            	ReceptionistPage_Controller.getInstance().roomController();
          		            
          		            	
            		 }	

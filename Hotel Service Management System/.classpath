@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/FontAwesome/fontawesomefx-8.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/javafx-sdk-22/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/Compressed/JAR Files/jfreechart-1.0.19/jfreechart-1.0.19/jfreechart-1.0.19-demo.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
