@@ -821,19 +821,9 @@
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
-                        <PieChart fx:id="guestType_pieChart" layoutX="645.0" layoutY="248.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="55.80000000000007" AnchorPane.topAnchor="248.0" />
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="19.0" prefHeight="35.0" prefWidth="242.0" text="Room Type Usage" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="19.0">
-                           <font>
-                              <Font name="Century Gothic" size="20.0" />
-                           </font>
-                        </Label>
-                        <PieChart fx:id="roomType_pieChart" layoutX="645.0" layoutY="54.0" prefHeight="146.0" prefWidth="150.0" AnchorPane.bottomAnchor="221.99999999999997" AnchorPane.rightAnchor="55.80000000000007" />
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="624.0" layoutY="213.0" prefHeight="35.0" prefWidth="242.0" text="Guest Type" textFill="#98116d" AnchorPane.rightAnchor="34.40000000000009" AnchorPane.topAnchor="213.0">
-                           <font>
-                              <Font name="Century Gothic" size="20.0" />
-                           </font>
-                        </Label>
-                        <BarChart fx:id="barChart" layoutX="6.0" layoutY="60.0" prefHeight="338.0" prefWidth="578.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="5.600000000000023" AnchorPane.rightAnchor="316.4000000000001" AnchorPane.topAnchor="60.0">
+                        <PieChart fx:id="guestType_pieChart" labelLineLength="10.0" layoutX="499.0" layoutY="220.8" prefHeight="203.0" prefWidth="420.0" title="Guest Type" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="221.0" />
+                        <PieChart fx:id="roomType_pieChart" labelLineLength="10.0" layoutX="500.0" layoutY="58.0" prefHeight="198.0" prefWidth="412.0" title="Room Type Usage" AnchorPane.bottomAnchor="219.0" AnchorPane.rightAnchor="10.0" />
+                        <BarChart fx:id="barChart" layoutX="6.4" layoutY="60.0" prefHeight="338.0" prefWidth="474.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="420.0" AnchorPane.topAnchor="60.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>

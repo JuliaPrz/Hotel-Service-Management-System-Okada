@@ -13,6 +13,7 @@ import application.guest.GuestPage_Controller;
 import application.roomData.Booked;
 import application.roomData.Room;
 import application.roomData.WalkIn;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +42,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
@@ -470,27 +472,184 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	    while (result.next()) {
     	    	XYChart.Data<String, Number> data = new XYChart.Data<>(result.getString(1), result.getInt(2));
                 chartData.getData().add(data);
+            //    chartData.getNode().setStyle("-fx-bar-fill: green;");
     	    }
-    	    
     	    barChart.setLegendVisible(false);
     	    barChart.getData().add(chartData);
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
 
+	
+	public void pieChart() {
+		String roomTypePieQuery  = "SELECT rt.Name AS RoomType, COUNT(*) AS BookingCount " +
+	             "FROM room_type AS rt " +
+	             "JOIN room AS r ON rt.Type_ID = r.Type_ID " +
+	             "JOIN `transaction` AS t ON r.Room_No = t.Room_No " +
+	             "GROUP BY rt.Name;";
+		try {
+	        prepare = connection.prepareStatement(roomTypePieQuery);
+	        result = prepare.executeQuery();
+
+	        ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
+
+	        while (result.next()) {
+	            String roomType = result.getString("RoomType");
+	            int bookingCount = result.getInt("BookingCount");
+	            
+	            // Create PieChart.Data for each room type and booking count
+	            PieChart.Data data = new PieChart.Data(roomType, bookingCount);
+	            
+	            // Add the data to the observable list
+	            chartData.add(data);
+	        }
+	        
+	        roomType_pieChart.getData().addAll(chartData);
+
+	     // Calculate the total sum of all pie values
+            double total = roomType_pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
+
+            // Iterate through each slice of the pie chart
+            roomType_pieChart.getData().forEach(data -> {
+                // Calculate the percentage for the current slice
+                double percentage = (data.getPieValue() / total) * 100;
+
+                // Format the percentage string
+                String formattedPercentage = String.format("%.2f%%", percentage);
+
+                // Create and install tooltip with the formatted percentage
+                Tooltip toolTip = new Tooltip(formattedPercentage);
+                Tooltip.install(data.getNode(), toolTip);
+            });
+		           
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		 
+		 String guestTypePieQuery = "SELECT " +
+			        "SUM(CASE WHEN g.Guest_Type = 'Walk-in Guest' THEN 1 ELSE 0 END) AS NumWalkInGuests, " +
+			        "SUM(CASE WHEN g.Guest_Type = 'Booked Guest' THEN 1 ELSE 0 END) AS NumBookedGuests " +
+			        "FROM GUEST AS g " +
+			        "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID;";
+		 try {
+		        prepare = connection.prepareStatement(guestTypePieQuery);
+		        result = prepare.executeQuery();
+
+		        ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
+
+		        while (result.next()) {
+		            int numWalkInGuests = result.getInt("NumWalkInGuests");
+		            int numBookedGuests = result.getInt("NumBookedGuests");
+
+		            // Create PieChart.Data for walk-in guests and booked guests
+		            PieChart.Data walkInData = new PieChart.Data("Walk-in Guests", numWalkInGuests);
+		            PieChart.Data bookedData = new PieChart.Data("Booked Guests", numBookedGuests);
+
+		            // Add the data to the observable list
+		            chartData.addAll(walkInData, bookedData);
+		            
+		        }
+	            guestType_pieChart.getData().addAll(chartData);
+	            
+	         // Calculate the total sum of all pie values
+	            double total = guestType_pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
+
+	            // Iterate through each slice of the pie chart
+	            guestType_pieChart.getData().forEach(data -> {
+	                // Calculate the percentage for the current slice
+	                double percentage = (data.getPieValue() / total) * 100;
+
+	                // Format the percentage string
+	                String formattedPercentage = String.format("%.2f%%", percentage);
+
+	                // Create and install tooltip with the formatted percentage
+	                Tooltip toolTip = new Tooltip(formattedPercentage);
+	                Tooltip.install(data.getNode(), toolTip);
+	            });
+	            
+
+	            
+			} catch (SQLException e) {
+			    e.printStackTrace();
+			}
+
+		 
+		
 	}
 	
 //  ---------     DASHBOARD TAB COMPONENT ACTIONS    --------
     public void dashboardController() {
     	
+    	revenueChart();
+    	pieChart();
     	
-    	
-    	
-    	
+    /*	// query to count all guests today
+    				String guestTodayQuery = "SELECT COUNT(*) AS 'Total Rooms' FROM ROOM";
+    				
+    				try {
+    					prepare = connection.prepareStatement(guestTodayQuery);
+    					result = prepare.executeQuery();
+    		// ALL ROOMS
+    					if (result.next()) {
+    					 int totalRooms = result.getInt("Total Rooms");
+    					 totalRoom_label.setText(String.valueOf(totalRooms));
+    					}
+    				} catch (SQLException e) {
+    					e.printStackTrace();
+    				}	
+    				
+    				String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
+    						 "FROM room_type AS rt " +
+    						 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+    						 "WHERE r.Room_no NOT IN ( " +
+    						 "    SELECT Room_no " +
+    						 "    FROM `transaction` " +
+    						 "    WHERE check_in_date <= CURRENT_DATE() " +
+    						 "    AND check_out_date > CURRENT_DATE() " +
+    						 ")";
+    				try {
+    					prepare = connection.prepareStatement(countAvailRoomQuery);
+    					result = prepare.executeQuery();
+    				
+    		// AVAILABLE ROOMS TODAY
+    			
+    					if (result.next()) {
+    					 int totalAvailRooms = result.getInt("NumOfAvailRooms");
+    					 availroom_label.setText(String.valueOf(totalAvailRooms));
+    					}
+    				} catch (SQLException e) {
+    					e.printStackTrace();
+    				}
+    				String countOccupiedRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfOccupiedRooms " +
+    						 "FROM room_type AS rt " +
+    						 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+    						 "WHERE r.Room_no IN ( " +
+    						 "    SELECT Room_no " +
+    						 "    FROM `transaction` " +
+    						 "    WHERE check_in_date <= CURRENT_DATE() " +
+    						 "    AND check_out_date > CURRENT_DATE() " +
+    						 ")";
+    				
+    				try {
+    					prepare = connection.prepareStatement(countOccupiedRoomQuery);
+    					result = prepare.executeQuery();
+    				
+    		// OCCUPIED ROOMS TODAY
+    			
+    				if (result.next()) {
+    				 int totalOccupiedRooms = result.getInt("NumOfOccupiedRooms");
+    				 occupied_label.setText(String.valueOf(totalOccupiedRooms));
+    				}
+
+    				
+    				} catch (SQLException e) {
+    					e.printStackTrace();
+    				}	
+    	*/	
     }
-	
-	
 
 //  ---------     BOOKING TAB COMPONENT ACTIONS    --------
     public void bookingController() {
@@ -538,8 +697,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	 
     	}	
     }
-	
-	
 	
 		//  ---------     WALK-IN TAB COMPONENT ACTIONS    ---------------------------
 		    
@@ -681,18 +838,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
 			}	
 		}
 	
-	
-    
-	
-		
-		
-   
-
-    
-    
-    
-    
-
     @FXML
     void checkBtnAction (ActionEvent event) {
     	AlertMessage alert = new AlertMessage();
@@ -787,22 +932,14 @@ public class ReceptionistPage_Controller extends DB_Connection {
     		System.out.println(walkIn_table);
     }
 
-    
-    
 	
     public void initialize() {
-    	
     	connection = connect();
-    	revenueChart();
     	
+    	dashboardController();
     	walkInController();
     	roomController();
     	bookingController();
-    	
-    	
-    
-    
-    	
     }
     
 
