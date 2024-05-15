@@ -18,12 +18,6 @@ public class DB_Connection {
     public PreparedStatement prepare;
     public ResultSet result;
     public Statement statement;
-     
-  /*  // Constructor
-    public DB_Connection() {
-        // Establish the database connection when the DB_Conection object is created
-        connect();
-    } */
 
     // Method to establish the database connection
      protected Connection connect() {
