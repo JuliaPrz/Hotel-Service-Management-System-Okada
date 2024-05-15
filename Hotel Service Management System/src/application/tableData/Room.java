@@ -1,4 +1,4 @@
-package application.roomData;
+package application.tableData;
 
 public class Room {
 
