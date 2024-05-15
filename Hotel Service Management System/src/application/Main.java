@@ -28,6 +28,10 @@ public class Main extends Application{
 
 
 
+
+
+
+
 //Parent root = FXMLLoader.load(getClass().getResource("guest/GuestPage.fxml"));
 //Parent root = FXMLLoader.load(getClass().getResource("receptionist/ReceptionistPage.fxml"));
 //Parent root = FXMLLoader.load(getClass().getResource("receptionist/Check-In.fxml"));

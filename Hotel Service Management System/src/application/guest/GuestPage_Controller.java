@@ -15,7 +15,13 @@ import java.util.ResourceBundle;
 import application.AlertMessage;
 import application.DB_Connection;
 import application.logIn_signUp.LogIn_Controller;
-import application.receptionist.ReceptionistPage_Controller;
+import application.tableData.Booked;
+import application.tableData.GuestTransaction;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -26,11 +32,15 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class GuestPage_Controller extends DB_Connection implements Initializable{
 	
@@ -92,6 +102,20 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 	    @FXML
 	    private Button hidePass_Btn, showPass_Btn;
 	    String password, hiddenPassword;
+	    
+	    @FXML
+	    private TableView<GuestTransaction> transaction_table;
+	    @FXML
+	    private TableColumn<GuestTransaction, Integer> transactID_col;
+	    @FXML
+	    private TableColumn<GuestTransaction, Double> total_col;
+	    @FXML
+	    private TableColumn<GuestTransaction, String> checkIn_col, checkOut_col;
+	   	    
+	    @FXML
+	    private Button cancel_btn, print_btn;
+
+	     
 	    private boolean alertShown = false; // Flag to track if alert has been shown
 	    private int errorCount = 0;
 	    private final int MAX_ERROR_COUNT = 3; // Set the maximum number of times the error message can be shown
@@ -624,6 +648,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 			    }
 	    }
 	    	
+	   //  ======================================         PROFILE PAGE        ==============================================
 	    
 	    public void showProfileInfo() {
 	    	int accountID = LogIn_Controller.getAccountID();	// get the Guest account ID when they logged in
@@ -692,6 +717,60 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
   		  gPassLabel.setFont(new Font("Amasis MT W1G", 35));
 	  }
 	    
+	 // UPDATES THE TRANSACTION TABLE IN THE PROFILE PAGE
+		TableCell<GuestTransaction, String> transactionTable() {
+			
+		ObservableList<GuestTransaction> allTransactList = FXCollections.observableArrayList(); 
+		transaction_table.setFixedCellSize(50);
+		
+		String query = "SELECT t.Transaction_ID, t.Check_In_Date, t.Check_Out_Date, pd.Total_Price AS Total_Payment " +
+	             "FROM `TRANSACTION` AS t " +
+	             "JOIN `Payment_Details` AS pd ON t.Payment_Id = pd.Payment_Id " +
+	             "WHERE t.Guest_ID = ?;";
+		try {
+			int accountID = LogIn_Controller.getAccountID();
+			 prepare = connection.prepareStatement(query);
+			 prepare.setInt(1, accountID);
+			 result = prepare.executeQuery();
+			
+			 while (result.next()) {
+			
+			 	// Define a formatter for the desired date format
+			 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+			
+			 	// Retrieve the check-in and check-out dates from the result set
+			     LocalDate checkInDate = result.getDate("Check_In_Date").toLocalDate();
+			     LocalDate checkOutDate = result.getDate("Check_Out_Date").toLocalDate();
+			     
+			     // Format the check-in and check-out dates
+			     String formattedArrivalDate = checkInDate.format(formatter);
+			     String formattedDepartureDate = checkOutDate.format(formatter);
+			
+			     allTransactList.add(new GuestTransaction(
+			 	    result.getInt("Transaction_ID"),
+			 	    formattedArrivalDate,
+			 	    formattedDepartureDate,
+			 	    result.getDouble("Total_Payment")
+			 	));
+			 }
+			
+			 // Set the items to the table before applying cell factory
+			 transaction_table.setItems(allTransactList);
+			 transaction_table.refresh();
+			
+			 transactID_col.setCellValueFactory(new PropertyValueFactory<>("transactNum"));
+			 checkIn_col.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+			 checkOut_col.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
+			 total_col .setCellValueFactory(new PropertyValueFactory<>("totalPayment"));
+			  
+			} catch (SQLException e) {
+			 e.printStackTrace();
+			
+			}	
+		return null;
+		}
+		
+		
  
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -706,7 +785,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         pageMap.put("profileBtn", profilePage);
     	
         updateRoomStatus();
-    	
+        transactionTable();    	
     	
         // Set the desired width and height of the ImageView
      //   img.setFitWidth(400); // Set the width to 400 pixels

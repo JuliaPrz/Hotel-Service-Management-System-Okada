@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import application.AlertMessage;
 import application.DB_Connection;
 import application.guest.GuestPage_Controller;
-import application.roomData.Booked;
-import application.roomData.Room;
-import application.roomData.WalkIn;
-import javafx.beans.binding.Bindings;
+import application.tableData.Booked;
+import application.tableData.Room;
+import application.tableData.WalkIn;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,16 +21,12 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -45,7 +40,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -261,14 +255,11 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	return null;
 	}
 	
-	
 	// UPDATES THE TABLE IN THE WALK-IN PAGE
 	TableCell<WalkIn, String> updateWalkInTable() {
 		// Update the data in the ObservableList that populates the TableView
 		GuestPage_Controller.getInstance().updateRoomStatus();
 		ObservableList<WalkIn> allWalkInList = FXCollections.observableArrayList(); 
-
-	
 	String query = "SELECT r.Room_No, rt.Name AS RoomType_Name, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date "
 			+ "FROM Room AS r "
 			+ "JOIN Room_type AS rt ON r.Type_ID = rt.Type_ID "
@@ -348,7 +339,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	}	
 	return null;
 	}
-	
 	
 	// UPDATES THE TABLE IN THE ROOM PAGE
 	TableCell<Room, String> updateRoomTable() {
@@ -454,8 +444,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	}	
 		return null;
 	}
-	    
-	
+	    	
 	public void revenueChart() {
 		String revenueQuery = "SELECT DATE(t.`Date`) AS Transaction_Date, SUM(pd.Total_Price) AS Revenue " +
 	             "FROM `transaction` t " +
@@ -482,7 +471,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		}
 	}
 
-	
 	public void pieChart() {
 		String roomTypePieQuery  = "SELECT rt.Name AS RoomType, COUNT(*) AS BookingCount " +
 	             "FROM room_type AS rt " +
@@ -586,69 +574,66 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	revenueChart();
     	pieChart();
     	
-    /*	// query to count all guests today
-    				String guestTodayQuery = "SELECT COUNT(*) AS 'Total Rooms' FROM ROOM";
+    	// query to count all guests today
+    				String guestTodayQuery = "SELECT COUNT(Room_No) AS 'TodaysGuest' FROM Room WHERE Status = 'Occupied'";
     				
     				try {
     					prepare = connection.prepareStatement(guestTodayQuery);
     					result = prepare.executeQuery();
-    		// ALL ROOMS
+    		// GUESTS TODAY
     					if (result.next()) {
-    					 int totalRooms = result.getInt("Total Rooms");
-    					 totalRoom_label.setText(String.valueOf(totalRooms));
+    					 int total_guests = result.getInt("TodaysGuest");
+    					 dTotalGuests_label.setText(String.valueOf(total_guests));
     					}
     				} catch (SQLException e) {
     					e.printStackTrace();
     				}	
     				
-    				String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
-    						 "FROM room_type AS rt " +
-    						 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
-    						 "WHERE r.Room_no NOT IN ( " +
-    						 "    SELECT Room_no " +
-    						 "    FROM `transaction` " +
-    						 "    WHERE check_in_date <= CURRENT_DATE() " +
-    						 "    AND check_out_date > CURRENT_DATE() " +
-    						 ")";
+    				String countBookedGuestsToday = "SELECT COUNT(*) AS AllBookedGuests " +
+								                "FROM GUEST AS g " +
+								                "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID " +
+								                "WHERE g.Guest_Type = 'Booked Guest' " +
+								                "AND t.Check_In_Date >= CURRENT_DATE();";
     				try {
-    					prepare = connection.prepareStatement(countAvailRoomQuery);
+    					prepare = connection.prepareStatement(countBookedGuestsToday);
     					result = prepare.executeQuery();
     				
     		// AVAILABLE ROOMS TODAY
     			
     					if (result.next()) {
-    					 int totalAvailRooms = result.getInt("NumOfAvailRooms");
-    					 availroom_label.setText(String.valueOf(totalAvailRooms));
+    					 int totalBookedGuests = result.getInt("AllBookedGuests");
+    					 dBookedGuests_label.setText(String.valueOf(totalBookedGuests));
     					}
     				} catch (SQLException e) {
     					e.printStackTrace();
     				}
-    				String countOccupiedRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfOccupiedRooms " +
-    						 "FROM room_type AS rt " +
-    						 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
-    						 "WHERE r.Room_no IN ( " +
-    						 "    SELECT Room_no " +
-    						 "    FROM `transaction` " +
-    						 "    WHERE check_in_date <= CURRENT_DATE() " +
-    						 "    AND check_out_date > CURRENT_DATE() " +
-    						 ")";
     				
-    				try {
-    					prepare = connection.prepareStatement(countOccupiedRoomQuery);
-    					result = prepare.executeQuery();
-    				
-    		// OCCUPIED ROOMS TODAY
-    			
-    				if (result.next()) {
-    				 int totalOccupiedRooms = result.getInt("NumOfOccupiedRooms");
-    				 occupied_label.setText(String.valueOf(totalOccupiedRooms));
-    				}
-
-    				
-    				} catch (SQLException e) {
-    					e.printStackTrace();
-    				}	
-    	*/	
+			    	String countAvailRoomQuery = "SELECT COUNT(r.Room_No) AS NumOfAvailRooms " +
+												 "FROM room_type AS rt " +
+												 "INNER JOIN room AS r ON r.Type_ID = rt.Type_ID " +
+												 "WHERE r.Room_no NOT IN ( " +
+												 "    SELECT Room_no " +
+												 "    FROM `transaction` " +
+												 "    WHERE check_in_date <= CURRENT_DATE() " +
+												 "    AND check_out_date > CURRENT_DATE() " +
+												 ")";
+					
+					try {
+						prepare = connection.prepareStatement(countAvailRoomQuery);
+						result = prepare.executeQuery();
+					
+				// AVAILABLE ROOMS TODAY
+						// Move cursor to the first row of the result set
+						if (result.next()) {
+						 // Retrieve the value of NumOfAvailRooms from the result set
+						 int totalAvailRooms = result.getInt("NumOfAvailRooms");
+						 // Set the text of the availRoom_label using the retrieved value
+						 dAvailRooms_label.setText(String.valueOf(totalAvailRooms));
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}	
+    	
     }
 
 //  ---------     BOOKING TAB COMPONENT ACTIONS    --------
@@ -895,23 +880,15 @@ public class ReceptionistPage_Controller extends DB_Connection {
 
 	    	}catch (SQLException e) {
 	    		e.printStackTrace();
-	    	}
-           
-	    	
-	    	
-	    }
-    	
+	    	} 	
+	    } 	
     }
     
     @FXML
     void checkInButtonAction(ActionEvent event) throws IOException {
         // Load the FXML file and create a new scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/receptionist/Check-In.fxml"));
-    
-        
-    
-        Parent root = loader.load();
-       
+        Parent root = loader.load();  
         Scene scene = new Scene(root);
 
         // Create a new stage for the scene
@@ -940,10 +917,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	walkInController();
     	roomController();
     	bookingController();
-    }
-    
-
-    
-    
+    }   
     
 }

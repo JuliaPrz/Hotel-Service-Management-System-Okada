@@ -117,7 +117,7 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     		alert.errorMessage("Invalid password, at least 8 characters needed");
     	
     	// makes sure that the guest is of legal age
-    	else if (age < 18 ) 
+    	else if (age < 18) 
     		alert.errorMessage("You must be 18 years old and above to create an account.");
     	
     	// checks the length of the contact number

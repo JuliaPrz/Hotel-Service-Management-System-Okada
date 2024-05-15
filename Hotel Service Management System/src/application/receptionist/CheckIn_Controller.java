@@ -13,7 +13,7 @@ import application.DB_Connection;
 import application.guest.GuestPage_Controller;
 import application.logIn_signUp.LogIn_Controller;
 import application.logIn_signUp.SignUp_Controller.DeriveAge;
-import application.roomData.WalkIn;
+import application.tableData.WalkIn;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
