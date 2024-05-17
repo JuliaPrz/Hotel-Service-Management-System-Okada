@@ -1,15 +1,19 @@
 package application.receptionist;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import application.AlertMessage;
 import application.DB_Connection;
 import application.guest.GuestPage_Controller;
+import application.logIn_signUp.LogIn_Controller;
+import application.tableData.AllTransaction;
 import application.tableData.Booked;
 import application.tableData.Room;
 import application.tableData.WalkIn;
@@ -40,6 +44,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -66,8 +71,6 @@ public class ReceptionistPage_Controller extends DB_Connection {
     
     @FXML
     private Label incomingNum_label, todayNum_Label;
-    @FXML
-    private Button bookingCheckOut_Btn;
     @FXML
     private TextField bookingSearch_TxtField;
 
@@ -107,7 +110,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     @FXML
     protected TableColumn<WalkIn, String> wRoomType_col, wGuest_col;
     
-    // ROOM (MANAGEMENT) PAGE
+    // ROOM PAGE
     @FXML
     protected Label totalRoom_label, occupied_label, availroom_label;
     @FXML
@@ -132,6 +135,33 @@ public class ReceptionistPage_Controller extends DB_Connection {
     private Label dBookedGuests_label;
     @FXML
     private Label dTotalGuests_label;
+    
+ //  TRANSACTION PAGE
+    
+    @FXML
+    private Label allTransact_label, totalGuest_label, receptionist_label;   
+    @FXML
+    private TextField transactionSearch_TxtField;
+    
+    @FXML
+    protected TableView<AllTransaction> transact_table;
+    @FXML
+    private TableColumn<AllTransaction, Integer> tTransactNum_col;
+    @FXML
+    private TableColumn<AllTransaction, String> tDate_col, tArrivalDate_col, tDepartureDate_col;
+    @FXML
+    private TableColumn<AllTransaction, String> tGuest_col;
+    @FXML
+    private TableColumn<AllTransaction, String> tTime_col;
+
+
+ // PROFILE PAGE
+    @FXML
+    private Label bdate_label, email_label, pass_label, phone_label, name_label;
+    @FXML
+    private Button hidePass_Btn, showPass_Btn;
+    String password, hiddenPassword;
+    
 	
 	// Switches tab
 	@FXML
@@ -158,6 +188,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	            break;
 	        case "profile_btn":
 	        	profile_page.toFront();
+	        	showProfileInfo();
 	            break;
 	        default:
 	        	System.out.println("Invalid");
@@ -445,6 +476,108 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		return null;
 	}
 	    	
+	
+	// UPDATES THE TABLE IN THE TRANSACTION PAGE
+		TableCell<AllTransaction, String> updateTransactionTable() {
+			
+		GuestPage_Controller.getInstance().updateRoomStatus();
+		ObservableList<AllTransaction> allTransactList = FXCollections.observableArrayList(); 
+		transact_table.setFixedCellSize(50);
+		
+		String query = "SELECT t.Transaction_ID, t.`Date`, t.`Time`, t.Check_In_Date, t.Check_Out_Date, " +
+	             "CONCAT(g.First_Name, ' ', g.Last_Name) AS Guest_Name " +
+	             "FROM `TRANSACTION` AS t " +
+	             "JOIN `GUEST` AS g ON t.Guest_ID = g.Guest_ID;";
+
+		try {
+		
+		 prepare = connection.prepareStatement(query);
+		 result = prepare.executeQuery();
+		
+		 while (result.next()) {
+		
+		 	// Define a formatter for the desired date format
+		 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+		 	// Define a formatter for the desired time format
+		 	DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+		
+		 	// Retrieve the check-in and check-out dates from the result set
+		 	LocalDate date = result.getDate("Date").toLocalDate();
+		     LocalDate checkInDate = result.getDate("Check_In_Date").toLocalDate();
+		     LocalDate checkOutDate = result.getDate("Check_Out_Date").toLocalDate();
+		     
+		     // Format the check-in and check-out dates
+		     String formattedDate = date.format(formatter);
+		     String formattedArrivalDate = checkInDate.format(formatter);
+		     String formattedDepartureDate = checkOutDate.format(formatter);
+		     
+		     // Retrieve the transaction time from the result set
+		     LocalTime transactionTime = result.getTime("Time").toLocalTime();
+		     // Format the transaction time
+		     String formattedTransactionTime = transactionTime.format(timeFormatter);
+		
+		     allTransactList.add(new AllTransaction(
+		 	    result.getInt("Transaction_ID"),
+		 	    result.getString("Guest_Name"),
+		 	    formattedDate,
+		 	    formattedTransactionTime,
+		 	    formattedArrivalDate,
+		 	    formattedDepartureDate
+		 	));
+		 }
+		
+		 // Set the items to the table before applying cell factory
+		 transact_table.setItems(allTransactList);
+		 transact_table.refresh();
+		
+		 tTransactNum_col.setCellValueFactory(new PropertyValueFactory<>("transactNum"));
+		 tGuest_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGuestName()));
+		 tDate_col.setCellValueFactory(new PropertyValueFactory<>("date"));
+		 tTime_col.setCellValueFactory(new PropertyValueFactory<>("time"));
+		 tArrivalDate_col.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+		 tDepartureDate_col.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
+		
+			
+		
+		// SEARCH FILTER
+		 FilteredList<AllTransaction> filteredData = new FilteredList<>(allTransactList, b -> true);
+		 transactionSearch_TxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+		 	filteredData.setPredicate(transact -> {
+		 		 if (newValue.isEmpty() || newValue.isBlank()) {
+		 	            // If the search text is empty, display all items
+		 	            return true;
+		 	        }
+		
+		 	        // Convert the search text to lowercase for case-insensitive search
+		 	        String searchKeyword = newValue.toLowerCase();
+		
+		 	     // Check if any of the properties contain the search text
+		 	        return String.valueOf(transact.getTransactNum()).contains(searchKeyword) ||
+		 	        		transact.getGuestName().toLowerCase().contains(searchKeyword) ||
+		 	        		transact.getDate().toString().toLowerCase().contains(searchKeyword) ||
+		 	        		transact.getTime().toString().toLowerCase().contains(searchKeyword) ||
+		 	        		transact.getArrivalDate().toString().toLowerCase().contains(searchKeyword) ||
+		 	        		transact.getDepartureDate().toString().toLowerCase().contains(searchKeyword);
+		 	               
+		 	});
+		 });
+		 
+		 SortedList<AllTransaction> sortedData = new SortedList<>(filteredData);
+		 sortedData.comparatorProperty().bind(transact_table.comparatorProperty());
+		 transact_table.setItems(sortedData);
+		 
+		 
+		} catch (SQLException e) {
+		 e.printStackTrace();
+		
+		}	
+		return null;
+		}
+	
+	
+	
+	
+	
 	public void revenueChart() {
 		String revenueQuery = "SELECT DATE(t.`Date`) AS Transaction_Date, SUM(pd.Total_Price) AS Revenue " +
 	             "FROM `transaction` t " +
@@ -909,6 +1042,127 @@ public class ReceptionistPage_Controller extends DB_Connection {
     		System.out.println(walkIn_table);
     }
 
+    
+    public void transactionController() {
+		updateTransactionTable(); // update the table
+		// query to count all transactions
+		String countTransactQuery = "SELECT COUNT(*) AS Total_Transactions FROM `TRANSACTION`;";
+
+		
+		try {
+			prepare = connection.prepareStatement(countTransactQuery);
+			result = prepare.executeQuery();
+// ALL ROOMS
+			if (result.next()) {
+			 int totalTransactions = result.getInt("Total_Transactions");
+			 allTransact_label.setText(String.valueOf(totalTransactions));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		
+		String countTotalGuestQuery = "SELECT COUNT(DISTINCT g.Guest_ID) AS Total_Guests " +
+             "FROM GUEST AS g " +
+             "JOIN `TRANSACTION` AS t ON g.Guest_ID = t.Guest_ID;";
+
+		try {
+			prepare = connection.prepareStatement(countTotalGuestQuery);
+			result = prepare.executeQuery();
+		
+	// TOTAL GUEST
+	
+			if (result.next()) {
+			 int totalGuest = result.getInt("Total_Guests");
+			 totalGuest_label.setText(String.valueOf(totalGuest));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String countReceptionistQuery = "SELECT COUNT(*) AS Total_Receptionists FROM RECEPTIONIST;";
+
+		try {
+			prepare = connection.prepareStatement(countReceptionistQuery);
+			result = prepare.executeQuery();
+		
+// OCCUPIED ROOMS TODAY
+	
+		if (result.next()) {
+		 int totalReceptionist = result.getInt("Total_Receptionists");
+		 receptionist_label.setText(String.valueOf(totalReceptionist));
+		}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+    
+//  ======================================         PROFILE PAGE        ==============================================
+    
+		    public void showProfileInfo() {
+		    	int accountID = LogIn_Controller.getAccountID();	// get the Guest account ID when they logged in
+		    	try {
+		        	// SQL query to retrieve info from sign in page to get the personal information of user
+		        	String query = "SELECT CONCAT(r.First_Name, ' ', r.Last_Name) AS Name, r.Email, r.Password, r.Contact_No, r.Birthdate " +
+		                    "FROM RECEPTIONIST r " +
+		                    "WHERE r.Employee_ID = ?";
+		
+		        	prepare = connection.prepareStatement(query);
+		            prepare.setInt(1, accountID); // Set the guest_acc_ID
+		        	result = prepare.executeQuery();
+		        	
+		        	 // If available room is found, show the booking summary
+		            if (result.next()) {
+		            	String name = result.getString("Name");
+		            	String email = result.getString("Email");
+		            	String pass = result.getString("Password"); 	
+		            	String contactNum = result.getString("Contact_No");
+		            	Date bday = result.getDate("Birthdate");
+		            	
+		            	// display password placeholders as bullet points
+		                String hiddenPass = "";
+		                for (int i = 0; i < pass.length(); i++) {
+		                    hiddenPass += "\u2022"; // Unicode for bullet point
+		                }
+		                
+		                password = pass;
+		                hiddenPassword = hiddenPass;
+		                
+		            	LocalDate birthdate = bday.toLocalDate(); // Convert SQL Date to LocalDate
+		            	  // Format LocalDate to "Month Day, Year"
+		            	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+		            	String formattedBirthdate = birthdate.format(formatter);
+		            	
+		                name_label.setText(name);
+		                email_label.setText(email);
+		                pass_label.setText(hiddenPassword);
+		        		pass_label.setFont(new Font("Amasis MT W1G", 35));
+		               	
+		                phone_label.setText(contactNum);
+		                bdate_label.setText(formattedBirthdate);
+		            	
+		            }
+		            	
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		  }
+		    @FXML
+		  public void showPassButtonAction(ActionEvent event) {
+			  showPass_Btn.setVisible(false);
+			  hidePass_Btn.setVisible(true);
+			  
+			  pass_label.setText(password);
+			  pass_label.setFont(new Font("Amasis MT W1G", 16));
+		  }
+		  
+		    @FXML
+		  public void hidePassButtonAction(ActionEvent event) {
+			  showPass_Btn.setVisible(true);
+			  hidePass_Btn.setVisible(false); 
+			  
+			  pass_label.setText(hiddenPassword);
+			  pass_label.setFont(new Font("Amasis MT W1G", 35));
+		  }
 	
     public void initialize() {
     	connection = connect();
@@ -917,6 +1171,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
     	walkInController();
     	roomController();
     	bookingController();
+    	transactionController();
     }   
     
 }
