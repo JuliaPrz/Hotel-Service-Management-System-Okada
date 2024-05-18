@@ -23,7 +23,7 @@
                   <Font name="Aharoni Bold" size="27.0" />
                </font>
             </Label>
-            <Line endX="152.00003051757812" endY="7.62939453125E-6" fill="#53093a" layoutX="265.0" layoutY="70.0" startX="-61.60002136230469" startY="7.62939453125E-6" stroke="#53093a" strokeWidth="3.0" />
+            <Line endX="152.00003051757812" endY="7.62939453125E-6" fill="#53093a" layoutX="265.0" layoutY="70.0" startX="-42.20002746582031" startY="1.52587890625E-5" stroke="#53093a" strokeWidth="3.0" />
             <Group layoutX="50.0" layoutY="105.0">
                <children>
                   <Label layoutX="288.0" layoutY="13.0" prefHeight="19.0" prefWidth="119.0" text="Check-in Date:">
