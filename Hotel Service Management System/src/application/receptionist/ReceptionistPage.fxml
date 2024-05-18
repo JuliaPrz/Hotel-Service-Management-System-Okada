@@ -338,7 +338,7 @@
                         <String fx:value="bg_shadow" />
                      </styleClass>
                      <children>
-                        <TableView fx:id="transact_table" layoutY="64.0" prefHeight="347.0" prefWidth="889.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+                        <TableView fx:id="transact_table" layoutY="64.0" prefHeight="306.0" prefWidth="890.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
                            <columns>
                               <TableColumn fx:id="tTransactNum_col" prefWidth="140.79998475313187" text="Transaction No." />
                               <TableColumn fx:id="tGuest_col" prefWidth="149.59999084472656" text="Guest" />
@@ -369,19 +369,19 @@
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
-                        <Button fx:id="print_btn" graphicTextGap="7.0" layoutX="200.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="103.0" styleClass="button_color" text="Download" textFill="WHITE" AnchorPane.leftAnchor="200.0">
+                        <Button fx:id="tShowReport_btn" graphicTextGap="7.0" layoutX="200.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Show Report" textFill="WHITE" AnchorPane.leftAnchor="200.0">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="DOWNLOAD" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="PRINT" />
                            </graphic>
                         </Button>
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="ROOM" fx:id="room_page" layoutX="10.0" layoutY="-4.0" prefHeight="674.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="ROOM" fx:id="room_page" layoutX="10.0" layoutY="-4.0" prefHeight="674.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -526,11 +526,19 @@
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
                            </children>
                         </Group>
+                        <Button fx:id="tShowReport_btn1" graphicTextGap="7.0" layoutX="162.0" layoutY="19.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Show Report" textFill="WHITE">
+                           <font>
+                              <Font name="Century Gothic Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PRINT" />
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="ROOM" fx:id="walkIn_page" layoutX="10.0" layoutY="6.0" prefHeight="674.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="ROOM" fx:id="walkIn_page" layoutX="10.0" layoutY="6.0" prefHeight="674.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -676,7 +684,7 @@
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
                            </children>
                         </Group>
-                        <Button fx:id="checkIn_Btn" layoutX="530.0" layoutY="18.0" mnemonicParsing="false" onAction="#checkInButtonAction" prefHeight="32.0" prefWidth="116.0" text="Check-In" textFill="WHITE" AnchorPane.rightAnchor="144.39999999999998">
+                        <Button fx:id="checkIn_Btn" layoutX="638.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkInButtonAction" prefHeight="32.0" prefWidth="116.0" text="Check-In" textFill="WHITE" AnchorPane.rightAnchor="145.20000000000005">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
@@ -691,26 +699,19 @@
                               <SVGPath content="M 8 1 L 8 5 L 9 5 L 9 2 L 19 2 L 19 19 L 9 19 L 9 16 L 8 16 L 8 20 L 20 20 L 20 1 L 8 1 z M 10 7 L 13 10 L 0 10 L 0 11 L 13 11 L 10 14 L 11.5 14 L 15 10.5 L 11.5 7 L 10 7 z " fill="WHITE" nodeOrientation="RIGHT_TO_LEFT" scaleX="0.8" scaleY="0.8" stroke="WHITE" />
                            </graphic>
                         </Button>
-                        <Button fx:id="checkOut_Btn" layoutX="652.0" layoutY="18.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="123.0" text="Check-Out" textFill="WHITE" AnchorPane.rightAnchor="15.199999999999932">
+                        <Button fx:id="tShowReport_btn2" graphicTextGap="7.0" layoutX="763.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Save Report" textFill="WHITE">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <styleClass>
-                              <String fx:value="hover_red" />
-                              <String fx:value="red_button" />
-                           </styleClass>
                            <graphic>
-                              <SVGPath content="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " fill="WHITE" scaleX="0.7" scaleY="0.7" stroke="WHITE" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="PRINT" />
                            </graphic>
                         </Button>
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="BOOKING" fx:id="booking_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.0" prefWidth="902.0" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="28.0" layoutY="54.0" prefHeight="59.0" prefWidth="766.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
@@ -835,6 +836,14 @@
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
+                        <Button fx:id="tShowReport_btn21" graphicTextGap="7.0" layoutX="795.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Save Report" textFill="WHITE">
+                           <font>
+                              <Font name="Century Gothic Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PRINT" />
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>

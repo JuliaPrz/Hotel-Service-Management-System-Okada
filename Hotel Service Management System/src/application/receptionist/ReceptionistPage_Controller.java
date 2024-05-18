@@ -47,6 +47,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 
@@ -1163,6 +1173,67 @@ public class ReceptionistPage_Controller extends DB_Connection {
 			  pass_label.setText(hiddenPassword);
 			  pass_label.setFont(new Font("Amasis MT W1G", 35));
 		  }
+		    
+		    
+		    // =============================       REPORT BUTTONS      ===========================================
+		    @FXML
+		    void transactionReportAction(ActionEvent event) {
+		    	String query = "SELECT t.Transaction_ID, t.`Date`, t.`Time`, t.Check_In_Date, t.Check_Out_Date, " +
+		                "CONCAT(g.First_Name, ' ', g.Last_Name) AS Guest_Name " +
+		                "FROM `TRANSACTION` AS t " +
+		                "JOIN `GUEST` AS g ON t.Guest_ID = g.Guest_ID;";
+
+		    	try {
+		    		// Load the JasperDesign from the specified JRXML file
+					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\TransactionReport.jrxml");
+					// Create a new JRDesignQuery object to hold the SQL query
+					JRDesignQuery updateQuery = new JRDesignQuery();
+					updateQuery.setText(query);
+					
+					// Create a new JRDesignQuery object to hold the SQL query
+					jdesign.setQuery(updateQuery);
+					
+					// Compile the JasperDesign to produce a JasperReport object
+					JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+					// Fill the report with data from the database connection
+				    // The second parameter is for passing parameters to the report, which is null in this case
+					JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
+					// View the report using JasperViewer
+					JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
+		    	} catch (JRException e) {
+					e.printStackTrace();
+				}
+		    }
+		    
+		    // DI PA NASISIMULAN
+		    @FXML
+		    void roomReportAction(ActionEvent event) {
+		    	String query = "SELECT t.Transaction_ID, t.`Date`, t.`Time`, t.Check_In_Date, t.Check_Out_Date, " +
+		                "CONCAT(g.First_Name, ' ', g.Last_Name) AS Guest_Name " +
+		                "FROM `TRANSACTION` AS t " +
+		                "JOIN `GUEST` AS g ON t.Guest_ID = g.Guest_ID;";
+
+		    	try {
+		    		// Load the JasperDesign from the specified JRXML file
+					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\TransactionReport.jrxml");
+					// Create a new JRDesignQuery object to hold the SQL query
+					JRDesignQuery updateQuery = new JRDesignQuery();
+					updateQuery.setText(query);
+					
+					// Create a new JRDesignQuery object to hold the SQL query
+					jdesign.setQuery(updateQuery);
+					
+					// Compile the JasperDesign to produce a JasperReport object
+					JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+					// Fill the report with data from the database connection
+				    // The second parameter is for passing parameters to the report, which is null in this case
+					JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
+					// View the report using JasperViewer
+					JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
+		    	} catch (JRException e) {
+					e.printStackTrace();
+				}
+		    }
 	
     public void initialize() {
     	connection = connect();
