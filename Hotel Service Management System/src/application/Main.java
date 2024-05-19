@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -12,6 +13,12 @@ public class Main extends Application{
 	public void start(Stage stage) throws Exception {
 			
 			Parent root = FXMLLoader.load(getClass().getResource("logIn_signUp/Log In Page.fxml"));
+			
+			// Set the title of the stage
+		    stage.setTitle("OKADA Manila - Log In");
+		    
+		    // Set the icon of the stage
+		    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
 			
 			Scene scene = new Scene(root);			
 			stage.setScene(scene);

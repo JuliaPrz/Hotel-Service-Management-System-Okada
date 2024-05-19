@@ -23,7 +23,7 @@
 
 <StackPane fx:id="rootPane" prefHeight="792.0" prefWidth="1540.0" style="-fx-background-color: purple;" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.guest.GuestPage_Controller">
    <children>
-      <AnchorPane fx:id="profilePage" prefHeight="58.0" prefWidth="924.0">
+      <AnchorPane fx:id="profilePage" prefHeight="58.0" prefWidth="924.0" visible="false">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -199,7 +199,7 @@
                         <Font name="AmasisMTW1G-Bold" size="30.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="transaction_table" layoutX="33.0" layoutY="78.0" prefHeight="460.0" prefWidth="602.0" style="-fx-background-color: white;">
+                  <TableView fx:id="transaction_table" layoutX="33.0" layoutY="78.0" prefHeight="493.0" prefWidth="602.0" style="-fx-background-color: white;">
                      <columns>
                         <TableColumn fx:id="transactID_col" prefWidth="130.39996337890625" text="Transaction ID" />
                         <TableColumn fx:id="checkIn_col" prefWidth="166.4000244140625" text="Check-In Date" />
@@ -213,22 +213,6 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </TableView>
-                  <Button fx:id="print_btn" graphicTextGap="6.0" layoutX="510.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="115.0" styleClass="button_color" text="Print Details" textFill="WHITE">
-                     <font>
-                        <Font name="Century Gothic Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="PRINT" text="" />
-                     </graphic>
-                  </Button>
-                  <Label graphicTextGap="6.0" layoutX="33.0" layoutY="552.0" prefHeight="18.0" prefWidth="243.0" text="Okada Manila. All rights reserved." textFill="#98116d">
-                     <font>
-                        <Font name="Century Gothic" size="13.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="COPYRIGHT" />
-                     </graphic>
-                  </Label>
                </children>
             </AnchorPane>
          </children>
@@ -1003,7 +987,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="welcomePage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
+      <AnchorPane fx:id="welcomePage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>

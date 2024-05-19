@@ -1,6 +1,8 @@
 package application.receptionist;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
@@ -13,7 +15,6 @@ import application.DB_Connection;
 import application.guest.GuestPage_Controller;
 import application.logIn_signUp.LogIn_Controller;
 import application.logIn_signUp.SignUp_Controller.DeriveAge;
-import application.tableData.WalkIn;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,13 +25,134 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+
+
+// ABSTRACTION
+	class PaymentDetails {
+	    private String cardNumber;
+	    private String nameOnCard;
+	    private String ccv;
+	    private String expiryDate;
+	    private String cashAmount;
+	    private String change;
+	
+	    // Constructor
+	    public PaymentDetails(String cardNumber, String nameOnCard, String ccv, String expiryDate, String cashAmount, String change) {
+	        this.cardNumber = cardNumber;
+	        this.nameOnCard = nameOnCard;
+	        this.ccv = ccv;
+	        this.expiryDate = expiryDate;
+	        this.cashAmount = cashAmount;
+	        this.change = change;
+	    }
+	
+	    // Getters and Setters
+	    public String getCardNumber() {
+	        return cardNumber;
+	    }
+	
+	    public void setCardNumber(String cardNumber) {
+	        this.cardNumber = cardNumber;
+	    }
+	
+	    public String getNameOnCard() {
+	        return nameOnCard;
+	    }
+	
+	    public void setNameOnCard(String nameOnCard) {
+	        this.nameOnCard = nameOnCard;
+	    }
+	
+	    public String getCcv() {
+	        return ccv;
+	    }
+	
+	    public void setCcv(String ccv) {
+	        this.ccv = ccv;
+	    }
+	
+	    public String getExpiryDate() {
+	        return expiryDate;
+	    }
+	
+	    public void setExpiryDate(String expiryDate) {
+	        this.expiryDate = expiryDate;
+	    }
+	
+	    public String getCashAmount() {
+	        return cashAmount;
+	    }
+	
+	    public void setCashAmount(String cashAmount) {
+	        this.cashAmount = cashAmount;
+	    }
+	
+	    public String getChange() {
+	        return change;
+	    }
+	
+	    public void setChange(String change) {
+	        this.change = change;
+	    }
+	}
+
+
+	abstract class Payment{
+	    // Abstract method to process the payment
+	    public abstract void processPayment(int paymentId, PaymentDetails paymentDetails) throws SQLException;
+	    
+	    protected Connection connection;
+
+	    public Payment(Connection connection) {
+	        this.connection = connection;
+	    }
+	}
+
+	class CardPayment extends Payment {
+		public CardPayment(Connection connection) {
+	        super(connection);
+	    }
+	    @Override
+	    public void processPayment(int paymentId, PaymentDetails paymentDetails) throws SQLException {
+	        // Implement the logic to process a card payment
+	        String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Card_Number, Name_OnCard, CCV, Expiry_Date) " +
+	                                "VALUES (?, ?, ?, ?, ?)";
+	        try (
+	        	PreparedStatement prepare = connection.prepareStatement(insertCardInfo)) {
+	            prepare.setInt(1, paymentId);
+	            prepare.setString(2, paymentDetails.getCardNumber());
+	            prepare.setString(3, paymentDetails.getNameOnCard());
+	            prepare.setString(4, paymentDetails.getCcv());
+	            prepare.setString(5, paymentDetails.getExpiryDate());
+	            prepare.executeUpdate();
+	        }
+	    }
+	}
+
+	class CashPayment extends Payment {
+		public CashPayment(Connection connection) {
+			super(connection);
+		}
+
+	    @Override
+	    public void processPayment(int paymentId, PaymentDetails paymentDetails) throws SQLException {
+	        // Implement the logic to process a cash payment
+	        String insertCashInfo = "INSERT INTO CASH_PAYMENT (Payment_ID, Cash_Amount, `Change`) " +
+	                                "VALUES (?, ?, ?)";
+	        try (PreparedStatement prepare = connection.prepareStatement(insertCashInfo)) {
+	            prepare.setInt(1, paymentId);
+	            prepare.setString(2, paymentDetails.getCashAmount());
+	            prepare.setString(3, paymentDetails.getChange());
+	            prepare.executeUpdate();
+	        }
+	    }
+	}
+
 
 
 public class CheckIn_Controller extends DB_Connection{
 
-	
     @FXML
     private TextField fName_txtField, lName_txtField;
     @FXML
@@ -211,113 +333,114 @@ public class CheckIn_Controller extends DB_Connection{
     	    		    			prepare.executeUpdate(); 	
     	    		            }
     	        	
-    	// INSERT DATA TO PAYMENT DETAILS
-    	    		                     	
+    	    		            // INSERT DATA TO PAYMENT DETAILS   	
                     			 // Get the necessary information from the UI components
-                    			int roomNo = Integer.parseInt(roomNum_cbb.getValue());
-                    			Double total = Double.parseDouble(cleanTotalString);
-             		            LocalDate date =  LocalDate.now();
-             		            LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
-             		            
-             		        // Get the selected payment option from the ComboBox
-             		           String payType = paymentOption_cbb.getValue();
 
-             		           // If no value is selected, use the prompt text as the payment option
-             		           if (payType == null || payType.isEmpty()) {
-             		               payType = paymentOption_cbb.getPromptText();
-             		           }
-             		           
-             		           String payment_type = "";
-             		           if (paymentOptions[1].equals(paymentOption)) 
-             		        	  payment_type = "Card Payment";
-             		           else 
-             		        	  payment_type = "Cash Payment";
-             		           
-           		            String insertPaymentDetails = "INSERT INTO payment_details (Total_Price, payment_type) "
-           		                + "VALUES (?,?)";
-           		            prepare = connection.prepareStatement(insertPaymentDetails, Statement.RETURN_GENERATED_KEYS);
-           		            prepare.setDouble(1, total);
-           		            prepare.setString(2, payment_type);
-           		            prepare.executeUpdate();
-           		            
-           		         // Retrieve the generated payment_ID
-           		            result = prepare.getGeneratedKeys();
-           		            int paymentId = -1; // Initialize to a default value
-           		            if (result.next()) {
-           		                paymentId = result.getInt(1); // Get the generated payment_ID
-           		            }
-    	    		            
-           		         if (paymentId != -1) {   	 
-             // INSERT DATA TO `TRANSACTION` TABLE
-         		            String insertBooking = "INSERT INTO `Transaction` (Guest_ID, Room_no, Payment_ID,  Date, Time, Check_in_date, Check_out_date) "
-         		            					+ "VALUES (?,?,?,?,?,?,?)";
-         		            prepare = connection.prepareStatement(insertBooking, Statement.RETURN_GENERATED_KEYS);
-         		            prepare.setInt(1, guestID);
-         		            prepare.setInt(2, roomNo);
-         		            prepare.setInt(3, paymentId); // Set the retrieved payment_ID
-         		            prepare.setDate(4, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
-         		            prepare.setTime(5, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
-         		            prepare.setDate(6, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
-         		            prepare.setDate(7, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
-         		            
-         		            // Execute the insert query
-         		            prepare.executeUpdate();
-         		            
-         		        // Retrieve the generated payment_ID
-        		            result = prepare.getGeneratedKeys();
-        		            int transactID = -1; // Initialize to a default value
-        		            if (result.next()) {
-        		            	transactID = result.getInt(1); // Get the generated payment_ID
-        		            }
-         		            
-         	 // INSERT DATA TO CARD_PAYMENT TABLE if the payment option is card
-         		            if (paymentOptions[1].equals(paymentOption) && paymentId != -1) {
-         		            	 // Insert the card payment information with the retrieved payment_ID
-         		                String insertCardInfo = "INSERT INTO CARD_PAYMENT (Payment_ID, Card_Number, Name_OnCard, CCV, Expiry_Date) " +
-         		                						"VALUES (?, ?, ?, ?, ?)";
-         		                prepare = connection.prepareStatement(insertCardInfo);
-         		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
-         		                prepare.setString(2, cardNum_txtField.getText());
-         		                prepare.setString(3, nameOnCard_txtField.getText());
-         		                prepare.setString(4, CCV_txtField.getText());
-         		                prepare.setString(5, expiryDate_txtField.getText());
-         		                prepare.executeUpdate();
-         	 // INSERT DATA TO CASH_PAYMENT TABLE if the payment option is cash
-         		            } else if ((paymentOptions[0].equals(paymentOption) ||  (paymentOptions[0].equals(promptText))) && paymentId != -1)  {
-         		            // Insert the card payment information with the retrieved payment_ID
-         		                String insertCashInfo = "INSERT INTO CASH_PAYMENT (Payment_ID, Cash_Amount, `Change`) " +
-         		                						"VALUES (?, ?, ?)";
-         		                prepare = connection.prepareStatement(insertCashInfo);
-         		                prepare.setInt(1, paymentId); // Set the retrieved payment_ID
-         		                prepare.setString(2, cashAmount_txtField.getText());
-         		                prepare.setString(3, change_label.getText());
-         		                prepare.executeUpdate();
-   	
-         		            }else
-         		            	// for debugging; failed to retrieve the payment_ID
-         		                System.out.println("Failed to retrieve payment_ID.");
-         		            
-         		           if (paymentId != -1) {
-         		           int accountID = LogIn_Controller.getAccountID();	// get the receptionist account ID when they logged in
-         		           String insertReceptionistTransact = "INSERT INTO Receptionist_Transaction (Employee_ID, Transaction_ID) "
-	            					+ "VALUES (?,?)";
-         		           prepare = connection.prepareStatement(insertReceptionistTransact);
-         		           prepare.setInt(1, accountID);
-         		           prepare.setInt(2, transactID);
-         		           // Execute the insert query
-         		           prepare.executeUpdate();
-         		        }     
-         		            	// indicate successful payment
-         		            	alert.infoMessage("Checked-in successfully!");
-         		            	clearFields();
-         		            	
-         		            	// UPDATE THE STATUS OF THE ROOM
-         		            	GuestPage_Controller.getInstance().updateRoomStatus();
-         		            	ReceptionistPage_Controller.getInstance().walkInController();
-         		            	ReceptionistPage_Controller.getInstance().roomController();
-         		            
-         		            	
-           		 }	
+    	    		         int roomNo = Integer.parseInt(roomNum_cbb.getValue());
+    	    		         Double total = Double.parseDouble(cleanTotalString);
+    	    		         LocalDate date = LocalDate.now();
+    	    		         LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS); // current time with seconds
+
+    	    		         // Get the selected payment option from the ComboBox
+    	    		         String payType = paymentOption_cbb.getValue();
+
+    	    		         // If no value is selected, use the prompt text as the payment option
+    	    		         if (payType == null || payType.isEmpty()) {
+    	    		             payType = paymentOption_cbb.getPromptText();
+    	    		         }
+
+    	    		         String payment_type = "";
+    	    		         if (paymentOptions[1].equals(paymentOption)) {
+    	    		             payment_type = "Card Payment";
+    	    		         } else {
+    	    		             payment_type = "Cash Payment";
+    	    		         }
+
+    	    		         String insertPaymentDetails = "INSERT INTO payment_details (Total_Price, payment_type) VALUES (?, ?)";
+    	    		         prepare = connection.prepareStatement(insertPaymentDetails, Statement.RETURN_GENERATED_KEYS);
+    	    		         prepare.setDouble(1, total);
+    	    		         prepare.setString(2, payment_type);
+    	    		         prepare.executeUpdate();
+
+    	    		         // Retrieve the generated payment_ID
+    	    		         result = prepare.getGeneratedKeys();
+    	    		         int paymentId = -1; // Initialize to a default value
+    	    		         if (result.next()) {
+    	    		             paymentId = result.getInt(1); // Get the generated payment_ID
+    	    		         }
+
+    	    		         if (paymentId != -1) {
+    	    		             // INSERT DATA TO `TRANSACTION` TABLE
+    	    		             String insertBooking = "INSERT INTO `Transaction` (Guest_ID, Room_no, Payment_ID, Date, Time, Check_in_date, Check_out_date) " +
+    	    		                                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    	    		             prepare = connection.prepareStatement(insertBooking, Statement.RETURN_GENERATED_KEYS);
+    	    		             prepare.setInt(1, guestID);
+    	    		             prepare.setInt(2, roomNo);
+    	    		             prepare.setInt(3, paymentId); // Set the retrieved payment_ID
+    	    		             prepare.setDate(4, java.sql.Date.valueOf(date)); // Convert LocalDate to java.sql.Date
+    	    		             prepare.setTime(5, java.sql.Time.valueOf(time)); // Convert LocalTime to java.sql.Time
+    	    		             prepare.setDate(6, java.sql.Date.valueOf(checkInDate)); // Convert LocalDate to java.sql.Date
+    	    		             prepare.setDate(7, java.sql.Date.valueOf(checkOutDate)); // Convert LocalDate to java.sql.Date
+
+    	    		             // Execute the insert query
+    	    		             prepare.executeUpdate();
+
+    	    		             // Retrieve the generated payment_ID
+    	    		             result = prepare.getGeneratedKeys();
+    	    		             int transactID = -1; // Initialize to a default value
+    	    		             if (result.next()) {
+    	    		                 transactID = result.getInt(1); // Get the generated payment_ID
+    	    		             }
+
+    	    		             // Create an instance of PaymentDetails and set the values
+    	    		             PaymentDetails paymentDetails = new PaymentDetails(insertBooking, insertBooking, insertBooking, insertBooking, insertBooking, insertBooking);
+    	    		             paymentDetails.setCardNumber(cardNum_txtField.getText());
+    	    		             paymentDetails.setNameOnCard(nameOnCard_txtField.getText());
+    	    		             paymentDetails.setCcv(CCV_txtField.getText());
+    	    		             paymentDetails.setExpiryDate(expiryDate_txtField.getText());
+    	    		             paymentDetails.setCashAmount(cashAmount_txtField.getText());
+    	    		             paymentDetails.setChange(change_label.getText());
+
+    	    		             // Determine the type of payment and process it
+    	    		             Payment payment;
+    	    		             if (paymentOptions[1].equals(paymentOption)) {
+    	    		                 payment = new CardPayment(connection);
+    	    		             } else {
+    	    		                 payment = new CashPayment(connection);
+    	    		             }
+
+    	    		             // Process the payment
+    	    		             try {
+    	    		                 payment.processPayment(paymentId, paymentDetails);
+    	    		                 
+    	    		                 int accountID = LogIn_Controller.getAccountID();	// get the receptionist account ID when they logged in
+    	           		           String insertReceptionistTransact = "INSERT INTO Receptionist_Transaction (Employee_ID, Transaction_ID) "
+    	  	            					+ "VALUES (?,?)";
+    	           		           prepare = connection.prepareStatement(insertReceptionistTransact);
+    	           		           prepare.setInt(1, accountID);
+    	           		           prepare.setInt(2, transactID);
+    	           		           // Execute the insert query
+    	           		           prepare.executeUpdate();
+    	           		           
+    	           		            	// indicate successful payment
+    	           		            	alert.infoMessage("Checked-in successfully!");
+    	           		            	clearFields();
+    	           		            	
+    	           		            	// UPDATE THE STATUS OF THE ROOM
+    	           		            	GuestPage_Controller.getInstance().updateRoomStatus();
+    	           		            	ReceptionistPage_Controller.getInstance().walkInController();
+    	           		            	ReceptionistPage_Controller.getInstance().roomController();
+    	    		                 
+    	    		                 
+    	    		                 
+    	    		             } catch (SQLException e) {
+    	    		                 e.printStackTrace(); // Handle SQL exception appropriately
+    	    		             }
+    	    		         } else {
+    	    		             // For debugging; failed to retrieve the payment_ID
+    	    		             System.out.println("Failed to retrieve payment_ID.");
+    	    		         }        	
+           		 
     	        } catch (SQLException e) {
     	            e.printStackTrace();
     	        }    		

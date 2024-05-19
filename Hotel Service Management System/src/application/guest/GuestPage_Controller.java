@@ -15,13 +15,9 @@ import java.util.ResourceBundle;
 import application.AlertMessage;
 import application.DB_Connection;
 import application.logIn_signUp.LogIn_Controller;
-import application.tableData.Booked;
 import application.tableData.GuestTransaction;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -566,6 +562,7 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
         		           alert.infoMessage("Booked successfully! See you!");
         		           clearPaymentFields(); //clear fields
         		           updateRoomStatus();
+        		           transactionTable();
         	        } catch (SQLException e) {
         	            e.printStackTrace();
         	        }    		
@@ -770,8 +767,6 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
 		return null;
 		}
 		
-		
- 
 
     public void initialize(URL location, ResourceBundle resources) {
     	

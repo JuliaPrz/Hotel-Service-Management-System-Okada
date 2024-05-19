@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -98,8 +99,11 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     		 	 
             	        	// Load the FXML file of the selected page
             	            root = FXMLLoader.load(getClass().getResource("/application/receptionist/ReceptionistPage.fxml"));
+            
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            	            stage.setTitle("OKADA Manila - Hotel Booking System");
+            			    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
             	         // Set the scene in the stage
                 	        stage.setScene(scene);
                 	        // shows the window to the center of the monitor screen
@@ -130,8 +134,11 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                            	 if (result.next()) {
                    	        	// Load the FXML file of the selected page
                    	            root = FXMLLoader.load(getClass().getResource("/application/admin/Admin Page.fxml"));
+                   	     
                    	            scene = new Scene(root);
                    	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                   	            stage.setTitle("OKADA Manila - Employee Management");
+                			    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
                        	        stage.setScene(scene);
                        	        // shows the window to the center of the monitor screen
                        	        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -169,8 +176,11 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 
             	        	// Load the FXML file of the selected page
             	            root = FXMLLoader.load(getClass().getResource("/application/guest/GuestPage.fxml"));
+
             	            scene = new Scene(root);
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            	            stage.setTitle("OKADA Manila - Hotel Booking System");
+            			    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
             	         // Set the scene in the stage
                 	        stage.setScene(scene);
                 	        stage.setResizable(false);
@@ -199,6 +209,8 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/application/logIn_signUp/Sign Up Page.fxml"));
             scene = new Scene(root);
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("OKADA Manila - Sign Up");
+		    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
 
             // Set the scene in the stage
             stage.setScene(scene);

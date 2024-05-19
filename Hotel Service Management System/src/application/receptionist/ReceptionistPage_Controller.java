@@ -43,13 +43,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -197,9 +197,11 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	        	transact_page.toFront();
 	            break;
 	        case "profile_btn":
+	        {
 	        	profile_page.toFront();
 	        	showProfileInfo();
 	            break;
+	        }
 	        default:
 	        	System.out.println("Invalid");
 	        
@@ -223,10 +225,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 			+ "WHERE g.Guest_Type = 'Booked Guest' "
 			+ "AND t.Check_Out_Date > CURRENT_DATE()" // does not include the guests which already departed
 			+ "ORDER BY t.Transaction_ID ASC ";
-		//	+ "AND t.Check_In_Date <= CURDATE() " // Check if check_in_date is today or before today
-		//	+ "AND t.Check_Out_Date >= CURDATE();"; // Check if check_out_date is today
 	try {
-	
 	 prepare = connection.prepareStatement(query);
 	 result = prepare.executeQuery();
 	
@@ -1032,15 +1031,19 @@ public class ReceptionistPage_Controller extends DB_Connection {
         // Load the FXML file and create a new scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/receptionist/Check-In.fxml"));
         Parent root = loader.load();  
+        
         Scene scene = new Scene(root);
 
         // Create a new stage for the scene
         Stage checkInStage = new Stage();
+     
         checkInStage.setScene(scene);
 
         // Set the owner of the new stage to the current stage
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         checkInStage.initOwner(currentStage);
+        checkInStage.setTitle("OKADA Manila - Hotel Check-In");
+        checkInStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
 
         // Position the new stage relative to the current stage
         checkInStage.setX(currentStage.getX() + 50); // Offset the new stage by 50 pixels from the current stage's X position
@@ -1176,6 +1179,8 @@ public class ReceptionistPage_Controller extends DB_Connection {
 		    
 		    
 		    // =============================       REPORT BUTTONS      ===========================================
+		    
+		    // Transaction Report
 		    @FXML
 		    void transactionReportAction(ActionEvent event) {
 		    	String query = "SELECT t.Transaction_ID, t.`Date`, t.`Time`, t.Check_In_Date, t.Check_Out_Date, " +
@@ -1204,36 +1209,88 @@ public class ReceptionistPage_Controller extends DB_Connection {
 					e.printStackTrace();
 				}
 		    }
-		    
-		    // DI PA NASISIMULAN
+		
+		    // Booking Report
 		    @FXML
-		    void roomReportAction(ActionEvent event) {
-		    	String query = "SELECT t.Transaction_ID, t.`Date`, t.`Time`, t.Check_In_Date, t.Check_Out_Date, " +
-		                "CONCAT(g.First_Name, ' ', g.Last_Name) AS Guest_Name " +
-		                "FROM `TRANSACTION` AS t " +
-		                "JOIN `GUEST` AS g ON t.Guest_ID = g.Guest_ID;";
+		    void bookingReportAction(ActionEvent event) {
+		    	String query = "SELECT t.Transaction_ID, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date, t.Room_No "
+		    			+ "FROM `TRANSACTION` AS t "
+		    			+ "JOIN GUEST AS g ON g.Guest_ID = t.Guest_ID "
+		    			+ "WHERE g.Guest_Type = 'Booked Guest' "
+		    			+ "AND t.Check_Out_Date > CURRENT_DATE()" // does not include the guests which already departed
+		    			+ "ORDER BY t.Transaction_ID ASC ";
 
 		    	try {
 		    		// Load the JasperDesign from the specified JRXML file
-					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\TransactionReport.jrxml");
-					// Create a new JRDesignQuery object to hold the SQL query
+					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\BookingReport.jrxml");
 					JRDesignQuery updateQuery = new JRDesignQuery();
 					updateQuery.setText(query);
 					
-					// Create a new JRDesignQuery object to hold the SQL query
 					jdesign.setQuery(updateQuery);
 					
-					// Compile the JasperDesign to produce a JasperReport object
 					JasperReport jreport = JasperCompileManager.compileReport(jdesign);
-					// Fill the report with data from the database connection
-				    // The second parameter is for passing parameters to the report, which is null in this case
 					JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
-					// View the report using JasperViewer
+
 					JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
 		    	} catch (JRException e) {
 					e.printStackTrace();
 				}
 		    }
+		    
+		    // Walk-In Guests Report
+		    @FXML
+		    void walkInReportAction(ActionEvent event) {
+		    	String query = "SELECT r.Room_No, rt.Name AS RoomType_Name, CONCAT(g.First_Name, ' ' ,g.Last_Name) AS Guest_Name, t.Check_In_Date, t.Check_Out_Date "
+		    			+ "FROM Room AS r "
+		    			+ "JOIN Room_type AS rt ON r.Type_ID = rt.Type_ID "
+		    			+ "JOIN `Transaction` AS t ON r.Room_No = t.Room_No "
+		    			+ "JOIN Guest AS g ON t.Guest_ID = g.Guest_ID "
+		    			+ "WHERE g.Guest_Type = 'Walk-In Guest'"
+		    			+ "AND t.Check_In_Date <= CURDATE() " // Check if check_in_date is today or before today
+		    			+ "AND t.Check_Out_Date >= CURDATE();"; // Check if check_out_date is today
+
+		    	try {
+		    		// Load the JasperDesign from the specified JRXML file
+					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\WalkIn_Report.jrxml");
+					JRDesignQuery updateQuery = new JRDesignQuery();
+					updateQuery.setText(query);
+					
+					jdesign.setQuery(updateQuery);
+					
+					JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+					JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
+
+					JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
+		    	} catch (JRException e) {
+					e.printStackTrace();
+				}
+		    }
+		    
+		    // Room Report
+		    @FXML
+		    void roomReportAction(ActionEvent event) {
+		    	String query = "SELECT room.Room_No, room_type.Name, room_type.Price_per_Night, room_type.Tax, room.`Status` "
+		    			+ "FROM room "
+		    			+ "INNER JOIN room_type ON room.Type_ID = room_type.Type_ID;";
+
+		    	try {
+		    		// Load the JasperDesign from the specified JRXML file
+					JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\RoomReport.jrxml");
+					JRDesignQuery updateQuery = new JRDesignQuery();
+					updateQuery.setText(query);
+					
+					jdesign.setQuery(updateQuery);
+					
+					JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+					JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
+
+					JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
+		    	} catch (JRException e) {
+					e.printStackTrace();
+				}
+		    }
+		    
+		    
 	
     public void initialize() {
     	connection = connect();

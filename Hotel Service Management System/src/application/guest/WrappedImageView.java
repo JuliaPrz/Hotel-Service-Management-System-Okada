@@ -3,7 +3,7 @@ package application.guest;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
+// POLYMORPHISM
 public class WrappedImageView extends ImageView {
 	
 	WrappedImageView()
