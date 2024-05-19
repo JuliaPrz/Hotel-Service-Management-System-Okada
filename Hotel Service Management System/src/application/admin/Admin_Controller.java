@@ -2,42 +2,39 @@ package application.admin;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 import application.AlertMessage;
 import application.DB_Connection;
-import application.guest.GuestPage_Controller;
-import application.logIn_signUp.LogIn_Controller;
 import application.logIn_signUp.SignUp_Controller.DeriveAge;
-import application.tableData.Booked;
 import application.tableData.Receptionist;
-import application.tableData.WalkIn;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 public class Admin_Controller extends DB_Connection{
@@ -306,6 +303,33 @@ public class Admin_Controller extends DB_Connection{
 	    	pass_field.setText("");
 	    }
 	    
+	    
+	    @FXML
+	    void showDetailsAction(ActionEvent event) {
+	    	String query = "SELECT Employee_ID, CONCAT(First_Name, ' ', Last_Name) AS `Name`, Contact_No, Birthdate, Age " +
+	                "FROM RECEPTIONIST;";
+	    	try {
+	    		// Load the JasperDesign from the specified JRXML file
+				JasperDesign jdesign = JRXmlLoader.load("C:\\Users\\ACER\\JaspersoftWorkspace\\Hotel Booking Reports\\ReceptionistData.jrxml");
+				// Create a new JRDesignQuery object to hold the SQL query
+				JRDesignQuery updateQuery = new JRDesignQuery();
+				updateQuery.setText(query);
+				
+				// Create a new JRDesignQuery object to hold the SQL query
+				jdesign.setQuery(updateQuery);
+				
+				// Compile the JasperDesign to produce a JasperReport object
+				JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+				// Fill the report with data from the database connection
+			    // The second parameter is for passing parameters to the report, which is null in this case
+				JasperPrint jprint = JasperFillManager.fillReport(jreport, null, connection);
+				// View the report using JasperViewer
+				JasperViewer.viewReport(jprint, false); // The 'false' parameter ensures the application does not exit  
+	    	} catch (JRException e) {
+				e.printStackTrace();
+			}
+	    }
+	        
     public void initialize() {
     	
     	// Restricts the available date in birthdate datepicker

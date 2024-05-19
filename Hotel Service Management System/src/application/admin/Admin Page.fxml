@@ -138,7 +138,7 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </TableView>
-                        <Button fx:id="report_btn" graphicTextGap="6.0" layoutX="345.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="115.0" styleClass="button_color" text="Save Details" textFill="WHITE" AnchorPane.bottomAnchor="14.400000000000013" AnchorPane.rightAnchor="22.600000000000065">
+                        <Button fx:id="report_btn" graphicTextGap="6.0" layoutX="345.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showDetailsAction" prefHeight="30.0" prefWidth="115.0" styleClass="button_color" text="Show Details" textFill="WHITE" AnchorPane.bottomAnchor="14.400000000000013" AnchorPane.rightAnchor="22.600000000000065">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
