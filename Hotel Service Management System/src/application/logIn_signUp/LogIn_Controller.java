@@ -38,8 +38,6 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	@FXML
 	private ComboBox<String> user;
 	
-
-
     private static int accountID;
     
     // Method to retrieve the accountID
@@ -76,7 +74,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
     	else {
     		
         	         // Login successful
-    		String[] userOptions = {"Guest", "Employee"};
+    		String[] userOptions = {"Guest", "Employee", "Admin"};
     		ObservableList<String> userTypeList = FXCollections.observableArrayList(userOptions);
     		user.setItems(userTypeList);
         	        	
@@ -97,8 +95,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
                     		// get the accountID; it is used in CheckIn_Controller class
 		            	        int accountID = result.getInt("Employee_ID");
 		            	        LogIn_Controller.setAccountID(accountID);
-                    		 
-                    		 
+                    		 	 
             	        	// Load the FXML file of the selected page
             	            root = FXMLLoader.load(getClass().getResource("/application/receptionist/ReceptionistPage.fxml"));
             	            scene = new Scene(root);
@@ -121,6 +118,38 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 	                // Handle database error
 	            	   alert.errorMessage("An error occurred. Please try again later.");
 	                	    }
+            	        }else if (userOptions[2].equals(userType)){
+            	        	  // Query the database to check if email and password match
+                   		 String queryEmployee = "SELECT Email, Password FROM `ADMIN` WHERE email = ? AND password = ?";
+                            try {
+                           	   prepare = connection.prepareStatement(queryEmployee);
+                           	   prepare.setString(1, email.getText());
+                           	   prepare.setString(2, password.getText());
+                           	   result = prepare.executeQuery();
+                           	        
+                           	 if (result.next()) {
+                   	        	// Load the FXML file of the selected page
+                   	            root = FXMLLoader.load(getClass().getResource("/application/admin/Admin Page.fxml"));
+                   	            scene = new Scene(root);
+                   	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                       	        stage.setScene(scene);
+                       	        // shows the window to the center of the monitor screen
+                       	        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                       	        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                       	        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                       	        stage.setResizable(false);
+                       	        stage.show();
+                   	     
+                           	  } else {
+                           	     // Login failed
+                           	     alert.errorMessage("Incorrect email or password.");
+                           	 }
+                          } 
+       	               catch (SQLException e) {
+       	            	   e.printStackTrace();
+       	                // Handle database error
+       	            	   alert.errorMessage("An error occurred. Please try again later.");
+       	                	    }	
             	        }else {
             	        	// Query the database to check if email and password match
             	        	String queryGuest = "SELECT BG.Guest_ID, BG.Email, BG.Password " +
@@ -184,7 +213,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
 		GuestPage_Controller updateStatus = new GuestPage_Controller();
      	updateStatus.updateRoomStatus();
      	
-		String[] userOptions = {"Guest", "Employee"};
+		String[] userOptions = {"Guest", "Employee", "Admin"};
 		ObservableList<String> userTypeList = FXCollections.observableArrayList(userOptions);
 		user.setItems(userTypeList);
 	}

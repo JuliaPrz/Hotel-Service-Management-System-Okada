@@ -749,7 +749,7 @@
                </children></AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="roomPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0">
+      <AnchorPane fx:id="roomPage" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="924.0" visible="false">
          <children>
             <AnchorPane layoutX="36.0" layoutY="22.0" prefHeight="64.0" prefWidth="1046.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="0.0">
                <children>

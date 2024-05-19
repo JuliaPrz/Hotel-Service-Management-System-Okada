@@ -831,12 +831,12 @@
                               <FontAwesomeIcon fill="#98116d" glyphName="SEARCH" layoutX="-39.0" layoutY="21.0" />
                            </children>
                         </Group>
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" prefHeight="35.0" prefWidth="148.0" text="All Rooms" textFill="#98116d" AnchorPane.leftAnchor="14.0">
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="15.0" prefHeight="35.0" prefWidth="148.0" text="All Booking" textFill="#98116d" AnchorPane.leftAnchor="14.0">
                            <font>
                               <Font name="Century Gothic" size="25.0" />
                            </font>
                         </Label>
-                        <Button fx:id="tShowReport_btn21" graphicTextGap="7.0" layoutX="795.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Save Report" textFill="WHITE">
+                        <Button fx:id="tShowReport_btn21" graphicTextGap="7.0" layoutX="759.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#transactionReportAction" prefHeight="30.0" prefWidth="121.0" styleClass="button_color" text="Save Report" textFill="WHITE" AnchorPane.rightAnchor="18.60000000000005">
                            <font>
                               <Font name="Century Gothic Bold" size="13.0" />
                            </font>
@@ -848,7 +848,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="DASHBOARD" fx:id="dashboard_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.2" prefWidth="830.4" styleClass="main_bg" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+            <AnchorPane id="DASHBOARD" fx:id="dashboard_page" layoutX="10.0" layoutY="-4.0" prefHeight="667.2" prefWidth="830.4" styleClass="main_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                <children>
                   <AnchorPane layoutX="38.0" layoutY="31.0" prefHeight="59.0" prefWidth="766.0" stylesheets="@../main.css" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="25.600000000000023" AnchorPane.topAnchor="15.0">
                      <children>
