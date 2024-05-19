@@ -1,7 +1,10 @@
 package application;
 
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class AlertMessage {
 	
@@ -24,12 +27,12 @@ public class AlertMessage {
 		alert.showAndWait();
 	}
 	
-	public void confirmationMessage (String message) {
-		alert = new Alert (AlertType.CONFIRMATION); 
-		alert.setTitle("Confirmation");
-		alert.setHeaderText (null);
-		alert.setContentText (message);
-		alert.showAndWait();
+	public Optional<ButtonType> confirmationMessage(String message) {
+	    Alert alert = new Alert(AlertType.CONFIRMATION);
+	    alert.setTitle("Confirmation");
+	    alert.setHeaderText(null);
+	    alert.setContentText(message);
+	    return alert.showAndWait();
 	}
 	
 	public void warningMessage (String message) {
