@@ -86,12 +86,10 @@ public class CheckIn_Controller extends DB_Connection{
     	// Calculate age using DeriveAge
         LocalDate currentDate = LocalDate.now();
         LocalDate birthdate = bdate_datePicker.getValue();
-        int age = DeriveAge.calculateAge(birthdate, currentDate); // from SignUp_Controller
-        
+        int age = DeriveAge.calculateAge(birthdate, currentDate); // from SignUp_Controller  
         
         LocalDate checkInDate = checkIn_datePicker.getValue();
 	    LocalDate checkOutDate = checkOut_datePicker.getValue();
-		
 	      
 	    String[] paymentOptions = {"CASH", "CARD"};
 		ObservableList<String> options = FXCollections.observableArrayList(paymentOptions);
@@ -177,10 +175,9 @@ public class CheckIn_Controller extends DB_Connection{
     	        		// capitalizes first letter of the name
     	    			String firstName = fName_txtField.getText();
     	    			String lastName = lName_txtField.getText();
-    	    			if (!firstName.isEmpty() && !lastName.isEmpty()) {
-    	    			    firstName = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
-    	    			    lastName = Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1);
-    	    			}    	        		
+    	    			firstName = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
+    	    			lastName = Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1);
+    	    			   	        		
     	       // INSERT DATA TO GUEST TABLE
     	    			String insertGuestData = "INSERT INTO GUEST " 
     	    						+ "(Last_Name, First_Name, Birthdate, Age, Contact_No, Guest_Type) " 
@@ -329,10 +326,6 @@ public class CheckIn_Controller extends DB_Connection{
 
     	} // end of else statement
   } // end of method
-	
-    
-    
-    
     
     public void clearFields() {
     	fName_txtField.setText("");
