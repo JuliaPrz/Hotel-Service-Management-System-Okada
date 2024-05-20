@@ -19,7 +19,7 @@ public class Main extends Application{
 		    
 		    // Set the icon of the stage
 		    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
-			
+		    stage.setResizable(false);
 			Scene scene = new Scene(root);			
 			stage.setScene(scene);
 			stage.show();

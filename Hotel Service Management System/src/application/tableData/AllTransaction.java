@@ -1,6 +1,6 @@
 package application.tableData;
 
-
+// ENCAPSULATION
 public class AllTransaction {
 
 	private Integer transactNum;

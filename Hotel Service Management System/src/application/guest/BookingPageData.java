@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import application.DB_Connection;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -15,7 +13,6 @@ public class BookingPageData extends DB_Connection{
 
 	private int numberOfRoomType = 4; //there are 4 room types
 	 
-
     public BookingPageData(Connection connection) {
         this.connection = connection;
     }
@@ -32,8 +29,6 @@ public class BookingPageData extends DB_Connection{
                 "SELECT Image FROM room_type WHERE type_ID = 40"
         };
         
-  
-
         // Display images
         for (int i = 0; i < numberOfRoomType; i++) {
             book_displayImage(connection, imageQueries[i], targetNodes[i]);
@@ -70,7 +65,6 @@ public class BookingPageData extends DB_Connection{
         } 
         
     }
-
 	    
 	    // BOOKING PAGE - method to display NAME
 	    void book_displayName(Connection connection, Label[] nameLabel) {	

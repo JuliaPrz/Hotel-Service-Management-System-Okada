@@ -3,7 +3,6 @@ package application.logIn_signUp;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Period;
@@ -82,8 +81,9 @@ public class SignUp_Controller extends DB_Connection implements Initializable  {
     	
     	// used to find a pattern if the phone number is numeric numbers only; continues in the if else statement
 		boolean phoneIsNumeric = signUp_contact.matches("[0-9]+");
-		boolean fNameOnlyLetters = signUpFName.getText().matches("[a-zA-Z.]+");
-		boolean lNameOnlyLetters = signUpLName.getText().matches("[a-zA-Z.]+");
+		boolean fNameOnlyLetters = signUpFName.getText().matches("[a-zA-Z. ]+");
+		boolean lNameOnlyLetters = signUpLName.getText().matches("[a-zA-Z. ]+");
+
     	
     	// Calculate age using DeriveAge
         LocalDate currentDate = LocalDate.now();

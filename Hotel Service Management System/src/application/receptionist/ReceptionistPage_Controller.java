@@ -182,7 +182,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	    // Switch on the button ID
 	    switch (buttonId) {
 	        case "dashboard_btn":
-	            dashboard_page.toFront();
+	            dashboard_page.toFront();          
 	            break;
 	        case "room_btn":       	
 	        	room_page.toFront();
@@ -386,14 +386,12 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	GuestPage_Controller.getInstance().updateRoomStatus();
 	ObservableList<Room> allRoomList = FXCollections.observableArrayList(); 
 	rmTable.setFixedCellSize(50);
-	// 	rmTable.getSelectionModel().clearSelection();
 	
 	String query = "SELECT room.Room_No, room_type.Name, room_type.Price_per_Night, room_type.Tax, room.`Status` "
 			+ "FROM room "
 			+ "INNER JOIN room_type ON room.Type_ID = room_type.Type_ID;";
 	
 	try {
-	//	connection = connect();
 	 prepare = connection.prepareStatement(query);
 	 result = prepare.executeQuery();
 	 DecimalFormat decimalFormat = new DecimalFormat("#,##0.00 PHP");
@@ -422,7 +420,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	     @Override
 	     public TableCell<Room, String> call(TableColumn<Room, String> param) {
 	         return new TableCell<Room, String>() {
-	             @Override
+	             @Override	//POLYMORPHISM
 	             protected void updateItem(String item, boolean empty) {
 	                 super.updateItem(item, empty);
 	                 setText(item);
@@ -497,9 +495,7 @@ public class ReceptionistPage_Controller extends DB_Connection {
 	             "CONCAT(g.First_Name, ' ', g.Last_Name) AS Guest_Name " +
 	             "FROM `TRANSACTION` AS t " +
 	             "JOIN `GUEST` AS g ON t.Guest_ID = g.Guest_ID;";
-
-		try {
-		
+		try {	
 		 prepare = connection.prepareStatement(query);
 		 result = prepare.executeQuery();
 		

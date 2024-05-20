@@ -781,38 +781,5 @@ public class GuestPage_Controller extends DB_Connection implements Initializable
     	
         updateRoomStatus();
         transactionTable();    	
-    	
-        // Set the desired width and height of the ImageView
-     //   img.setFitWidth(400); // Set the width to 400 pixels
-      //  img.setFitHeight(300); // Set the height to 300 pixels
-    	
-      //  img.fitWidthProperty().bind(rootPane.widthProperty()); 
-        
-  
-       
-        
-     
-/*
-    	// Create an instance of WrappedImageView
-        WrappedImageView imageView = new WrappedImageView();
-
-        // Load your image
-        Image image = new Image("/images/background/okada night.png");
-
-        // Set the image
-        imageView.setImage(image);
-
-        // Add the WrappedImageView to the StackPane
-        rootPane.getChildren().add(imageView);
-
-    	*/
-
-    	
-    	
-    	
-    	
-    	
-    	
     }
-    
 }

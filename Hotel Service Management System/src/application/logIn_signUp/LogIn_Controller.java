@@ -104,6 +104,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
             	            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             	            stage.setTitle("OKADA Manila - Hotel Booking System");
             			    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
+            			    stage.setResizable(true);
             	         // Set the scene in the stage
                 	        stage.setScene(scene);
                 	        // shows the window to the center of the monitor screen
@@ -211,6 +212,7 @@ public class LogIn_Controller extends DB_Connection implements Initializable {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("OKADA Manila - Sign Up");
 		    stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons/purple logo.png")));
+		    stage.setResizable(false);
 
             // Set the scene in the stage
             stage.setScene(scene);

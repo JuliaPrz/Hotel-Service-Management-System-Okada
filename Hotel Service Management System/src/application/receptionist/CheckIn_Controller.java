@@ -28,7 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 
-// ABSTRACTION
+// ENCAPSULATION
 	class PaymentDetails {
 	    private String cardNumber;
 	    private String nameOnCard;
@@ -97,7 +97,7 @@ import javafx.scene.control.TextField;
 	    }
 	}
 
-
+// ABSTRACTION
 	abstract class Payment{
 	    // Abstract method to process the payment
 	    public abstract void processPayment(int paymentId, PaymentDetails paymentDetails) throws SQLException;
